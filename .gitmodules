@@ -25,3 +25,6 @@
 [submodule "rm_gimbal_description"]
 	path = rm_gimbal_description
 	url = https://github.com/HY-LiYihan/rm_gimbal_description.git
+[submodule "driver/ros2_hik_camera"]
+	path = driver/ros2_hik_camera
+	url = https://github.com/HY-LiYihan/ros2_hik_camera.git
