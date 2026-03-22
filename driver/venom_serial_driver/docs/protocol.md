@@ -13,7 +13,7 @@
 | 5-8 | linear_x | float32 | 底盘前后速度 | m/s | - |
 | 9-12 | linear_y | float32 | 底盘左右速度 | m/s | - |
 | 13-16 | linear_z | float32 | 相对于云台中心Z方向速度 | m/s | 地面机器人可置0，保留扩展 |
-| 17-20 | angular_x | float32 | 小陀螺角速度 / 底盘旋转角速度 | rad/s | - |
+| 17-20 | gyro_wz | float32 | 小陀螺角速度 / 底盘旋转角速度 | rad/s | - |
 | 21-24 | angular_y | float32 | 相对于云台中心的 pitch 控制量 | rad | - |
 | 25-28 | angular_z | float32 | 相对于云台中心的 yaw 控制量 | rad | - |
 | 29-32 | distance | float32 | 预留 float32 | - | - |
