@@ -7,7 +7,7 @@ from .crc_utils import crc16, verify_crc16, append_crc16
 
 # 协议常量
 SOF_TX = 0xA5  # NUC发送给C板
-SOF_RX = 0x5A  # C板发送给NUC
+SOF_RX = 0xA5  # C板发送给NUC
 CMD_ID_STATE = 0x01  # C板状态数据
 CMD_ID_CTRL = 0x02   # 视觉控制指令
 
@@ -120,7 +120,7 @@ def unpack_state_frame(raw_bytes: bytes) -> tuple:
     if raw_bytes[0] != SOF_RX:
         return False, None
 
-    data_len = struct.unpack('<H', raw_bytes[1:3])[0]
+    data_len = struct.unpack('<H', raw_bytes[1:3])[0]  # 小端序
     cmd_id = raw_bytes[3]
     frame_len = 4 + data_len + 2
 

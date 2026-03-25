@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import sys
 import time
+import math
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -44,7 +45,8 @@ class SerialMonitor:
         """解析并打印状态帧"""
         while len(self.rx_buffer) >= 6:
             if self.rx_buffer[0] != serial_protocol.SOF_RX:
-                self.rx_buffer.pop(0)
+                bad_byte = self.rx_buffer.pop(0)
+                # print(f"[WARN] 丢弃垃圾字节: 0x{bad_byte:02X} (期望帧头: 0x{serial_protocol.SOF_RX:02X})")
                 continue
 
             success, state = serial_protocol.unpack_state_frame(bytes(self.rx_buffer))
@@ -64,6 +66,7 @@ class SerialMonitor:
                 frame_len = 4 + data_len + 2
                 self.rx_buffer = self.rx_buffer[frame_len:]
             else:
+                # print(f"[WARN] 检测到疑似垃圾/坏帧，丢弃1字节后继续同步 (buffer_len={len(self.rx_buffer)})")
                 self.rx_buffer.pop(0)
 
     def _print_statistics(self):
