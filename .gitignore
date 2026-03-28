@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Environment and secrets
+.env
+.env.*
+
+# Per CLAUDE.md: never commit these
+command.md
+
+# ROS2 build artifacts (when building inside src, which is non-standard)
+build/
+install/
+log/
+
+# Editor and IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
