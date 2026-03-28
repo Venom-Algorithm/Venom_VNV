@@ -1,16 +1,16 @@
 # venom_serial_driver
 
-DJI C板串口通信驱动，用于 RoboMaster 机器人视觉系统与电控板之间的数据交互。
+DJI C-board serial communication driver for the RoboMaster robot vision system.
 
-## 功能特性
+## Features
 
-- 双向通信协议实现
-- CRC16 数据校验
-- 滑动窗口帧解析
-- 超时保护机制
-- ROS2 话题接口
+- Bidirectional binary protocol implementation
+- CRC16 data verification
+- Sliding-window frame parsing
+- Timeout protection
+- ROS 2 topic interface
 
-## 安装
+## Installation
 
 ```bash
 cd ~/venom_ws
@@ -18,15 +18,15 @@ colcon build --packages-select venom_serial_driver
 source install/setup.bash
 ```
 
-## 使用方法
+## Usage
 
-### 启动驱动
+### Launch the driver
 
 ```bash
 ros2 launch venom_serial_driver serial_driver.launch.py
 ```
 
-### 自定义串口参数
+### Override serial parameters
 
 ```bash
 ros2 launch venom_serial_driver serial_driver.launch.py \
@@ -34,94 +34,105 @@ ros2 launch venom_serial_driver serial_driver.launch.py \
   baud_rate:=921600
 ```
 
-## ROS2 话题
+## ROS 2 Topics
 
-### 发布话题
+Full system-level topic reference: [topics.md](./topics.md)
 
-- `/robot_state` (std_msgs/String) - 机器人状态数据（JSON格式）
-  ```json
-  {
-    "timestamp_us": 1234567,
-    "pitch": 0.1,
-    "yaw": 0.2,
-    "pitch_speed": 0.01,
-    "yaw_speed": 0.02,
-    "current_HP": 600,
-    "game_progress": 4
-  }
-  ```
+### Subscriptions
 
-### 订阅话题
+| Topic | Message Type | Description |
+|---|---|---|
+| `/cmd_vel` | `geometry_msgs/Twist` | Chassis velocity command. Only `linear.x/y/z` are used. |
+| `/auto_aim` | `venom_serial_driver/AutoAimCmd` | Gimbal angle commands and aim state (pitch, yaw, detected, tracking, fire, distance, proj_x/y). |
 
-- `/vision_ctrl` (std_msgs/String) - 视觉控制指令（JSON格式）
-  ```json
-  {
-    "tracking_state": 1,
-    "target_pitch": 0.15,
-    "target_yaw": 0.25,
-    "target_pitch_v": 0.01,
-    "target_yaw_v": 0.02
-  }
-  ```
+### Publications
 
-## 参数配置
+| Topic | Message Type | Description |
+|---|---|---|
+| `/robot_status` | `venom_serial_driver/RobotStatus` | Chassis velocity and gimbal angle feedback from C-board. |
+| `/game_status` | `venom_serial_driver/GameStatus` | Game state: HP, barrel heat, game progress, RFID, etc. |
 
-编辑 `config/serial_params.yaml`：
+## Parameter Configuration
+
+Edit `config/serial_params.yaml`:
 
 ```yaml
 serial_node:
   ros__parameters:
-    port_name: "/dev/ttyUSB0"  # 串口设备
-    baud_rate: 921600           # 波特率
-    timeout: 0.1                # 读取超时(秒)
-    loop_rate: 50               # 循环频率(Hz)
+    port_name: "/dev/ttyUSB0"  # serial device
+    baud_rate: 921600           # baud rate
+    timeout: 0.1                # read timeout (s)
+    loop_rate: 50               # timer frequency (Hz)
 ```
 
-## 通信协议
+## Communication Protocol
 
-详细协议说明请参考 [protocol.md](protocol.md)
+See [protocol.md](protocol.md) for the full binary protocol specification.
 
-### 帧格式
+### Frame Format
 
-**NUC → C板 (控制指令)**
+**NUC -> C-board (control command)**
 ```
 [0xA5][len(2)][0x02][data][CRC16(2)]
 ```
 
-**C板 → NUC (状态数据)**
+**C-board -> NUC (state data)**
 ```
 [0x5A][len(2)][0x01][data][CRC16(2)]
 ```
 
-## 测试
+## Testing
 
-### 查看状态数据
-
-```bash
-ros2 topic echo /robot_state
-```
-
-### 发送控制指令
+### Monitor incoming state data
 
 ```bash
-ros2 topic pub /vision_ctrl std_msgs/String \
-  'data: "{\"tracking_state\":1,\"target_pitch\":0.1,\"target_yaw\":0.2}"'
+ros2 topic echo /robot_status
+ros2 topic echo /game_status
 ```
 
-## 故障排查
+### Send a chassis velocity command
 
-1. **串口权限问题**
+```bash
+ros2 topic pub /cmd_vel geometry_msgs/msg/Twist \
+  '{linear: {x: 0.1, y: 0.0, z: 0.0}}'
+```
+
+### Send an auto-aim command
+
+```bash
+ros2 topic pub /auto_aim venom_serial_driver/msg/AutoAimCmd \
+  '{pitch: 0.1, yaw: 0.2, detected: true, tracking: true, fire: false, distance: 3.0, proj_x: 640, proj_y: 360}'
+```
+
+### Hardware tests (requires physical serial connection)
+
+```bash
+# Loopback and CRC validation
+python3 test/test_loopback.py /dev/ttyUSB0
+
+# Real-time state monitor (no ROS stack required)
+python3 test/test_monitor.py --port /dev/ttyUSB0
+
+# Yaw rotation test
+python3 test/test_hardware.py --port /dev/ttyUSB0 --test yaw
+
+# Chassis motion test
+python3 test/test_hardware.py --port /dev/ttyUSB0 --test chassis
+```
+
+## Troubleshooting
+
+1. **Serial permission denied**
    ```bash
    sudo chmod 666 /dev/ttyUSB0
    ```
 
-2. **检查串口连接**
+2. **Check serial device**
    ```bash
    ls /dev/ttyUSB*
    ```
 
-3. **查看日志**
+3. **Enable debug logging**
    ```bash
    ros2 run venom_serial_driver serial_node --ros-args --log-level debug
    ```
-
