@@ -8,8 +8,8 @@ System-level coordinate frame hierarchy used across the robot stack.
 flowchart TD
     map --> odom
     odom --> base_link
-    base_link -->|static| laser_link
-    base_link -->|static| base_footprint["base_footprint\n车外框线"]
+    base_link --> laser_link
+    base_link -->|static| base_footprint["base_footprint车外框线"]
     base_link -->|static| gimbal_link
     gimbal_link -->|rm_auto_aim| target_armor
     gimbal_link -->|static| barrel_link
