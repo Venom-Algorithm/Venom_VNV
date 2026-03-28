@@ -25,6 +25,10 @@ ros2 launch rm_vision_bringup vision_bringup.launch.py
 - [armor_tracker](./armor_tracker.md) - 目标跟踪
 - [auto_aim_interfaces](../rm_auto_aim/auto_aim_interfaces/README.md) - 接口定义
 
+## TF 坐标系
+
+系统完整 TF 树见：[tf_tree.md](./tf_tree.md)
+
 ## 详细文档
 
 详见：[rm_auto_aim README](../rm_auto_aim/README.md)

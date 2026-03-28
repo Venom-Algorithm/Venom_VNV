@@ -1,37 +1,37 @@
-# Venom Robot TF Tree
+# TF Tree
+
+System-level coordinate frame hierarchy used across the robot stack.
+
+## Frame Hierarchy
 
 ```mermaid
-graph TD
-    map["frame_id: map"]
-    odom["frame_id: odom"]
-    base_link["frame_id: base_link"]
-    base_footprint["base_footprint"]
-    laser_link["frame_id: laser_link"]
-    gimbal_link["frame_id: gimbal_link"]
-    barrel_link["frame_id: barrel_link"]
-    target_armor["frame_id: target_armor"]
-    target_chassis["target_chassis"]
-
+flowchart TD
     map --> odom
     odom --> base_link
-    base_link -->|static| base_footprint
     base_link -->|static| laser_link
-    base_link -->|serial_driver| gimbal_link
-    gimbal_link -->|static| barrel_link
+    base_link -->|static| base_footprint["base_footprint\n车外框线"]
+    base_link -->|static| gimbal_link
     gimbal_link -->|rm_auto_aim| target_armor
+    gimbal_link -->|static| barrel_link
     target_armor --> target_chassis
 ```
 
 ## Frame 说明
 
-| Frame            | 发布者            | 说明                         |
-|------------------|-------------------|------------------------------|
-| `map`            | —                 | 全局固定坐标系（根节点）     |
-| `odom`           | `/cloud_registered` | 里程计坐标系               |
-| `base_link`      | `/cloud_registered` | 机器人本体坐标系           |
-| `base_footprint` | static            | 车外框线投影坐标系           |
-| `laser_link`     | static / `/livox` | 激光雷达坐标系               |
-| `gimbal_link`    | `/serial_driver`  | 云台坐标系                   |
-| `barrel_link`    | static            | 炮管坐标系                   |
-| `target_armor`   | `/rm_auto_aim`    | 装甲板目标坐标系             |
-| `target_chassis` | `/rm_auto_aim`    | 底盘目标坐标系               |
+| Frame | 父 Frame | 变换类型 | 发布者 | 说明 |
+|---|---|---|---|---|
+| `map` | — | — | 定位模块 | 全局地图坐标系 |
+| `odom` | `map` | dynamic | 里程计 | 里程计坐标系 |
+| `base_link` | `odom` | dynamic | 底盘 | 机器人本体中心 |
+| `laser_link` | `base_link` | static | URDF / static broadcaster | 激光雷达安装位置 |
+| `base_footprint` | `base_link` | static | URDF / static broadcaster | 机器人在地面的投影框线 |
+| `gimbal_link` | `base_link` | static | URDF / static broadcaster | 云台基座坐标系 |
+| `target_armor` | `gimbal_link` | dynamic | `rm_auto_aim` | 当前目标装甲板坐标系 |
+| `target_chassis` | `target_armor` | dynamic | `rm_auto_aim` | 目标车体中心坐标系 |
+| `barrel_link` | `gimbal_link` | static | URDF / static broadcaster | 枪管坐标系 |
+
+## 关键说明
+
+- `base_link → laser_link` / `base_footprint` / `gimbal_link` / `barrel_link` 均为 **static transform**，由 URDF 或 static_transform_publisher 发布，不随运行时状态改变。
+- `gimbal_link → target_armor` 由 **rm_auto_aim** 节点在检测到目标时动态发布；未检测到目标时该变换不存在。
+- `target_armor → target_chassis` 表示从装甲板反推目标车体中心的变换，同样由 rm_auto_aim 发布。
