@@ -1,0 +1,9 @@
+imu_odom_publisher:
+  ros__parameters:
+    # Rotation from IMU frame (livox_frame) to base_link, in RPY (radians).
+    # The IMU frame_id is hardcoded to livox_frame by the driver, independent of
+    # the laser_link frame_id parameter which only affects point cloud output.
+    # Lidar is mounted upside-down: roll = pi.
+    imu_roll:  3.14159
+    imu_pitch: 0.0
+    imu_yaw:   0.0
