@@ -29,6 +29,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'imu_odom_publisher = venom_bringup.imu_odom_publisher:main',
         ],
     },
 )
