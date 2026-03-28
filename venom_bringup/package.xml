@@ -8,6 +8,8 @@
   <license>TODO: License declaration</license>
 
   <depend>rclpy</depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
 
   <exec_depend>nav2_bringup</exec_depend>
   <exec_depend>nav2_bt_navigator</exec_depend>
@@ -15,7 +17,25 @@
   <exec_depend>nav2_planner</exec_depend>
   <exec_depend>nav2_recoveries</exec_depend>
   <exec_depend>nav2_lifecycle_manager</exec_depend>
+  <exec_depend>nav2_behaviors</exec_depend>
   <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>xacro</exec_depend>
+  <exec_depend>rm_vision_bringup</exec_depend>
+  <exec_depend>rm_gimbal_description</exec_depend>
+  <exec_depend>hik_camera</exec_depend>
+  <exec_depend>armor_detector</exec_depend>
+  <exec_depend>armor_tracker</exec_depend>
+  <exec_depend>auto_aim_solver</exec_depend>
+  <exec_depend>venom_serial_driver</exec_depend>
+  <exec_depend>launch_sim</exec_depend>
+  <exec_depend>scout_base</exec_depend>
+  <exec_depend>livox_ros_driver2</exec_depend>
+  <exec_depend>point_lio</exec_depend>
+  <exec_depend>small_gicp_relocalization</exec_depend>
+  <exec_depend>slam_toolbox</exec_depend>
+  <exec_depend>pointcloud_to_laserscan</exec_depend>
+  <exec_depend>venom_robot_description</exec_depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
