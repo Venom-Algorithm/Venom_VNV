@@ -1,0 +1,47 @@
+/camera_node:
+  ros__parameters:
+    camera_info_url: package://venom_bringup/config/autoaim/camera_info.yaml
+    exposure_time: 2500
+    gain: 8.0
+
+/serial_driver:
+  ros__parameters:
+    timestamp_offset: 0.006
+    device_name: /dev/ttyACM0
+    baud_rate: 115200
+    flow_control: none
+    parity: none
+    stop_bits: "1"
+
+/armor_detector:
+  ros__parameters:
+    debug: true
+
+    detect_color: 0
+    binary_thres: 80
+
+    light.min_ratio: 0.1
+    armor.min_light_ratio: 0.8
+
+    classifier_threshold: 0.8
+    ignore_classes: ["negative"]
+
+/armor_tracker:
+  ros__parameters:
+    target_frame: odom
+    max_armor_distance: 10.0
+
+    ekf:
+      sigma2_q_xyz: 0.05
+      sigma2_q_yaw: 5.0
+      sigma2_q_r: 80.0
+
+      r_xyz_factor: 4e-4
+      r_yaw: 5e-3
+
+    tracker:
+      max_match_distance: 0.5
+      max_match_yaw_diff: 1.0
+
+      tracking_thres: 5
+      lost_time_thres: 1.0

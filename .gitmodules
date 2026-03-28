@@ -13,21 +13,18 @@
 [submodule "driver/scout_ros2"]
 	path = driver/scout_ros2
 	url = https://github.com/agilexrobotics/scout_ros2
-[submodule "venom_vision"]
-	path = venom_vision
-	url = https://github.com/HY-LiYihan/venom_vision.git
 [submodule "rm_auto_aim"]
 	path = rm_auto_aim
 	url = https://github.com/HY-LiYihan/rm_auto_aim.git
 [submodule "ros2_hik_camera"]
 	path = ros2_hik_camera
 	url = https://github.com/HY-LiYihan/ros2_hik_camera.git
-[submodule "rm_gimbal_description"]
-	path = rm_gimbal_description
-	url = https://github.com/HY-LiYihan/rm_gimbal_description.git
 [submodule "driver/ros2_hik_camera"]
 	path = driver/ros2_hik_camera
 	url = https://github.com/HY-LiYihan/ros2_hik_camera.git
 [submodule "driver/venom_serial_driver"]
 	path = driver/venom_serial_driver
 	url = git@github.com:HY-LiYihan/venom_serial_driver.git
+[submodule "launch_sim"]
+	path = launch_sim
+	url = https://github.com/HY-LiYihan/launch_sim.git
