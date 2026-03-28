@@ -31,3 +31,6 @@
 [submodule "driver/venom_serial_driver"]
 	path = driver/venom_serial_driver
 	url = git@github.com:HY-LiYihan/venom_serial_driver.git
+[submodule "launch_sim"]
+	path = launch_sim
+	url = https://github.com/HY-LiYihan/launch_sim.git
