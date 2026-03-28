@@ -1,0 +1,13 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+  - Class: rviz_common/Views
+    Name: Views
+Visualization Manager:
+  Displays: []
+  Global Options:
+    Fixed Frame: map
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Name: Current View
