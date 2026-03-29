@@ -4,4 +4,9 @@ transforms:
     child_frame: laser_link
     translation: [0.0, 0.0, 0.36]
     rotation: [0.0, 0.0, 0.0]
-
+  # livox_frame is the hardcoded IMU frame_id in the Livox driver (lddc.cpp),
+  # co-located with laser_link (same physical unit, no offset).
+  - parent_frame: laser_link
+    child_frame: livox_frame
+    translation: [0.0, 0.0, 0.0]
+    rotation: [0.0, 0.0, 0.0]
