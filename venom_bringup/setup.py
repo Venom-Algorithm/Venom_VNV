@@ -58,6 +58,9 @@ setup(
         ],
     },
     entry_points={
-        'console_scripts': [],
+        'console_scripts': [
+            'multi_waypoint_commander = '
+            'venom_bringup.multi_waypoint_commander:main',
+        ],
     },
 )

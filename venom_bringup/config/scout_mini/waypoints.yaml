@@ -1,0 +1,42 @@
+# Waypoint list for Scout Mini multi-waypoint navigation.
+#
+# Each entry defines one navigation goal in the specified TF frame.
+#
+# Fields:
+#   frame_id : TF frame the coordinates are expressed in (typically "map")
+#   x        : X position in metres
+#   y        : Y position in metres
+#   yaw      : Heading in radians (0 = +X axis, pi/2 = +Y axis)
+#
+# Edit this file to define your mission waypoints.
+# The multi_waypoint_commander node reads this file at startup.
+
+waypoints:
+  - frame_id: map
+    x: 3.1
+    y: -0.83
+    yaw: 0.0
+
+  - frame_id: map
+    x: 3.1
+    y: -10.0
+    yaw: -1.5708   # 90 deg (pi/2), facing +Y
+
+  - frame_id: map
+    x: 3.1
+    y: -0.83
+    yaw: -3.1416  # 180 deg (pi), facing -X
+
+  - frame_id: map
+    x: 0.0
+    y: 0.0
+    yaw: 0.0   
+  # - frame_id: map
+  #   x: 2.5
+  #   y: 3.0
+  #   yaw: 3.1416   # 180 deg (pi), facing -X
+
+  # - frame_id: map
+  #   x: 0.0
+  #   y: 3.0
+  #   yaw: -1.5708  # -90 deg (-pi/2), facing -Y
