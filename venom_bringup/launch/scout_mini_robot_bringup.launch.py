@@ -15,7 +15,7 @@ Odometry source is selectable via the 'odom_source' argument:
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, TimerAction
 from launch.conditions import IfCondition, UnlessCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PythonExpression
@@ -161,6 +161,12 @@ def generate_launch_description():
         condition=IfCondition(PythonExpression(["'", odom_source, "' == 'ekf'"]))
     )
 
+    # Delay EKF startup to allow rf2o to stabilize and publish initial /odom_rf2o
+    delayed_ekf_scout_node = TimerAction(
+        period=2.0,
+        actions=[ekf_scout_node]
+    )
+
     robot_description_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(robot_description_dir, 'launch', 'scout_mini_description.launch.py')
@@ -184,7 +190,7 @@ def generate_launch_description():
         scout_base_launch,
         rf2o_laser_node,
         rf2o_ekf_node,
-        ekf_scout_node,
+        delayed_ekf_scout_node,
         robot_description_launch,
         rviz_node,
     ])

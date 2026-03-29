@@ -1,16 +1,7 @@
-# EKF configuration for Scout Mini with rf2o laser odometry + Livox IMU.
-#
-# Fuses:
-#   - /odom_rf2o (nav_msgs/Odometry, 10 Hz) from rf2o_laser_odometry
-#   - /livox/imu (sensor_msgs/Imu, ~200 Hz) from Livox MID360
-#
-# Output: /odom (nav_msgs/Odometry) at 50 Hz + odom->base_link TF.
-# rf2o provides absolute 2D pose corrections; IMU fills in between at high rate.
-
 ekf_filter_node:
   ros__parameters:
     frequency: 50.0
-    sensor_timeout: 0.1
+    sensor_timeout: 0.5
     two_d_mode: false
     transform_time_offset: 0.0
     transform_timeout: 0.0
@@ -32,10 +23,10 @@ ekf_filter_node:
                    true,  true,  false,
                    false, false, true,
                    false, false, false]
-    odom0_queue_size: 5
+    odom0_queue_size: 10
     odom0_nodelay: false
     odom0_differential: false
-    odom0_relative: false
+    odom0_relative: true
 
     # Livox IMU: fuse orientation (roll/pitch/yaw) and angular velocity
     # Linear acceleration excluded to avoid unbounded position drift
