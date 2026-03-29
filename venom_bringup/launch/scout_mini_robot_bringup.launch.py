@@ -36,7 +36,7 @@ def generate_launch_description():
     )
     declare_odom_source = DeclareLaunchArgument(
         'odom_source',
-        default_value='wheel',
+        default_value='laser',
         description="Odometry source: 'wheel' for wheel encoder odometry, 'laser' for rf2o laser odometry"
     )
 
