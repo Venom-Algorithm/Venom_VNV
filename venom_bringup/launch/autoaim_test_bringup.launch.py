@@ -11,7 +11,7 @@ from launch_ros.actions import Node
 def generate_launch_description():
     venom_bringup_dir = get_package_share_directory('venom_bringup')
     launch_sim_dir = get_package_share_directory('launch_sim')
-    default_ballistic_config = os.path.join(launch_sim_dir, 'config', 'rm42mm.yaml')
+    default_ballistic_config = os.path.join(launch_sim_dir, 'config', 'rm17mm.yaml')
 
     ballistic_config = LaunchConfiguration('ballistic_config')
     serial_port = LaunchConfiguration('serial_port')

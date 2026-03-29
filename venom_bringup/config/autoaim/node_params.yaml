@@ -21,14 +21,20 @@
     binary_thres: 80
 
     light.min_ratio: 0.1
-    armor.min_light_ratio: 0.8
+    light.max_angle: 45.0
+    armor.min_light_ratio: 0.6
+    armor.min_small_center_distance: 0.6
+    armor.max_small_center_distance: 4.2
+    armor.min_large_center_distance: 2.8
+    armor.max_large_center_distance: 6.8
+    armor.max_angle: 45.0
 
     classifier_threshold: 0.8
     ignore_classes: ["negative"]
 
 /armor_tracker:
   ros__parameters:
-    target_frame: odom
+    target_frame: gimbal_link
     max_armor_distance: 10.0
 
     ekf:

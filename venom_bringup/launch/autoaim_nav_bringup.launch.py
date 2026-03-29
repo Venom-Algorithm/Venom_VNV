@@ -94,12 +94,6 @@ def generate_launch_description():
         }.items()
     )
 
-    nav_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(venom_bringup_dir, 'launch', 'nav_test.launch.py')
-        )
-    )
-
     autoaim_stack = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(venom_bringup_dir, 'launch', 'autoaim_stack.launch.py')
@@ -116,7 +110,6 @@ def generate_launch_description():
         declare_args + [
             scout_base_launch,
             relocalization_launch,
-            nav_launch,
             autoaim_stack,
         ]
     )

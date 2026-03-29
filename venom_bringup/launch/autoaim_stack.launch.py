@@ -60,33 +60,33 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             'launcher_x',
-            default_value='0.0',
-            description='Static transform x from camera_link to launcher_link.'
+            default_value='0.15',
+            description='Static transform x from gimbal_link to launcher_link.'
         ),
         DeclareLaunchArgument(
             'launcher_y',
-            default_value='0.0',
-            description='Static transform y from camera_link to launcher_link.'
+            default_value='0.05',
+            description='Static transform y from gimbal_link to launcher_link.'
         ),
         DeclareLaunchArgument(
             'launcher_z',
-            default_value='0.05',
-            description='Static transform z from camera_link to launcher_link.'
+            default_value='0.0',
+            description='Static transform z from gimbal_link to launcher_link.'
         ),
         DeclareLaunchArgument(
             'launcher_roll',
             default_value='0.0',
-            description='Static transform roll from camera_link to launcher_link.'
+            description='Static transform roll from gimbal_link to launcher_link.'
         ),
         DeclareLaunchArgument(
             'launcher_pitch',
-            default_value='-0.02',
-            description='Static transform pitch from camera_link to launcher_link.'
+            default_value='0.0',
+            description='Static transform pitch from gimbal_link to launcher_link.'
         ),
         DeclareLaunchArgument(
             'launcher_yaw',
             default_value='0.0',
-            description='Static transform yaw from camera_link to launcher_link.'
+            description='Static transform yaw from gimbal_link to launcher_link.'
         ),
         DeclareLaunchArgument(
             'camera_params_file',
@@ -121,7 +121,7 @@ def generate_launch_description():
     launcher_tf = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
-        name='camera_to_launcher_tf',
+        name='gimbal_to_launcher_tf',
         arguments=[
             '--x', launcher_x,
             '--y', launcher_y,
@@ -129,7 +129,7 @@ def generate_launch_description():
             '--roll', launcher_roll,
             '--pitch', launcher_pitch,
             '--yaw', launcher_yaw,
-            '--frame-id', 'camera_link',
+            '--frame-id', 'gimbal_link',
             '--child-frame-id', 'launcher_link',
         ],
         output='screen',
