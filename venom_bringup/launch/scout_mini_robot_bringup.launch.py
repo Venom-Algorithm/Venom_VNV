@@ -67,7 +67,7 @@ def generate_launch_description():
         parameters=[{
             'target_frame': 'base_link',
             'transform_tolerance': 0.01,
-            'min_height': 0.0,
+            'min_height': 0.1,
             'max_height': 0.7,
             'angle_min': -3.14159,
             'angle_max': 3.14159,
@@ -107,6 +107,8 @@ def generate_launch_description():
         }.items()
     )
 
+    # rf2o publishes raw laser odometry to /odom_rf2o for EKF input.
+    # publish_tf is disabled — ekf_scout_node owns the odom->base_link TF.
     rf2o_node = Node(
         package='rf2o_laser_odometry',
         executable='rf2o_laser_odometry_node',
@@ -114,13 +116,25 @@ def generate_launch_description():
         output='screen',
         parameters=[{
             'laser_scan_topic': '/scan',
-            'odom_topic': '/odom',
-            'publish_tf': True,
+            'odom_topic': '/odom_rf2o',
+            'publish_tf': False,
             'base_frame_id': 'base_link',
             'odom_frame_id': 'odom',
             'init_pose_from_topic': '',
-            'freq': 20.0,
+            'freq': 10.0,
         }],
+        condition=IfCondition(PythonExpression(["'", odom_source, "' == 'laser'"]))
+    )
+
+    # EKF node: fuses rf2o (10 Hz) + Livox IMU (~200 Hz) -> /odom at 50 Hz.
+    ekf_scout_config = os.path.join(venom_bringup_dir, 'config', 'ekf_scout.yaml')
+
+    ekf_scout_node = Node(
+        package='robot_localization',
+        executable='ekf_node',
+        name='ekf_filter_node',
+        output='screen',
+        parameters=[ekf_scout_config],
         condition=IfCondition(PythonExpression(["'", odom_source, "' == 'laser'"]))
     )
 
@@ -146,6 +160,7 @@ def generate_launch_description():
         pointcloud_to_laserscan_node,
         scout_base_launch,
         rf2o_node,
+        ekf_scout_node,
         robot_description_launch,
         rviz_node,
     ])
