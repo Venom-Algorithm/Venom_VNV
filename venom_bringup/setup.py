@@ -9,14 +9,32 @@ def collect_config_data_files():
     data_files = []
     for root, _, _ in os.walk(config_root):
         yaml_files = glob(os.path.join(root, '*.yaml'))
-        if not yaml_files:
+        json_files = glob(os.path.join(root, '*.json'))
+        files = yaml_files + json_files
+        if not files:
             continue
         rel_root = os.path.relpath(root, config_root)
         install_dir = os.path.join('share', package_name, 'config')
         if rel_root != '.':
             install_dir = os.path.join(install_dir, rel_root)
-        data_files.append((install_dir, yaml_files))
+        data_files.append((install_dir, files))
     return data_files
+
+
+def collect_launch_data_files():
+    launch_root = 'launch'
+    data_files = []
+    for root, _, _ in os.walk(launch_root):
+        py_files = glob(os.path.join(root, '*.py'))
+        if not py_files:
+            continue
+        rel_root = os.path.relpath(root, launch_root)
+        install_dir = os.path.join('share', package_name, 'launch')
+        if rel_root != '.':
+            install_dir = os.path.join(install_dir, rel_root)
+        data_files.append((install_dir, py_files))
+    return data_files
+
 
 setup(
     name=package_name,
@@ -26,9 +44,8 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
         (os.path.join('share', package_name, 'rviz_cfg'), glob('rviz_cfg/*.rviz')),
-    ] + collect_config_data_files(),
+    ] + collect_launch_data_files() + collect_config_data_files(),
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='venom',

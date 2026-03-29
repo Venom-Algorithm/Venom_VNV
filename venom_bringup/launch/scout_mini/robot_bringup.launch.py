@@ -23,7 +23,6 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    livox_driver_dir = get_package_share_directory('livox_ros_driver2')
     scout_base_dir = get_package_share_directory('scout_base')
     robot_description_dir = get_package_share_directory('venom_robot_description')
     venom_bringup_dir = get_package_share_directory('venom_bringup')
@@ -47,7 +46,7 @@ def generate_launch_description():
         )
     )
 
-    livox_config_path = os.path.join(livox_driver_dir, 'config', 'MID360_config.json')
+    livox_config_path = os.path.join(venom_bringup_dir, 'config', 'scout_mini', 'MID360_config.json')
 
     livox_driver_node = Node(
         package='livox_ros_driver2',
@@ -113,24 +112,6 @@ def generate_launch_description():
         }.items()
     )
 
-    # laser mode: rf2o publishes odom->base_link TF and /odom directly (10 Hz)
-    rf2o_laser_node = Node(
-        package='rf2o_laser_odometry',
-        executable='rf2o_laser_odometry_node',
-        name='rf2o_laser_odometry',
-        output='screen',
-        parameters=[{
-            'laser_scan_topic': '/scan',
-            'odom_topic': '/odom',
-            'publish_tf': True,
-            'base_frame_id': 'base_link',
-            'odom_frame_id': 'odom',
-            'init_pose_from_topic': '',
-            'freq': 10.0,
-        }],
-        condition=IfCondition(PythonExpression(["'", odom_source, "' == 'laser'"]))
-    )
-
     # ekf mode: rf2o publishes raw odometry to /odom_rf2o (no TF) for EKF input
     rf2o_ekf_node = Node(
         package='rf2o_laser_odometry',
@@ -188,7 +169,6 @@ def generate_launch_description():
         livox_driver_node,
         pointcloud_to_laserscan_node,
         scout_base_launch,
-        rf2o_laser_node,
         rf2o_ekf_node,
         delayed_ekf_scout_node,
         robot_description_launch,

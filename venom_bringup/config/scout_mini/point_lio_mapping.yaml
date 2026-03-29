@@ -1,0 +1,74 @@
+/**:
+    ros__parameters:
+        use_imu_as_input: False                             # Change to True to use IMU as input of Point-LIO
+        prop_at_freq_of_imu: True
+        check_satu: True
+        init_map_size: 10
+        point_filter_num: 4                                 # Options: 4, 3
+        space_down_sample: True
+        filter_size_surf: 0.5                               # Options: 0.5, 0.3, 0.2, 0.15, 0.1
+        filter_size_map: 0.5                                # Options: 0.5, 0.3, 0.15, 0.1
+        ivox_nearby_type: 6                                 # Options: 0, 6, 18, 26
+        runtime_pos_log_enable: False                       # Option: True
+
+        common:
+            lid_topic: "livox/lidar"
+            imu_topic: "livox/imu"
+            con_frame: False
+            con_frame_num: 1
+            cut_frame: False
+            cut_frame_time_interval: 0.1
+            time_diff_lidar_to_imu: 0.0
+
+        prior_pcd:
+            enable: False
+            prior_pcd_map_path: ""
+            init_pose: [ 0.0, 0.0, 0.0 ]
+
+        preprocess:
+            lidar_type: 1                                   # 1 for Livox series LiDAR
+            scan_line: 4
+            timestamp_unit: 3                               # 3-nanosecond
+            blind: 0.5
+
+        mapping:
+            imu_en: True
+            extrinsic_est_en: False
+            imu_time_inte: 0.005                            # = 1 / IMU frequency
+            lidar_time_inte: 0.1
+            satu_acc: 3.0
+            satu_gyro: 35.0
+            acc_norm: 1.0                                   # 1.0 for g as unit
+            lidar_meas_cov: 0.01
+            acc_cov_output: 500.0
+            gyr_cov_output: 1000.0
+            b_acc_cov: 0.0001
+            b_gyr_cov: 0.0001
+            imu_meas_acc_cov: 0.01
+            imu_meas_omg_cov: 0.01
+            gyr_cov_input: 0.01
+            acc_cov_input: 0.1
+            plane_thr: 0.1
+            match_s: 81.0
+            ivox_grid_resolution: 2.0
+            gravity: [ 0.0, 0.0, -9.810 ]
+            gravity_init: [ 0.0, 0.0, -9.810 ]
+            # LiDAR-to-IMU extrinsic for MID360 mounted on Scout Mini
+            extrinsic_T: [ -0.011, -0.02329, 0.04412 ]
+            extrinsic_R: [ 1.0, 0.0, 0.0,
+                           0.0, 1.0, 0.0,
+                           0.0, 0.0, 1.0 ]
+
+        odometry:
+            publish_odometry_without_downsample: False
+            enable_2d_mode: True
+
+        publish:
+            path_en: True
+            scan_publish_en: True
+            scan_bodyframe_pub_en: False
+            tf_send_en: True                                # publish odom -> base_link TF
+
+        pcd_save:
+            pcd_save_en: True                               # save PCD for relocalization map
+            interval: -1

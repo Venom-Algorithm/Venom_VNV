@@ -30,5 +30,5 @@
 	url = https://github.com/HY-LiYihan/launch_sim.git
 [submodule "lio/rf2o_laser_odometry"]
 	path = lio/rf2o_laser_odometry
-	url = https://github.com/Adlink-ROS/rf2o_laser_odometry.git
+	url = git@github.com:HY-LiYihan/rf2o_laser_odometry.git
 	branch = humble-devel

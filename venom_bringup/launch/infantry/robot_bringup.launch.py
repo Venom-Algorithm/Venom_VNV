@@ -1,9 +1,11 @@
-"""Sentry robot bringup launch file.
+"""Infantry robot bringup launch file.
+
+TODO: This is a placeholder launch file for the Infantry robot platform.
+      Fill in the actual chassis driver, EKF config, and robot description
+      once the Infantry hardware integration is confirmed.
 
 Starts the Livox MID360 lidar driver, pointcloud-to-laserscan converter,
-EKF-based odometry (odom->base_link TF and /odom topic via robot_localization),
-and sentry robot description TF tree. No chassis driver is included as the
-sentry platform does not have base control at this stage.
+and infantry robot description TF tree.
 """
 
 import os
@@ -17,7 +19,7 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    livox_driver_dir = get_package_share_directory('livox_ros_driver2')
+    # TODO: replace with infantry-specific description package once available
     robot_description_dir = get_package_share_directory('venom_robot_description')
     venom_bringup_dir = get_package_share_directory('venom_bringup')
 
@@ -29,7 +31,7 @@ def generate_launch_description():
         description='Do not launch RViz if true'
     )
 
-    livox_config_path = os.path.join(livox_driver_dir, 'config', 'MID360_config.json')
+    livox_config_path = os.path.join(venom_bringup_dir, 'config', 'infantry', 'MID360_config.json')
 
     livox_driver_node = Node(
         package='livox_ros_driver2',
@@ -45,7 +47,7 @@ def generate_launch_description():
             {'frame_id': 'laser_link'},
             {'lvx_file_path': '/home/livox/livox_test.lvx'},
             {'user_config_path': livox_config_path},
-            {'cmdline_input_bd_code': '47MDLAS0020103'},
+            {'cmdline_input_bd_code': '47MDLAS0020103'},  # TODO: update serial number
         ]
     )
 
@@ -72,19 +74,13 @@ def generate_launch_description():
         ]
     )
 
-    ekf_config = os.path.join(venom_bringup_dir, 'config', 'ekf.yaml')
+    # TODO: add chassis driver launch
+    # TODO: add EKF node with infantry-specific config
 
-    ekf_node = Node(
-        package='robot_localization',
-        executable='ekf_node',
-        name='ekf_filter_node',
-        output='screen',
-        parameters=[ekf_config],
-    )
-
+    # TODO: replace with infantry description launch once available
     robot_description_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(robot_description_dir, 'launch', 'sentry_description.launch.py')
+            os.path.join(robot_description_dir, 'launch', 'infantry_description.launch.py')
         )
     )
 
@@ -100,8 +96,8 @@ def generate_launch_description():
     return LaunchDescription([
         declare_headless,
         livox_driver_node,
-        ekf_node,
         pointcloud_to_laserscan_node,
+        # TODO: chassis driver and EKF
         robot_description_launch,
         rviz_node,
     ])
