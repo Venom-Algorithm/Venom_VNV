@@ -1,8 +1,11 @@
-"""Mapping bringup with slam_toolbox sync mode.
+"""Mapping bringup with slam_toolbox async mode.
 
-Runs slam_toolbox in synchronous mapping mode to build and serialize a 2D
+Runs slam_toolbox in asynchronous mapping mode to build and serialize a 2D
 occupancy grid. Hardware drivers (Livox, Scout Mini, TF tree, /scan) are
 expected to be running via scout_mini_robot_bringup.launch.py beforehand.
+
+Async mode drops scans when the solver is busy, which is more suitable for
+real-time operation on hardware with limited CPU resources.
 """
 
 import os
@@ -26,7 +29,7 @@ def generate_launch_description():
 
     slam_toolbox_node = Node(
         package='slam_toolbox',
-        executable='sync_slam_toolbox_node',
+        executable='async_slam_toolbox_node',
         name='slam_toolbox',
         output='screen',
         parameters=[
@@ -41,7 +44,6 @@ def generate_launch_description():
         period=5.0,
         actions=[slam_toolbox_node]
     )
-
 
     return LaunchDescription([
         declare_slam_params_file,
