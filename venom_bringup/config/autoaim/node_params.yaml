@@ -1,53 +1,59 @@
 /camera_node:
   ros__parameters:
-    camera_info_url: package://venom_bringup/config/autoaim/camera_info.yaml
-    exposure_time: 2500
-    gain: 8.0
+    camera_info_url: package://venom_bringup/config/autoaim/camera_info.yaml  # 相机内参标定文件路径
+    exposure_time: 2500  # 曝光时间(us)，越大画面越亮但拖影更明显
+    gain: 8.0  # 模拟/数字增益，越大越亮但噪声也增大
 
-/serial_driver:
-  ros__parameters:
-    timestamp_offset: 0.006
-    device_name: /dev/ttyACM0
-    baud_rate: 115200
-    flow_control: none
-    parity: none
-    stop_bits: "1"
 
 /armor_detector:
   ros__parameters:
-    debug: true
+    debug: true  # 是否发布调试信息与调试图像
+    debug_publish_rate: 10.0  # debug图像与debug消息发布频率(Hz)，0表示每帧都发
 
-    detect_color: 0
-    binary_thres: 80
+    camera_info_topic: /camera_info  # 相机内参输入话题
+    image_topic: /image_raw  # 相机图像输入话题
+    armors_topic: /detector/armors  # 装甲识别结果输出话题
+    marker_topic: /detector/marker  # 可视化Marker输出话题
+    debug_lights_topic: /detector/debug_lights  # 灯条调试信息话题
+    debug_armors_topic: /detector/debug_armors  # 装甲板调试信息话题
+    debug_binary_img_topic: /detector/binary_img  # 二值图调试话题
+    debug_number_img_topic: /detector/number_img  # 数字ROI调试图话题
+    debug_result_img_topic: /detector/result_img  # 结果叠加调试图话题
 
-    light.min_ratio: 0.1
-    light.max_angle: 45.0
-    armor.min_light_ratio: 0.6
-    armor.min_small_center_distance: 0.6
-    armor.max_small_center_distance: 4.2
-    armor.min_large_center_distance: 2.8
-    armor.max_large_center_distance: 6.8
-    armor.max_angle: 45.0
+    detect_color: 0  # 识别敌方颜色：0=RED, 1=BLUE
+    binary_thres: 80  # 图像二值化阈值(0-255)
 
-    classifier_threshold: 0.8
-    ignore_classes: ["negative"]
+    light.min_ratio: 0.1  # 灯条最小宽高比(短边/长边)
+    light.max_ratio: 0.4  # 灯条最大宽高比(短边/长边)
+    light.max_angle: 45.0  # 灯条最大倾斜角(度)
+    armor.min_light_ratio: 0.6  # 成对灯条最小长度比(短/长)
+    armor.min_small_center_distance: 0.6  # 小装甲最小中心距(按灯条长度归一化)
+    armor.max_small_center_distance: 4.2  # 小装甲最大中心距(按灯条长度归一化)
+    armor.min_large_center_distance: 2.8  # 大装甲最小中心距(按灯条长度归一化)
+    armor.max_large_center_distance: 6.8  # 大装甲最大中心距(按灯条长度归一化)
+    armor.max_angle: 45.0  # 装甲板连线最大倾斜角(度)
+
+    classifier_threshold: 0.8  # 数字分类置信度阈值(0-1)
+    ignore_classes: ["negative"]  # 分类结果忽略名单
 
 /armor_tracker:
   ros__parameters:
-    target_frame: gimbal_link
-    max_armor_distance: 10.0
+    target_frame: gimbal_link  # 目标输出参考坐标系(TF目标系)
+    max_armor_distance: 10.0  # 允许的最大目标距离(m)，超出则丢弃
+    min_armor_z: -1.2  # 目标允许最小高度(m, 在target_frame下)
+    max_armor_z: 1.2  # 目标允许最大高度(m, 在target_frame下)
 
     ekf:
-      sigma2_q_xyz: 0.05
-      sigma2_q_yaw: 5.0
-      sigma2_q_r: 80.0
+      sigma2_q_xyz: 0.05  # EKF过程噪声: 平移位置相关项
+      sigma2_q_yaw: 5.0  # EKF过程噪声: 偏航角相关项
+      sigma2_q_r: 80.0  # EKF过程噪声: 目标半径相关项
 
-      r_xyz_factor: 4e-4
-      r_yaw: 5e-3
+      r_xyz_factor: 4e-4  # EKF测量噪声系数: xyz随距离放大因子
+      r_yaw: 5e-3  # EKF测量噪声: yaw项基准值
 
     tracker:
-      max_match_distance: 0.5
-      max_match_yaw_diff: 1.0
+      max_match_distance: 0.5  # 相邻帧目标匹配最大空间距离(m)
+      max_match_yaw_diff: 1.0  # 相邻帧目标匹配最大yaw差(rad)
 
-      tracking_thres: 5
-      lost_time_thres: 1.0
+      tracking_thres: 5  # 从DETECTING进入TRACKING所需连续匹配帧数
+      lost_time_thres: 1.0  # 超过该丢失时间(s)后进入LOST
