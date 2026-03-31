@@ -1,0 +1,30 @@
+robot_status_topic: /robot_status
+publish_rate: 380.0
+
+dynamic_transforms:
+  - parent_frame: base_link
+    child_frame: gimbal_yaw_link
+    translation: [0.0, 0.0, 0.36]
+    rotation: [0.0, 0.0, 0.0]
+    angle_source: velocity.angular.z
+    axis: z
+    sign: 1.0
+
+  - parent_frame: gimbal_yaw_link
+    child_frame: gimbal_link
+    translation: [0.0, 0.0, 0.0]
+    rotation: [0.0, 0.0, 0.0]
+    angle_source: velocity.angular.y
+    axis: y
+    sign: -1.0
+
+static_transforms:
+  - parent_frame: gimbal_link
+    child_frame: barrel_link
+    translation: [0.05, 0.0, 0.0]
+    rotation: [0.0, 0.0, 0.0]
+
+  - parent_frame: gimbal_link
+    child_frame: camera_link
+    translation: [0.0, 0.05, 0.05]
+    rotation: [-1.57, 1.57079632679, 0.0]

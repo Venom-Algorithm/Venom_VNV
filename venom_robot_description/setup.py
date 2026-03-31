@@ -20,10 +20,12 @@ setup(
     zip_safe=True,
     maintainer='venom',
     maintainer_email='venom@todo.todo',
-    description='Venom robot static TF publisher',
+    description='Venom robot TF publisher',
     license='Apache-2.0',
     tests_require=['pytest'],
     entry_points={
-        'console_scripts': [],
+        'console_scripts': [
+            'dynamic_tf_publisher = venom_robot_description.dynamic_tf_publisher:main',
+        ],
     },
 )

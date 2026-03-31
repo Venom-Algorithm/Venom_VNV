@@ -44,7 +44,7 @@ def generate_launch_description():
             {'frame_id': 'laser_link'},
             {'lvx_file_path': '/home/livox/livox_test.lvx'},
             {'user_config_path': livox_config_path},
-            {'cmdline_input_bd_code': '47MDLAS0020103'},
+            {'cmdline_input_bd_code': '47MDN6D0030233'},
         ]
     )
 

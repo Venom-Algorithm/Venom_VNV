@@ -3,12 +3,15 @@
 <package format="3">
   <name>venom_robot_description</name>
   <version>0.0.1</version>
-  <description>Venom robot static TF publisher using robot_state_publisher and static_transform_publisher</description>
+  <description>Venom robot TF publisher using static and dynamic YAML-driven transforms</description>
   <maintainer email="venom@todo.todo">venom</maintainer>
   <license>Apache-2.0</license>
 
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>tf2_ros</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>venom_serial_driver</exec_depend>
   <exec_depend>xacro</exec_depend>
 
   <test_depend>ament_copyright</test_depend>
