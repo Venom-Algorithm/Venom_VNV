@@ -3,10 +3,10 @@
 	url = https://github.com/Livox-SDK/livox_ros_driver2
 [submodule "lio/Point-LIO"]
 	path = lio/Point-LIO
-	url = https://github.com/HY-LiYihan/Point-LIO
+	url = git@github.com:HY-LiYihan/Point-LIO.git
 [submodule "relocalization/small_gicp_relocalization"]
 	path = relocalization/small_gicp_relocalization
-	url = https://github.com/HY-LiYihan/small_gicp_relocalization.git
+	url = git@github.com:HY-LiYihan/small_gicp_relocalization.git
 [submodule "driver/ugv_sdk"]
 	path = driver/ugv_sdk
 	url = https://github.com/agilexrobotics/ugv_sdk
@@ -15,19 +15,19 @@
 	url = https://github.com/agilexrobotics/scout_ros2
 [submodule "rm_auto_aim"]
 	path = rm_auto_aim
-	url = https://github.com/HY-LiYihan/rm_auto_aim.git
+	url = git@github.com:HY-LiYihan/rm_auto_aim.git
 [submodule "ros2_hik_camera"]
 	path = ros2_hik_camera
-	url = https://github.com/HY-LiYihan/ros2_hik_camera.git
+	url = git@github.com:HY-LiYihan/ros2_hik_camera.git
 [submodule "driver/ros2_hik_camera"]
 	path = driver/ros2_hik_camera
-	url = https://github.com/HY-LiYihan/ros2_hik_camera.git
+	url = git@github.com:HY-LiYihan/ros2_hik_camera.git
 [submodule "driver/venom_serial_driver"]
 	path = driver/venom_serial_driver
 	url = git@github.com:HY-LiYihan/venom_serial_driver.git
 [submodule "launch_sim"]
 	path = launch_sim
-	url = https://github.com/HY-LiYihan/launch_sim.git
+	url = git@github.com:HY-LiYihan/launch_sim.git
 [submodule "lio/rf2o_laser_odometry"]
 	path = lio/rf2o_laser_odometry
 	url = git@github.com:HY-LiYihan/rf2o_laser_odometry.git
