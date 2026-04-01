@@ -20,11 +20,11 @@ dynamic_transforms:
 
 static_transforms:
   - parent_frame: gimbal_link
+    child_frame: camera_link
+    translation: [0.04, 0.11, 0.02]
+    rotation: [-1.5707963267948966, 0.0, 0.0]
+
+  - parent_frame: gimbal_link
     child_frame: barrel_link
     translation: [0.05, 0.0, 0.0]
     rotation: [0.0, 0.0, 0.0]
-
-  - parent_frame: gimbal_link
-    child_frame: camera_link
-    translation: [0.0, 0.05, 0.05]
-    rotation: [-1.57, 1.57079632679, 0.0]
