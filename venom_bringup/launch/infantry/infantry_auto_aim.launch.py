@@ -11,8 +11,10 @@ def generate_launch_description():
     """Launch infantry auto-aim stack."""
 
     pkg_share = get_package_share_directory('venom_bringup')
+    serial_pkg_share = get_package_share_directory('venom_serial_driver')
     default_camera_params = os.path.join(pkg_share, 'config', 'infantry', 'camera_params.yaml')
     default_node_params = os.path.join(pkg_share, 'config', 'infantry', 'node_params.yaml')
+    serial_config = os.path.join(serial_pkg_share, 'config', 'serial_params.yaml')
 
     camera_params_arg = DeclareLaunchArgument(
         'camera_params',
@@ -30,6 +32,32 @@ def generate_launch_description():
         'debug',
         default_value='true',
         description='Enable detector debug outputs'
+    )
+
+    port_arg = DeclareLaunchArgument(
+        'port_name',
+        default_value='/dev/ttyACM0',
+        description='Serial port name'
+    )
+
+    baud_arg = DeclareLaunchArgument(
+        'baud_rate',
+        default_value='921600',
+        description='Baud rate'
+    )
+
+    serial_node = Node(
+        package='venom_serial_driver',
+        executable='serial_node',
+        name='serial_node',
+        output='screen',
+        parameters=[
+            serial_config,
+            {
+                'port_name': LaunchConfiguration('port_name'),
+                'baud_rate': LaunchConfiguration('baud_rate'),
+            }
+        ]
     )
 
     camera_node = Node(
@@ -80,6 +108,9 @@ def generate_launch_description():
         camera_params_arg,
         node_params_arg,
         debug_arg,
+        port_arg,
+        baud_arg,
+        serial_node,
         camera_node,
         TimerAction(period=1.0, actions=[detector_node]),
         TimerAction(period=1.5, actions=[tracker_node]),
