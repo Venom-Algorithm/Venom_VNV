@@ -1,0 +1,143 @@
+# Generic Mission Configuration File
+# 通用任务配置文件
+#
+# This file configures the mission controller framework including:
+# - State monitors (what to monitor)
+# - Behaviors (what to do when conditions are triggered)
+# - Mission parameters (how to execute the mission)
+#
+# 本文件配置任务控制框架，包括：
+# - 状态监控器（监控什么）
+# - 行为插件（触发时做什么）
+# - 任务参数（如何执行任务）
+
+# =============================================================================
+# State Monitors Configuration / 状态监控器配置
+# =============================================================================
+monitors:
+  # Health monitor / 血量监控
+  health:
+    enabled: true
+    topic: "/game_status"
+    msg_type: "venom_bringup/msg/GameStatus"
+    field: "hp_percentage"
+    conditions:
+      - name: "low_health"
+        type: "threshold"
+        operator: "<"
+        value: 0.2
+        action: "return_to_base"
+        cooldown: 5.0  # seconds / 秒
+      
+      - name: "health_recovered"
+        type: "threshold"
+        operator: ">="
+        value: 1.0
+        action: "resume_mission"
+        cooldown: 5.0  # seconds / 秒
+
+  # Example: Battery monitor (uncomment to use)
+  # 示例：电池监控（取消注释以使用）
+  # battery:
+  #   enabled: false
+  #   topic: "/battery_status"
+  #   msg_type: "sensor_msgs/msg/BatteryState"
+  #   field: "percentage"
+  #   conditions:
+  #     - name: "low_battery"
+  #       type: "threshold"
+  #       operator: "<"
+  #       value: 0.15
+  #       action: "return_to_base"
+  #       cooldown: 10.0
+
+# =============================================================================
+# Behavior Plugins Configuration / 行为插件配置
+# =============================================================================
+behaviors:
+  # Return to base behavior / 返回基地行为
+  return_to_base:
+    plugin: "ReturnToBaseBehavior"
+    enabled: true
+    params:
+      base_position:
+        frame_id: "map"
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        yaw: 0.0
+      tolerance: 0.5  # meters / 米
+  
+  # Pause mission behavior / 暂停任务行为
+  pause_mission:
+    plugin: "PauseMissionBehavior"
+    enabled: true
+    params:
+      timeout: 30.0  # seconds / 秒 (0 = indefinite / 无限)
+  
+  # Continue mission behavior / 继续任务行为
+  continue_mission:
+    plugin: "ContinueMissionBehavior"
+    enabled: true
+    params:
+      auto_save_state: true
+
+# =============================================================================
+# Mission Configuration / 任务配置
+# =============================================================================
+mission:
+  # Mission type / 任务类型
+  # Options: waypoint_navigation, patrol, explore, custom
+  # 选项：航点导航、巡逻、探索、自定义
+  type: "waypoint_navigation"
+  
+  # Waypoints file path (relative to package) / 航点文件路径（相对于包）
+  waypoints_file: "config/scout_mini/waypoints.yaml"
+  
+  # Mission execution mode / 任务执行模式
+  loop: true              # Loop navigation / 循环导航
+  auto_start: true        # Auto-start on launch / 启动时自动开始
+  
+  # State persistence / 状态持久化
+  save_state_on_interrupt: true   # Save state when interrupted / 中断时保存状态
+  restore_on_recovery: true       # Restore state on recovery / 恢复时还原状态
+  
+  # Base position (for emergency return) / 基地位置（紧急返回点）
+  base_position:
+    frame_id: "map"
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  
+  # Navigation parameters / 导航参数
+  navigation:
+    controller_frequency: 20.0    # Hz
+    goal_tolerance: 0.5           # meters / 米
+    max_retries: 3                # Max retries per waypoint / 每个航点最大重试次数
+    waypoint_timeout: 60.0        # seconds / 秒
+
+# =============================================================================
+# Health Plugin Configuration / 血量插件配置
+# =============================================================================
+health_plugin:
+  enabled: true
+  
+  # Health thresholds / 血量阈值
+  low_threshold: 0.2      # 20% - trigger return / 触发返回
+  high_threshold: 1.0     # 100% - trigger resume / 触发恢复
+  
+  # Behavior settings / 行为设置
+  auto_return: true       # Auto return when low health / 低血量自动返回
+  auto_resume: true       # Auto resume when health recovered / 血量恢复自动继续
+  
+  # Status reporting / 状态报告
+  report_interval: 1.0    # seconds / 秒 (0 = disable / 禁用)
+
+# =============================================================================
+# Logging Configuration / 日志配置
+# =============================================================================
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  log_mission_events: true
+  log_state_changes: true
+  log_behavior_execution: true

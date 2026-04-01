@@ -10,33 +10,31 @@
 #
 # Edit this file to define your mission waypoints.
 # The multi_waypoint_commander node reads this file at startup.
+#
+# Mission: Round-trip navigation from (0, 0) to (5.8, 4.0)
+# Coordinates converted from map units (mm) to metres
+#
+# Waypoint sequence:
+#   1. Start position (0, 0)
+#   2. Target position (5.8, 4.0) - Upper right area
+#   3. Return to start (0, 0) - for loop navigation
 
 waypoints:
-  - frame_id: map
-    x: 3.1
-    y: -0.83
-    yaw: 0.0
-
-  - frame_id: map
-    x: 3.1
-    y: -10.0
-    yaw: -1.5708   # 90 deg (pi/2), facing +Y
-
-  - frame_id: map
-    x: 3.1
-    y: -0.83
-    yaw: -3.1416  # 180 deg (pi), facing -X
-
+  # Waypoint 1: Start position (Blue Supply area)
   - frame_id: map
     x: 0.0
     y: 0.0
-    yaw: 0.0   
-  # - frame_id: map
-  #   x: 2.5
-  #   y: 3.0
-  #   yaw: 3.1416   # 180 deg (pi), facing -X
+    yaw: 0.5404       # Facing towards target (atan2(4.0, 5.8) ≈ 0.5404 rad)
 
-  # - frame_id: map
-  #   x: 0.0
-  #   y: 3.0
-  #   yaw: -1.5708  # -90 deg (-pi/2), facing -Y
+  # Waypoint 2: Target position (5800mm, 4000mm) -> (5.8m, 4.0m)
+  # Located in the upper right area of the map
+  - frame_id: map
+    x: 5.8
+    y: 4.0
+    yaw: -2.6012      # Facing back towards start (0.5404 - π ≈ -2.6012 rad)
+
+  # Waypoint 3: Return to start (for loop navigation)
+  - frame_id: map
+    x: 0.0
+    y: 0.0
+    yaw: 0.5404       # Facing towards target again
