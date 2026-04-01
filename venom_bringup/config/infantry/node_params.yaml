@@ -1,0 +1,24 @@
+/armor_detector:
+  ros__parameters:
+    debug: true
+    detect_color: 0  # 0: red, 1: blue
+    binary_thres: 160
+    light:
+      min_ratio: 0.1
+      max_ratio: 0.55
+      max_angle: 40.0
+    armor:
+      min_light_ratio: 0.7
+      min_small_center_distance: 0.8
+      max_small_center_distance: 3.2
+      min_large_center_distance: 3.2
+      max_large_center_distance: 5.5
+      max_angle: 35.0
+
+/armor_tracker:
+  ros__parameters:
+    target_frame: "base_link"
+    max_match_distance: 0.2
+    max_match_yaw_diff: 1.0
+    tracking_thres: 5
+    lost_thres: 5
