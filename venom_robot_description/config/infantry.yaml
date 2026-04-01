@@ -1,6 +1,12 @@
 robot_status_topic: /robot_status
 publish_rate: 380.0
 
+# Frame convention:
+# - base_link / gimbal_link / barrel_link use body frames: x forward, y left, z up
+# - camera_link is used as the vision frame directly: x right, y down, z forward
+# Therefore gimbal_link -> camera_link must include the standard body->optical rotation
+# in addition to the measured translation offset.
+
 dynamic_transforms:
   - parent_frame: base_link
     child_frame: gimbal_yaw_link
@@ -22,9 +28,14 @@ static_transforms:
   - parent_frame: gimbal_link
     child_frame: camera_link
     translation: [0.04, 0.11, 0.02]
-    rotation: [-1.5707963267948966, 0.0, 0.0]
+    rotation: [0.0, 1.5707963267948966, 0.0]
 
   - parent_frame: gimbal_link
     child_frame: barrel_link
+    translation: [0.05, 0.0, 0.0]
+    rotation: [0.0, 0.0, 0.0]
+
+  - parent_frame: gimbal_link
+    child_frame: launcher_link
     translation: [0.05, 0.0, 0.0]
     rotation: [0.0, 0.0, 0.0]
