@@ -9,3 +9,4 @@ serial_node:
     venom_cmd_topic: "/venom_cmd"
     robot_status_topic: "/robot_status"
     game_status_topic: "/game_status"
+    heartbeat_rate: 10.0
