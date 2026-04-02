@@ -1,0 +1,7 @@
+image: rmul2026_map.pgm
+mode: trinary
+resolution: 0.050
+origin: [-1.125, -1.000, 0.0]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.25

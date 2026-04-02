@@ -1,0 +1,11 @@
+serial_node:
+  ros__parameters:
+    port_name: "/dev/ttyACM0"
+    baud_rate: 921600
+    timeout: 0.1
+    loop_rate: 50
+    cmd_vel_topic: "/cmd_vel"
+    auto_aim_topic: "/auto_aim"
+    venom_cmd_topic: "/venom_cmd"
+    robot_status_topic: "/robot_status"
+    game_status_topic: "/game_status"

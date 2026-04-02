@@ -12,11 +12,10 @@ def generate_launch_description():
     """Launch infantry auto-aim stack."""
 
     pkg_share = get_package_share_directory('venom_bringup')
-    serial_pkg_share = get_package_share_directory('venom_serial_driver')
     description_pkg_share = get_package_share_directory('venom_robot_description')
     default_camera_params = os.path.join(pkg_share, 'config', 'infantry', 'camera_params.yaml')
     default_node_params = os.path.join(pkg_share, 'config', 'infantry', 'node_params.yaml')
-    serial_config = os.path.join(serial_pkg_share, 'config', 'serial_params.yaml')
+    serial_config = os.path.join(pkg_share, 'config', 'infantry', 'serial_params.yaml')
     description_launch = os.path.join(
         description_pkg_share, 'launch', 'infantry_description.launch.py'
     )

@@ -1,22 +1,18 @@
-"""Sentry mapping bringup launch file.
+"""Sentry navigation bringup launch file.
 
-Full mapping stack for the Sentry platform:
+Navigation stack for the Sentry platform:
   1. Livox MID360 driver  -- publishes /livox/lidar and /livox/imu
   2. venom_serial_driver  -- Sentry chassis driver
   3. Point-LIO            -- 3D LiDAR-inertial odometry; publishes /cloud_registered
-                             and odom->base_link TF; saves PCD to ~/Point-LIO/PCD/
+                             and odom->base_link TF
   4. pointcloud_to_laserscan -- converts /cloud_registered to /scan (2D)
-  5. slam_toolbox (async) -- builds a 2D occupancy map from /scan
-  6. nav2_bringup         -- navigation stack
-
-Run this file to build a map from scratch. When done, save the slam_toolbox
-map via: ros2 service call /slam_toolbox/save_map slam_toolbox/srv/SaveMap
+  5. nav2_bringup         -- navigation stack with map_server (static map)
 """
 
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, TimerAction
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.conditions import UnlessCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
@@ -30,6 +26,7 @@ def generate_launch_description():
 
     headless = LaunchConfiguration('headless')
     nav2_params_file = LaunchConfiguration('nav2_params_file')
+    map_yaml_file = LaunchConfiguration('map_yaml_file')
 
     declare_headless = DeclareLaunchArgument(
         'headless',
@@ -40,6 +37,11 @@ def generate_launch_description():
         'nav2_params_file',
         default_value=os.path.join(venom_bringup_dir, 'config', 'sentry', 'nav2_params.yaml'),
         description='Path to nav2 parameters file'
+    )
+    declare_map_yaml = DeclareLaunchArgument(
+        'map_yaml_file',
+        default_value=os.path.join(venom_bringup_dir, 'map', 'rmul2026_map.yaml'),
+        description='Path to static map yaml for map_server'
     )
 
     # ---------------------------------------------------------------------------
@@ -79,7 +81,7 @@ def generate_launch_description():
     )
 
     # ---------------------------------------------------------------------------
-    # 3. Point-LIO (3D LiDAR-inertial odometry + PCD save)
+    # 3. Point-LIO (3D LiDAR-inertial odometry)
     # ---------------------------------------------------------------------------
     point_lio_config = os.path.join(venom_bringup_dir, 'config', 'sentry', 'point_lio_mapping.yaml')
 
@@ -119,29 +121,7 @@ def generate_launch_description():
     )
 
     # ---------------------------------------------------------------------------
-    # 5. slam_toolbox (async mapping, map->odom TF disabled -- Point-LIO owns it)
-    # ---------------------------------------------------------------------------
-    slam_toolbox_config = os.path.join(venom_bringup_dir, 'config', 'sentry', 'slam_toolbox_mapping.yaml')
-
-    slam_toolbox_node = Node(
-        package='slam_toolbox',
-        executable='async_slam_toolbox_node',
-        name='slam_toolbox',
-        output='screen',
-        parameters=[
-            slam_toolbox_config,
-            {'use_sim_time': False},
-        ]
-    )
-
-    # Delay slam_toolbox until Point-LIO has published the first odom->base_link TF.
-    delayed_slam_toolbox = TimerAction(
-        period=10.0,
-        actions=[slam_toolbox_node]
-    )
-
-    # ---------------------------------------------------------------------------
-    # 6. Robot description TF tree
+    # 5. Robot description TF tree
     # ---------------------------------------------------------------------------
     robot_description_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -150,7 +130,7 @@ def generate_launch_description():
     )
 
     # ---------------------------------------------------------------------------
-    # 7. Navigation stack
+    # 6. Navigation stack (map_server via static map yaml)
     # ---------------------------------------------------------------------------
     nav2_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -159,11 +139,12 @@ def generate_launch_description():
         launch_arguments={
             'use_sim_time': 'false',
             'params_file': nav2_params_file,
+            'map': map_yaml_file,
         }.items()
     )
 
     # ---------------------------------------------------------------------------
-    # 8. RViz
+    # 7. RViz
     # ---------------------------------------------------------------------------
     rviz_node = Node(
         package='rviz2',
@@ -177,11 +158,11 @@ def generate_launch_description():
     return LaunchDescription([
         declare_headless,
         declare_nav2_params,
+        declare_map_yaml,
         serial_driver_node,
         livox_driver_node,
         point_lio_node,
         pointcloud_to_laserscan_node,
-        delayed_slam_toolbox,
         robot_description_launch,
         nav2_launch,
         rviz_node,
