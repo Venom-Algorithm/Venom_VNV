@@ -1,7 +1,7 @@
 /hik_camera:
   ros__parameters:
     camera_name: "narrow_stereo"
-    exposure_time: 6000
+    exposure_time: 2000
     gain: 10.0
     frame_id: "camera_link"
     camera_info_url: "package://venom_bringup/config/infantry/camera_info.yaml"

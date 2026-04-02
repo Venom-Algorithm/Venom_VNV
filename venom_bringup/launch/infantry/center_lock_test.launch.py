@@ -12,7 +12,6 @@ from launch_ros.actions import Node
 def generate_launch_description():
     venom_bringup_dir = get_package_share_directory('venom_bringup')
     robot_description_dir = get_package_share_directory('venom_robot_description')
-    serial_dir = get_package_share_directory('venom_serial_driver')
 
     default_node_params = os.path.join(
         venom_bringup_dir, 'config', 'infantry', 'node_params.yaml')
@@ -26,8 +25,6 @@ def generate_launch_description():
     serial_params = LaunchConfiguration('serial_params')
     debug = LaunchConfiguration('debug')
     enable_serial = LaunchConfiguration('enable_serial')
-    serial_port = LaunchConfiguration('serial_port')
-    serial_baud = LaunchConfiguration('serial_baud')
 
     declare_args = [
         DeclareLaunchArgument(
@@ -50,14 +47,6 @@ def generate_launch_description():
             'enable_serial',
             default_value='true',
             description='Start venom_serial_driver so the center-lock command reaches the C-board'),
-        DeclareLaunchArgument(
-            'serial_port',
-            default_value='/dev/ttyUSB0',
-            description='Serial port used by venom_serial_driver'),
-        DeclareLaunchArgument(
-            'serial_baud',
-            default_value='921600',
-            description='Serial baud rate used by venom_serial_driver'),
     ]
 
     description_launch = IncludeLaunchDescription(
@@ -113,13 +102,7 @@ def generate_launch_description():
         executable='serial_node',
         name='serial_node',
         output='screen',
-        parameters=[
-            serial_params,
-            {
-                'port_name': serial_port,
-                'baud_rate': serial_baud,
-            }
-        ],
+        parameters=[serial_params],
         condition=IfCondition(enable_serial)
     )
 

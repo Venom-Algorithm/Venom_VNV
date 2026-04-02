@@ -2,7 +2,7 @@
   ros__parameters:
     debug: true
     detect_color: 0  # 0: red, 1: blue
-    binary_thres: 160
+    binary_thres: 140
     light:
       min_ratio: 0.1
       max_ratio: 0.55

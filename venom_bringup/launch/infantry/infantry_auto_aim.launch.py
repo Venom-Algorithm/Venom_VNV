@@ -15,7 +15,7 @@ def generate_launch_description():
     description_pkg_share = get_package_share_directory('venom_robot_description')
     default_camera_params = os.path.join(pkg_share, 'config', 'infantry', 'camera_params.yaml')
     default_node_params = os.path.join(pkg_share, 'config', 'infantry', 'node_params.yaml')
-    serial_config = os.path.join(pkg_share, 'config', 'infantry', 'serial_params.yaml')
+    default_serial_params = os.path.join(pkg_share, 'config', 'infantry', 'serial_params.yaml')
     description_launch = os.path.join(
         description_pkg_share, 'launch', 'infantry_description.launch.py'
     )
@@ -32,22 +32,16 @@ def generate_launch_description():
         description='Detector/tracker parameters file'
     )
 
+    serial_params_arg = DeclareLaunchArgument(
+        'serial_params',
+        default_value=default_serial_params,
+        description='Serial driver parameter yaml'
+    )
+
     debug_arg = DeclareLaunchArgument(
         'debug',
         default_value='true',
         description='Enable detector debug outputs'
-    )
-
-    port_arg = DeclareLaunchArgument(
-        'port_name',
-        default_value='/dev/ttyACM0',
-        description='Serial port name'
-    )
-
-    baud_arg = DeclareLaunchArgument(
-        'baud_rate',
-        default_value='921600',
-        description='Baud rate'
     )
 
     robot_description_launch = IncludeLaunchDescription(
@@ -59,13 +53,7 @@ def generate_launch_description():
         executable='serial_node',
         name='serial_node',
         output='screen',
-        parameters=[
-            serial_config,
-            {
-                'port_name': LaunchConfiguration('port_name'),
-                'baud_rate': LaunchConfiguration('baud_rate'),
-            }
-        ]
+        parameters=[LaunchConfiguration('serial_params')]
     )
 
     camera_node = Node(
@@ -115,9 +103,8 @@ def generate_launch_description():
     return LaunchDescription([
         camera_params_arg,
         node_params_arg,
+        serial_params_arg,
         debug_arg,
-        port_arg,
-        baud_arg,
         robot_description_launch,
         serial_node,
         camera_node,
