@@ -3,10 +3,10 @@ serial_node:
     port_name: "/dev/ttyUSB0"
     baud_rate: 921600
     timeout: 0.1
-    loop_rate: 50
+    loop_rate: 400
     cmd_vel_topic: "/cmd_vel"
     auto_aim_topic: "/auto_aim"
     venom_cmd_topic: "/venom_cmd"
     robot_status_topic: "/robot_status"
     game_status_topic: "/game_status"
-    heartbeat_rate: 10.0
+    heartbeat_rate: 0.0
