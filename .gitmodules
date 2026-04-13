@@ -25,9 +25,6 @@
 [submodule "driver/venom_serial_driver"]
 	path = driver/venom_serial_driver
 	url = https://github.com/HY-LiYihan/venom_serial_driver.git
-[submodule "launch_sim"]
-	path = launch_sim
-	url = https://github.com/HY-LiYihan/launch_sim.git
 [submodule "lio/rf2o_laser_odometry"]
 	path = lio/rf2o_laser_odometry
 	url = https://github.com/HY-LiYihan/rf2o_laser_odometry.git
