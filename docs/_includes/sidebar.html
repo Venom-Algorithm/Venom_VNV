@@ -1,0 +1,15 @@
+<!-- 导航数据：新增页面只需在 _data/navigation.yml 加一行 -->
+{% assign nav_items = site.data.navigation %}
+
+{% for group in nav_items %}
+<div class="nav-category">{{ group.category }}</div>
+{% for item in group.items %}
+  {% assign current_url = page.url | relative_url %}
+  {% assign item_url = item.url | relative_url %}
+  {% if item_url == current_url %}
+  <a href="{{ item_url }}" class="nav-item active">{{ item.title }}</a>
+  {% else %}
+  <a href="{{ item_url }}" class="nav-item">{{ item.title }}</a>
+  {% endif %}
+{% endfor %}
+{% endfor %}

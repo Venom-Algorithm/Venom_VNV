@@ -1,3 +1,10 @@
+---
+title: rf2o 激光里程计
+desc: rf2o_laser_odometry — 基于 Range Flow 的 2D 激光扫描里程计。
+breadcrumb: 定位建图
+layout: default
+---
+
 # rf2o_laser_odometry
 
 基于 Range Flow 的 2D 激光扫描里程计，适用于移动机器人平面运动估计。
