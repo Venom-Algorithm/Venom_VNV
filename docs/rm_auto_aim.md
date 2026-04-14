@@ -1,3 +1,10 @@
+---
+title: 自瞄算法总览
+desc: rm_auto_aim — 装甲板检测、目标跟踪、弹道解算与统一控制输出。
+breadcrumb: 自瞄算法
+layout: default
+---
+
 # rm_auto_aim
 
 自瞄算法套件，包含装甲板检测、目标跟踪、弹道解算与统一控制输出。

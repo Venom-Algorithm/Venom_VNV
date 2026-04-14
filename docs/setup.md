@@ -1,6 +1,11 @@
-## ⚙️ 装配步骤
-
 ---
+title: 装配配置
+desc: 从零开始搭建开发环境，安装 SDK、编译工作空间、配置硬件。
+breadcrumb: 快速开始
+layout: default
+---
+
+## ⚙️ 装配步骤
 
 ### 1. 第一步：安装 Livox-SDK2
 

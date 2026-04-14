@@ -1,3 +1,10 @@
+---
+title: 底盘驱动
+desc: scout_ros2 + ugv_sdk — Scout 系列底盘 ROS2 控制接口。
+breadcrumb: 硬件驱动
+layout: default
+---
+
 # 底盘驱动 (scout_ros2 + ugv_sdk)
 
 Scout 系列底盘的 ROS2 控制接口，基于 ugv_sdk 实现 CAN 总线通信。

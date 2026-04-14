@@ -1,3 +1,10 @@
+---
+title: 海康相机驱动
+desc: ros2_hik_camera — 海康 USB3.0 工业相机 ROS2 驱动。
+breadcrumb: 硬件驱动
+layout: default
+---
+
 # ros2_hik_camera
 
 海康 USB3.0 工业相机 ROS2 驱动，用于自瞄系统的图像采集。

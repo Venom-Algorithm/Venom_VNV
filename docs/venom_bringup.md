@@ -1,3 +1,10 @@
+---
+title: 系统启动
+desc: venom_bringup — 系统启动配置 + Mission Controller 任务控制框架。
+breadcrumb: 系统集成
+layout: default
+---
+
 # venom_bringup
 
 系统启动配置包 + 通用任务控制框架（Mission Controller）。

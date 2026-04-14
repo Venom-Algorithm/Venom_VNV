@@ -1,0 +1,23 @@
+# Jekyll 配置
+title: Venom VNV Docs
+description: 基于 ROS2 Humble 的 RoboMaster 机器人系统文档
+baseurl: "/Venom_VNV"
+url: "https://venom-algorithm.github.io"
+
+# Markdown 解析
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# 默认布局
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+
+# 插件（GitHub Pages 白名单）
+plugins:
+  - jekyll-seo-tag

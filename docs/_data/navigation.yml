@@ -1,0 +1,49 @@
+# 侧边栏导航配置
+# 新增页面只需在这里加一条，然后写对应的 .md 文件即可
+
+- category: 快速开始
+  items:
+    - title: 首页
+      url: /
+    - title: 装配配置
+      url: /setup
+    - title: 话题参考
+      url: /topics
+    - title: TF 树
+      url: /tf_tree
+
+- category: 硬件驱动
+  items:
+    - title: Livox 雷达驱动
+      url: /livox_ros_driver2
+    - title: 海康相机驱动
+      url: /ros2_hik_camera
+    - title: 底盘驱动
+      url: /chassis_driver
+    - title: 串口通信驱动
+      url: /venom_serial_driver
+
+- category: 定位建图
+  items:
+    - title: Point-LIO
+      url: /point_lio
+    - title: rf2o 激光里程计
+      url: /rf2o_laser_odometry
+    - title: 重定位
+      url: /small_gicp_relocalization
+
+- category: 自瞄算法
+  items:
+    - title: 自瞄总览
+      url: /rm_auto_aim
+    - title: 装甲板检测
+      url: /armor_detector
+    - title: 目标跟踪
+      url: /armor_tracker
+
+- category: 系统集成
+  items:
+    - title: 系统启动
+      url: /venom_bringup
+    - title: 机器人描述
+      url: /venom_robot_description

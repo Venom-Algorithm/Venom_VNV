@@ -115,7 +115,7 @@ rosdep install --from-paths . --ignore-src -r -y
 colcon build --symlink-install -DCMAKE_BUILD_TYPE=Release
 ```
 
-> 详细的装配与配置步骤见 [docs/setup.md](docs/setup.md)
+> 详细的装配与配置步骤见 [文档站](https://venom-algorithm.github.io/Venom_VNV/setup)
 
 ### 常用启动命令
 
@@ -137,17 +137,19 @@ ros2 launch venom_bringup relocalization_bringup.launch.py
 
 ## 文档索引
 
+> 📖 完整文档站：[venom-algorithm.github.io/Venom_VNV](https://venom-algorithm.github.io/Venom_VNV/)
+
 | 文档 | 说明 |
 |------|------|
-| [装配配置](docs/setup.md) | Livox-SDK 安装、工作空间编译、网卡 IP 配置、MID360 配置 |
-| [话题参考](docs/topics.md) | 系统级 ROS2 话题、数据流图、自定义消息字段 |
-| [TF 树](docs/tf_tree.md) | 坐标系层级结构与帧说明 |
-| [串口驱动](docs/venom_serial_driver.md) | venom_serial_driver 话题、协议与测试 |
-| [Point-LIO](docs/point_lio.md) | Point-LIO 配置步骤与依赖安装 |
-| [重定位](docs/small_gicp_relocalization.md) | small_gicp 重定位模块说明 |
-| [自瞄算法](docs/rm_auto_aim.md) | 自瞄数据流与启动方式 |
-| [装甲板检测](docs/armor_detector.md) | armor_detector 模块说明 |
-| [目标跟踪](docs/armor_tracker.md) | armor_tracker 模块说明 |
+| [装配配置](https://venom-algorithm.github.io/Venom_VNV/setup) | Livox-SDK 安装、工作空间编译、网卡 IP 配置、MID360 配置 |
+| [话题参考](https://venom-algorithm.github.io/Venom_VNV/topics) | 系统级 ROS2 话题、数据流图、自定义消息字段 |
+| [TF 树](https://venom-algorithm.github.io/Venom_VNV/tf_tree) | 坐标系层级结构与帧说明 |
+| [串口驱动](https://venom-algorithm.github.io/Venom_VNV/venom_serial_driver) | venom_serial_driver 话题、协议与测试 |
+| [Point-LIO](https://venom-algorithm.github.io/Venom_VNV/point_lio) | Point-LIO 配置步骤与依赖安装 |
+| [重定位](https://venom-algorithm.github.io/Venom_VNV/small_gicp_relocalization) | small_gicp 重定位模块说明 |
+| [自瞄算法](https://venom-algorithm.github.io/Venom_VNV/rm_auto_aim) | 自瞄数据流与启动方式 |
+| [装甲板检测](https://venom-algorithm.github.io/Venom_VNV/armor_detector) | armor_detector 模块说明 |
+| [目标跟踪](https://venom-algorithm.github.io/Venom_VNV/armor_tracker) | armor_tracker 模块说明 |
 
 ## 数据流
 

@@ -1,3 +1,10 @@
+---
+title: 串口通信驱动
+desc: venom_serial_driver — NUC 与 DJI C 板串口通信驱动。
+breadcrumb: 硬件驱动
+layout: default
+---
+
 # venom_serial_driver
 
 DJI C-board serial communication driver for the RoboMaster robot vision system.
