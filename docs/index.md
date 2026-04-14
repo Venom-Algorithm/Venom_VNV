@@ -1,9 +1,30 @@
 ---
 title: Venom VNV
-desc: 基于 ROS2 Humble 的 RoboMaster 机器人系统，集成定位建图、重定位、导航与自瞄能力。
+desc: 面向多类智能无人系统竞赛的通用平台，支持导航、抓取、自瞄与多载体系统集成。
 breadcrumb: 首页
 layout: default
 ---
+
+## 项目定位
+
+Venom VNV 是一个基于 ROS 2 Humble 构建的综合通用平台，面向：
+
+- RoboMaster
+- CUADC
+- RoboTac
+- 智能无人系统
+- 机器人与人工智能等相关比赛
+
+项目目标是提供一个尽可能到手即用的统一底座，用于支持：
+
+- 导航
+- 抓取
+- 自瞄
+- 无人车
+- 无人机
+- 无人船
+
+通过统一的驱动层、定位层、任务控制层和接口层，降低不同赛事和不同平台之间的迁移成本。
 
 ## 快速导航
 
@@ -36,19 +57,3 @@ layout: default
 | 🎯 自瞄算法 | `rm_auto_aim` | 检测 + 跟踪 + 解算 + 消息定义 |
 | 🔧 系统集成 | `venom_bringup` | 启动配置 + Mission Controller |
 | 🔧 系统集成 | `venom_robot_description` | TF 树发布 |
-
-## 快速开始
-
-```bash
-# 克隆主仓库及子模块
-git clone --recurse-submodules git@github.com:Venom-Algorithm/Venom_VNV.git
-cd Venom_VNV
-
-# 安装依赖
-rosdep install --from-paths . --ignore-src -r -y
-
-# 编译
-colcon build --symlink-install -DCMAKE_BUILD_TYPE=Release
-```
-
-> 详细的装配步骤见 [装配配置]({{ '/setup' | relative_url }})
