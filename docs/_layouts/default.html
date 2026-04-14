@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
+  <link rel="stylesheet" href="{{ site.baseurl }}/style.css">
+  {% seo title=false %}
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div style="display:flex;align-items:center;gap:1rem">
+      <button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
+      <a href="{{ site.baseurl }}/" class="site-title">
+        <span class="logo">◈</span> {{ site.title }}
+      </a>
+    </div>
+    <div class="header-right">
+      <input type="text" class="header-search" placeholder="搜索文档...  /" id="searchInput">
+      <a href="https://github.com/Venom-Algorithm/Venom_VNV" target="_blank" class="header-link">GitHub ↗</a>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+      {% include sidebar.html %}
+    </nav>
+
+    <!-- Main + TOC -->
+    <div class="main-wrap">
+      <main class="main-content">
+        <!-- Page header -->
+        {% if page.breadcrumb or page.title %}
+        <div class="page-header">
+          {% if page.breadcrumb %}
+          <div class="page-breadcrumb">{{ page.breadcrumb | markdownify | remove: '<p>' | remove: '</p>' }}</div>
+          {% endif %}
+          {% if page.title %}
+          <h1 class="page-title">{{ page.title }}</h1>
+          {% endif %}
+          {% if page.desc %}
+          <p class="page-desc">{{ page.desc }}</p>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- Page content -->
+        {{ content }}
+
+        <!-- Footer -->
+        <footer class="site-footer">
+          <span>© 2026 Venom Algorithm</span>
+          <span><a href="https://github.com/Venom-Algorithm/Venom_VNV" target="_blank">GitHub</a></span>
+        </footer>
+      </main>
+
+      <!-- TOC -->
+      {% if page.toc != false %}
+      <aside class="toc" id="toc-sidebar">
+        <div class="toc-title">本页目录</div>
+        <!-- JS 会自动生成 TOC -->
+      </aside>
+      {% endif %}
+    </div>
+  </div>
+
+  <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+  <script>
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+    document.querySelector('.main-wrap')?.addEventListener('click', () => { document.getElementById('sidebar').classList.remove('open'); });
+    window.addEventListener('scroll', () => { document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 400); });
+    document.addEventListener('keydown', e => { if (e.key === '/' && document.activeElement.tagName !== 'INPUT') { e.preventDefault(); document.getElementById('searchInput').focus(); } });
+
+    // Auto-generate TOC from headings
+    (function() {
+      const tocSidebar = document.getElementById('toc-sidebar');
+      if (!tocSidebar) return;
+      const headings = document.querySelectorAll('.main-content h2, .main-content h3');
+      if (!headings.length) { tocSidebar.style.display = 'none'; return; }
+      headings.forEach(h => {
+        if (!h.id) {
+          h.id = h.textContent.trim().toLowerCase().replace(/[^\w\u4e00-\u9fff]+/g, '-').replace(/^-|-$/g, '');
+        }
+        const a = document.createElement('a');
+        a.href = '#' + h.id;
+        a.textContent = h.textContent;
+        if (h.tagName === 'H3') a.classList.add('toc-h4');
+        tocSidebar.appendChild(a);
+      });
+      // Active highlight
+      const tocLinks = tocSidebar.querySelectorAll('a');
+      const headingEls = [];
+      tocLinks.forEach(link => {
+        const id = link.getAttribute('href')?.slice(1);
+        const el = id && document.getElementById(id);
+        if (el) headingEls.push({ el, link });
+      });
+      if (headingEls.length) {
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              tocLinks.forEach(l => l.classList.remove('active'));
+              const match = headingEls.find(h => h.el === entry.target);
+              if (match) match.link.classList.add('active');
+            }
+          });
+        }, { rootMargin: '-80px 0px -70% 0px' });
+        headingEls.forEach(h => observer.observe(h.el));
+      }
+    })();
+  </script>
+</body>
+</html>

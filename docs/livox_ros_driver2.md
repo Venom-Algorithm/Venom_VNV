@@ -1,3 +1,10 @@
+---
+title: Livox 雷达驱动
+desc: livox_ros_driver2 — Livox Mid360 激光雷达驱动。
+breadcrumb: 硬件驱动
+layout: default
+---
+
 # livox_ros_driver2
 
 Livox 第二代激光雷达驱动，本项目使用 Mid360 型号。

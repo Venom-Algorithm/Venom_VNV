@@ -1,3 +1,10 @@
+---
+title: 重定位
+desc: small_gicp_relocalization — 基于点云配准的全局重定位。
+breadcrumb: 定位建图
+layout: default
+---
+
 # small_gicp_relocalization
 
 基于点云配准的重定位模块，用于机器人在已知地图中的全局定位。

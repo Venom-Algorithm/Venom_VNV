@@ -1,3 +1,10 @@
+---
+title: Point-LIO
+desc: Point-LIO — 高带宽激光惯性里程计配置步骤。
+breadcrumb: 定位建图
+layout: default
+---
+
 ### 7. 第七步：配置 Point-LIO
 把 Point-LIO 放进localization 目录：
 ```bash

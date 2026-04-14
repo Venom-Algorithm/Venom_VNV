@@ -1,3 +1,10 @@
+---
+title: 装甲板检测
+desc: armor_detector — 基于深度学习识别装甲板并解算 3D 位置。
+breadcrumb: 自瞄算法
+layout: default
+---
+
 # armor_detector
 
 装甲板检测模块，基于深度学习识别装甲板并解算 3D 位置。
