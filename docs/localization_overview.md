@@ -8,6 +8,7 @@ layout: default
 ## 核心模块
 
 - [Point-LIO](point_lio.md)
+- `Fast-LIO`（后续补充文档）
 - [rf2o 激光里程计](rf2o_laser_odometry.md)
 - [重定位](small_gicp_relocalization.md)
 
