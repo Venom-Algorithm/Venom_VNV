@@ -52,6 +52,7 @@ Venom VNV 是一个基于 ROS 2 Humble 构建的综合通用平台，面向：
 | 🖥️ 硬件驱动 | `scout_ros2` + `ugv_sdk` | Scout Mini 底盘驱动 |
 | 🖥️ 硬件驱动 | `venom_serial_driver` | NUC ↔ DJI C 板串口通信 |
 | 📍 定位建图 | `Point-LIO` | 高带宽激光惯性里程计 |
+| 📍 定位建图 | `Fast-LIO` | FAST-LIO ROS2 版本 |
 | 📍 定位建图 | `rf2o_laser_odometry` | 2D 激光扫描里程计 |
 | 📍 定位建图 | `small_gicp_relocalization` | 点云重定位 |
 | 🎯 自瞄算法 | `rm_auto_aim` | 检测 + 跟踪 + 解算 + 消息定义 |

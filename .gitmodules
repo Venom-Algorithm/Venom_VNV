@@ -26,3 +26,6 @@
 	path = lio/rf2o_laser_odometry
 	url = https://github.com/Venom-Algorithm/rf2o_laser_odometry.git
 	branch = humble-devel
+[submodule "lio/Fast-LIO"]
+	path = lio/Fast-LIO
+	url = https://github.com/Venom-Algorithm/FAST_LIO_ROS2.git
