@@ -33,7 +33,10 @@ rosdep update
 
 如果你之前有旧工作区，建议先清理后重新拉取：
 
+注意：如果你当前终端正好停留在 `~/venom_ws` 或它的子目录里，删除前请先切回家目录，否则删完后当前 shell 会处在一个失效路径中，后续 `git` 可能报 `Unable to read current working directory`。
+
 ```bash
+cd ~
 rm -rf ~/venom_ws
 mkdir -p ~/venom_ws/src
 git clone --recurse-submodules https://github.com/Venom-Algorithm/Venom_VNV ~/venom_ws/src/venom_vnv

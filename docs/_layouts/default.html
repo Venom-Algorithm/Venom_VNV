@@ -96,10 +96,49 @@
         navGroup?.querySelector('.nav-category')?.classList.add('active');
       });
     }
+    function initCodeCopyButtons() {
+      const codeBlocks = document.querySelectorAll('.main-content pre');
+      codeBlocks.forEach(pre => {
+        let wrapper = pre.parentElement;
+        if (!wrapper || !wrapper.classList.contains('code-block-wrap')) {
+          wrapper = document.createElement('div');
+          wrapper.className = 'code-block-wrap';
+          pre.parentNode.insertBefore(wrapper, pre);
+          wrapper.appendChild(pre);
+        }
+        if (wrapper.querySelector('.code-copy-btn')) return;
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'code-copy-btn';
+        button.textContent = '复制';
+        button.setAttribute('aria-label', '复制代码');
+        button.addEventListener('click', async () => {
+          const code = pre.querySelector('code');
+          const text = code ? code.innerText : pre.innerText;
+          try {
+            await navigator.clipboard.writeText(text.replace(/\n$/, ''));
+            const originalText = button.textContent;
+            button.textContent = '已复制';
+            button.classList.add('copied');
+            window.setTimeout(() => {
+              button.textContent = originalText;
+              button.classList.remove('copied');
+            }, 1400);
+          } catch (_) {
+            button.textContent = '复制失败';
+            window.setTimeout(() => {
+              button.textContent = '复制';
+            }, 1400);
+          }
+        });
+        wrapper.appendChild(button);
+      });
+    }
     document.querySelector('.main-wrap')?.addEventListener('click', () => { document.getElementById('sidebar').classList.remove('open'); });
     window.addEventListener('scroll', () => { document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 400); });
     document.addEventListener('keydown', e => { if (e.key === '/' && document.activeElement.tagName !== 'INPUT') { e.preventDefault(); document.getElementById('searchInput').focus(); } });
     syncSidebarActiveState();
+    initCodeCopyButtons();
     const navGroups = document.querySelectorAll('.nav-group');
     const navStateKey = 'venom-docs-nav-groups';
     let savedNavState = {};
