@@ -51,6 +51,62 @@ colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release -DROS_EDI
 source ~/venom_ws/install/setup.bash
 ```
 
+## Git 远程地址建议（主仓库 + 子模块）
+
+如果你的机器还没配置 GitHub SSH 密钥，请先参考：
+
+- [GitHub SSH 密钥配置完整教程（RSA 版本）](https://liyihan.xyz/archives/github-ssh-mi-yao-pei-zhi)
+
+配置好 SSH 后，建议将本项目统一设置为：
+
+- `fetch/pull` 走 HTTPS（未配置 SSH 的机器也能拉取）
+- `push` 走 SSH（开发机推送更方便）
+
+在仓库根目录执行以下一键命令，可同时修改主仓库和所有子模块的 `origin`：
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+
+to_https() {
+  echo "$1" | sed -E \
+    's|^git@github.com:([^/]+/.+)\.git$|https://github.com/\1.git|; s|^git@github.com:([^/]+/.+)$|https://github.com/\1.git|'
+}
+
+to_ssh() {
+  echo "$1" | sed -E \
+    's|^https://github.com/([^/]+/.+)\.git$|git@github.com:\1.git|; s|^https://github.com/([^/]+/.+)$|git@github.com:\1.git|'
+}
+
+# 主仓库：pull/fetch 用 HTTPS，push 用 SSH
+main_url="$(git remote get-url origin)"
+main_https="$(to_https "$main_url")"
+main_ssh="$(to_ssh "$main_https")"
+git remote set-url origin "$main_https"
+git remote set-url --push origin "$main_ssh"
+
+# .gitmodules 里的 URL 统一改为 HTTPS，便于任何机器拉取
+if [ -f .gitmodules ]; then
+  while read -r key url; do
+    git config -f .gitmodules "$key" "$(to_https "$url")"
+  done < <(git config -f .gitmodules --get-regexp '^submodule\..*\.url$' || true)
+  git submodule sync --recursive
+fi
+
+# 子模块工作树：同样设置 origin 为 HTTPS + pushurl 为 SSH
+git submodule foreach --recursive '
+url="$(git config --get remote.origin.url 2>/dev/null || true)"
+if [ -z "$url" ]; then
+  url="$(git config -f "$toplevel/.gitmodules" --get "submodule.$name.url" 2>/dev/null || true)"
+fi
+if [ -n "$url" ]; then
+  https="$(echo "$url" | sed -E "s|^git@github.com:([^/]+/.+)\\.git$|https://github.com/\\1.git|; s|^git@github.com:([^/]+/.+)$|https://github.com/\\1.git|")"
+  ssh="$(echo "$https" | sed -E "s|^https://github.com/([^/]+/.+)\\.git$|git@github.com:\\1.git|; s|^https://github.com/([^/]+/.+)$|git@github.com:\\1.git|")"
+  git remote set-url origin "$https"
+  git remote set-url --push origin "$ssh"
+fi
+'
+```
+
 ## 推荐阅读顺序
 
 1. [环境准备]({{ '/environment' | relative_url }})
