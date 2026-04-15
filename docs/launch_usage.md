@@ -20,6 +20,17 @@ cd ~/venom_ws
 source install/setup.bash
 ```
 
+## 更新到最新版本
+
+如果你已经在另一台机器上拉过仓库，后续想把主仓库和全部子模块一起更新到当前最新版本，可以执行：
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+git pull origin master
+git submodule sync --recursive
+git submodule update --init --recursive
+```
+
 ## 常用启动命令
 
 ### 1. 雷达驱动验证
