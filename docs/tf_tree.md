@@ -39,6 +39,7 @@ flowchart TD
 
 ## 关键说明
 
+- LIO 模块统一负责发布 `odom -> base_link`，当前接入的 Point-LIO / Fast-LIO 都必须遵守这一点。
 - `base_link → laser_link` / `base_footprint` / `gimbal_link` / `barrel_link` 均为 **static transform**，由 URDF 或 static_transform_publisher 发布，不随运行时状态改变。
 - `gimbal_link → target_armor` 由 **rm_auto_aim** 节点在检测到目标时动态发布；未检测到目标时该变换不存在。
 - `target_armor → target_chassis` 表示从装甲板反推目标车体中心的变换，同样由 rm_auto_aim 发布。

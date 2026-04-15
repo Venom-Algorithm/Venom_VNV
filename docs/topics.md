@@ -62,8 +62,13 @@ flowchart LR
 
 | Direction | Topic | Message Type | Publisher / Subscriber | Description |
 |---|---|---|---|---|
-| Publish | `/odom` | `nav_msgs/Odometry` | Point-LIO | LiDAR-inertial odometry output. |
-| Subscribe | `/livox/lidar` | `livox_ros_driver2/CustomMsg` | Point-LIO | Livox LiDAR point cloud input. |
+| Publish | `/odom` | `nav_msgs/Odometry` | Point-LIO / Fast-LIO | Standardized LiDAR-inertial odometry output. |
+| Publish | `/cloud_registered` | `sensor_msgs/PointCloud2` | Point-LIO / Fast-LIO | Registered point cloud in the `odom` frame. |
+| Publish | `/cloud_registered_body` | `sensor_msgs/PointCloud2` | Point-LIO / Fast-LIO | Registered point cloud in the `base_link` frame. |
+| Publish | `/map_cloud` | `sensor_msgs/PointCloud2` | Point-LIO / Fast-LIO | Low-frequency visualization map cloud in the `odom` frame. |
+| Publish | `/path` | `nav_msgs/Path` | Point-LIO / Fast-LIO | Integrated local path in the `odom` frame. |
+| Subscribe | `/livox/lidar` | `livox_ros_driver2/CustomMsg` | Point-LIO / Fast-LIO | Livox LiDAR point cloud input. |
+| Subscribe | `/livox/imu` | `sensor_msgs/Imu` | Point-LIO / Fast-LIO | IMU input for the LIO estimator. |
 
 ---
 
