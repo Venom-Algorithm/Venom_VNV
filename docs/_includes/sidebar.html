@@ -15,14 +15,36 @@
 {% else %}
 {% assign current_url = page.url | relative_url %}
 {% assign group_open = false %}
+{% assign group_active = false %}
+{% assign group_url = group.url | relative_url %}
+{% if group.url and group_url == current_url %}
+  {% assign group_open = true %}
+  {% assign group_active = true %}
+{% endif %}
 {% for item in group.items %}
   {% assign item_url = item.url | relative_url %}
   {% if item_url == current_url %}
     {% assign group_open = true %}
+    {% assign group_active = true %}
+  {% endif %}
+  {% if item.children %}
+    {% for child in item.children %}
+      {% assign child_url = child.url | relative_url %}
+      {% if child_url == current_url %}
+        {% assign group_open = true %}
+        {% assign group_active = true %}
+      {% endif %}
+    {% endfor %}
   {% endif %}
 {% endfor %}
 <details class="nav-group" data-group="{{ group.category }}" {% if group_open %}open{% endif %}>
-  <summary class="nav-category">{{ group.category }}</summary>
+  <summary class="nav-category{% if group_active %} active{% endif %}">
+    {% if group.url %}
+    <a href="{{ group_url }}" class="nav-category-link{% if group_active and group_url == current_url %} active{% endif %}">{{ group.category }}</a>
+    {% else %}
+    <span class="nav-category-link">{{ group.category }}</span>
+    {% endif %}
+  </summary>
   <div class="nav-group-items">
   {% for item in group.items %}
     {% assign item_url = item.url | relative_url %}
@@ -30,6 +52,18 @@
     <a href="{{ item_url }}" class="nav-item active">{{ item.title }}</a>
     {% else %}
     <a href="{{ item_url }}" class="nav-item">{{ item.title }}</a>
+    {% endif %}
+    {% if item.children %}
+      <div class="nav-children">
+      {% for child in item.children %}
+        {% assign child_url = child.url | relative_url %}
+        {% if child_url == current_url %}
+        <a href="{{ child_url }}" class="nav-item-child active">{{ child.title }}</a>
+        {% else %}
+        <a href="{{ child_url }}" class="nav-item-child">{{ child.title }}</a>
+        {% endif %}
+      {% endfor %}
+      </div>
     {% endif %}
   {% endfor %}
   </div>

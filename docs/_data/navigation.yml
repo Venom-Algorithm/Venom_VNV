@@ -29,45 +29,56 @@
       url: /system_overview
 
 - category: 模块与接口
+  url: /interface_reference
   items:
     - title: 总体架构
       url: /architecture
     - title: 驱动层
       url: /driver_overview
-    - title: Livox 雷达驱动
-      url: /livox_ros_driver2
-    - title: 海康相机驱动
-      url: /ros2_hik_camera
-    - title: 底盘驱动
-      url: /chassis_driver
-    - title: 串口通信驱动
-      url: /venom_serial_driver
+      children:
+        - title: Livox 雷达驱动
+          url: /livox_ros_driver2
+        - title: 海康相机驱动
+          url: /ros2_hik_camera
+        - title: 底盘驱动
+          url: /chassis_driver
+        - title: 串口通信驱动
+          url: /venom_serial_driver
+    - title: LIO
+      url: /lio_overview
+      children:
+        - title: Point-LIO
+          url: /point_lio
+        - title: Fast-LIO
+          url: /fast_lio
     - title: 定位建图
       url: /localization_overview
-    - title: Point-LIO
-      url: /point_lio
-    - title: rf2o 激光里程计
-      url: /rf2o_laser_odometry
-    - title: 重定位
-      url: /small_gicp_relocalization
+      children:
+        - title: rf2o 激光里程计
+          url: /rf2o_laser_odometry
+        - title: 重定位
+          url: /small_gicp_relocalization
     - title: 自瞄算法
       url: /rm_auto_aim
-    - title: 装甲板检测
-      url: /armor_detector
-    - title: 目标跟踪
-      url: /armor_tracker
+      children:
+        - title: 装甲板检测
+          url: /armor_detector
+        - title: 目标跟踪
+          url: /armor_tracker
     - title: 系统集成
       url: /integration_overview
-    - title: 系统启动
-      url: /venom_bringup
-    - title: 机器人描述
-      url: /venom_robot_description
-    - title: 接口参考
-      url: /interface_reference
-    - title: 话题参考
+      children:
+        - title: 系统启动
+          url: /venom_bringup
+        - title: 机器人描述
+          url: /venom_robot_description
+    - title: 接口规范
       url: /topics
-    - title: TF 树
-      url: /tf_tree
+      children:
+        - title: 话题参考
+          url: /topics
+        - title: TF 树
+          url: /tf_tree
 
 - category: 支持与社区
   items:
