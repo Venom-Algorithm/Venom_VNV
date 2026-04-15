@@ -1,75 +1,110 @@
 ---
 title: 系统启动
-desc: venom_bringup — 系统启动配置 + Mission Controller 任务控制框架。
+desc: venom_bringup — 系统启动配置与任务控制框架。
 breadcrumb: 系统集成
 layout: default
 ---
 
-# venom_bringup
+## 模块定位
 
-系统启动配置包 + 通用任务控制框架（Mission Controller）。
+`venom_bringup` 是整仓库的系统集成入口，负责：
 
-## 启动文件
+- 组织多模块联合启动
+- 管理不同运行模式的 launch 组合
+- 承载任务控制器这一类任务层逻辑
+- 将导航、自瞄、定位、驱动等模块拼装成完整系统
 
-| Launch 文件 | 功能 |
-|-------------|------|
+如果说单个 pkg 解决的是“一个模块怎么跑”，那么 `venom_bringup` 解决的是“整套系统怎么协同跑”。
+
+## 主要启动入口
+
+| 启动文件 | 功能 |
+| --- | --- |
 | `autoaim_test_bringup.launch.py` | 自瞄测试（相机 + 自瞄 + 串口） |
 | `autoaim_nav_bringup.launch.py` | 导航 + 自瞄（完整模式） |
-| `mapping_bringup.launch.py` | 3D + 2D 建图 |
-| `relocalization_bringup.launch.py` | 重定位 |
-| `health_aware_navigation.launch.py` | 血量感知导航 |
+| `mapping_bringup.launch.py` | 建图与定位链路联调 |
+| `relocalization_bringup.launch.py` | 重定位模式 |
+| `health_aware_navigation.launch.py` | 带任务层状态感知的导航模式 |
 
-## Mission Controller — 通用任务控制框架
+## 参数与配置入口
 
-### 核心特性
+`venom_bringup` 的参数不是集中在单个 yaml，而是分成几类：
 
-- **通用状态监控** — 可监控任意 ROS 话题（血量、电池、视觉等）
-- **插件化架构** — 轻松扩展新的监控类型和行为
-- **任务状态持久化** — 支持中断后精确恢复任务状态
-- **配置驱动** — 通过 YAML 配置，无需修改代码
+- 机器人专项配置：`config/scout_mini/`、`config/sentry/`、`config/infantry/`
+- 相机参数：`config/*/camera_params.yaml`
+- 自瞄参数：`config/*/node_params.yaml`
+- 串口参数：`config/*/serial_params.yaml`
+- LIO 参数透传：`config/*/point_lio_mapping.yaml`
+- 导航参数：`config/*/nav2_params.yaml`
+- 任务控制参数：`mission_config.yaml`、`waypoints.yaml`
 
-### 架构
+也就是说，`venom_bringup` 更像“参数调度中心”，而不是单独定义某个算法参数的地方。
 
-```
-┌──────────────────────────────────────┐
-│       Generic Mission Controller     │
-│  ┌──────────────┐ ┌───────────────┐ │
-│  │State Monitor │→│Mission Manager│ │
-│  └──────────────┘ └───────────────┘ │
-└──────────────────────────────────────┘
-        ↓                    ↓
-  Health Plugin      Navigation Plugin
-  (血量监控)          (导航任务)
-```
+## 核心职责
 
-### 快速使用
+- launch 编排：定义模块之间的启动顺序与组合关系
+- 模式切换：同一套仓库支持测试、比赛、联调等不同运行模式
+- 任务控制：通过任务控制器管理任务状态和恢复逻辑
+- 参数整合：将多包参数放在统一入口调度
+
+## 任务控制器
+
+当前 `venom_bringup` 还承载了通用任务控制框架，主要用于：
+
+- 监控任务状态
+- 根据外部状态触发暂停、恢复、重试等行为
+- 支持任务持久化与中断恢复
+
+任务控制器当前最直接的参数入口是：
+
+- [`mission_config.yaml`](/Users/liyh/venom_vnv/venom_bringup/config/scout_mini/mission_config.yaml)
+- [`waypoints.yaml`](/Users/liyh/venom_vnv/venom_bringup/config/scout_mini/waypoints.yaml)
+
+运行时代码入口包括：
+
+- [`health_aware_commander.py`](/Users/liyh/venom_vnv/venom_bringup/venom_bringup/health_aware_commander.py)
+- [`multi_waypoint_commander.py`](/Users/liyh/venom_vnv/venom_bringup/venom_bringup/multi_waypoint_commander.py)
+
+其中最关键的两个外部参数是：
+
+| 参数名 | 作用 | 默认语义 |
+| --- | --- | --- |
+| `waypoints_file` | 航点文件路径。 | 指向当前机器人对应的航点配置 |
+| `mission_config_file` | 任务配置文件路径。 | 指向当前机器人对应的任务配置 |
+
+## 推荐使用方式
+
+日常使用尽量从 `venom_bringup` 进入，而不是直接逐个启动底层模块：
 
 ```bash
-# 血量感知导航（默认配置）
-ros2 launch venom_bringup health_aware_navigation.launch.py
+# 自瞄测试
+ros2 launch venom_bringup autoaim_test_bringup.launch.py
 
-# 自定义航点文件
-ros2 run venom_bringup multi_waypoint_commander \
-    --ros-args -p waypoints_file:=/path/to/waypoints.yaml
-
-# 自定义任务配置
-ros2 run venom_bringup multi_waypoint_commander \
-    --ros-args -p mission_config_file:=/path/to/mission_config.yaml
+# 完整模式
+ros2 launch venom_bringup autoaim_nav_bringup.launch.py
 ```
 
-### 任务状态
+如果是整机入口，更建议使用：
 
-| 状态 | 说明 |
-|------|------|
-| `IDLE` | 空闲 |
-| `RUNNING` | 正在执行 |
-| `PAUSED` | 已暂停 |
-| `EMERGENCY` | 紧急状态（如血量低） |
-| `COMPLETED` | 已完成 |
-| `FAILED` | 已失败 |
+```bash
+ros2 launch venom_bringup robot_bringup.launch.py
+```
 
-状态转换：`IDLE → RUNNING → COMPLETED`，`RUNNING → EMERGENCY → RUNNING（恢复）`
+它会根据 `robot_type` 选择不同平台的 bringup 组合。
 
-## 详细文档
+## 调试重点
 
-详见：[MISSION_CONTROLLER_README.md](../venom_bringup/MISSION_CONTROLLER_README.md)
+- 单模块能跑但整机起不来时，优先检查 bringup 里传入的参数文件路径
+- 出现 TF、话题重名或重复启动，优先检查 launch 组合关系
+- 不同机器人切换时，首先确认 `robot_type` 和对应配置目录是否一致
+
+## 相关页面
+
+- [启动与使用](launch_usage.md)
+- [运行模式](run_modes.md)
+- [自瞄算法总览](rm_auto_aim.md)
+- [定位模块总览](localization_overview.md)
+
+## 进一步阅读
+
+- [MISSION_CONTROLLER_README.md](../venom_bringup/MISSION_CONTROLLER_README.md)
