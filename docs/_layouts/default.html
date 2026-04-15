@@ -71,9 +71,35 @@
 
   <script>
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+    function normalizePath(path) {
+      if (!path) return '/';
+      let normalized = path;
+      try {
+        normalized = new URL(path, window.location.origin).pathname;
+      } catch (_) {}
+      normalized = normalized.replace(/\/index\.html$/, '/').replace(/\.html$/, '');
+      if (normalized.length > 1) {
+        normalized = normalized.replace(/\/+$/, '');
+      }
+      return normalized || '/';
+    }
+    function syncSidebarActiveState() {
+      const sidebar = document.getElementById('sidebar');
+      if (!sidebar) return;
+      const currentPath = normalizePath(window.location.pathname);
+      sidebar.querySelectorAll('.nav-item.active, .nav-item-child.active, .nav-category-link.active, .nav-category.active')
+        .forEach(el => el.classList.remove('active'));
+      sidebar.querySelectorAll('a[href]').forEach(link => {
+        if (normalizePath(link.getAttribute('href')) !== currentPath) return;
+        link.classList.add('active');
+        const navGroup = link.closest('.nav-group');
+        navGroup?.querySelector('.nav-category')?.classList.add('active');
+      });
+    }
     document.querySelector('.main-wrap')?.addEventListener('click', () => { document.getElementById('sidebar').classList.remove('open'); });
     window.addEventListener('scroll', () => { document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 400); });
     document.addEventListener('keydown', e => { if (e.key === '/' && document.activeElement.tagName !== 'INPUT') { e.preventDefault(); document.getElementById('searchInput').focus(); } });
+    syncSidebarActiveState();
     const navGroups = document.querySelectorAll('.nav-group');
     const navStateKey = 'venom-docs-nav-groups';
     let savedNavState = {};
@@ -84,7 +110,7 @@
     }
     navGroups.forEach(group => {
       const groupName = group.dataset.group;
-      const active = group.querySelector('.nav-item.active');
+      const active = group.querySelector('.nav-item.active, .nav-item-child.active, .nav-category-link.active');
       if (groupName && Object.prototype.hasOwnProperty.call(savedNavState, groupName)) {
         group.open = !!savedNavState[groupName];
       } else if (active) {

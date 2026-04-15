@@ -171,7 +171,7 @@ a:hover { color: var(--color-primary-dim); text-decoration: underline; }
 }
 .nav-item.active {
   color: var(--color-primary); background: var(--bg-active);
-  border-left-color: var(--color-primary); font-weight: 500;
+  border-left-color: var(--color-primary); font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 0.2rem;
   text-decoration-thickness: 1.5px;
@@ -188,6 +188,7 @@ a:hover { color: var(--color-primary-dim); text-decoration: underline; }
 .nav-item-child.active {
   color: var(--color-primary);
   background: rgba(45, 212, 191, 0.04);
+  font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 0.2rem;
   text-decoration-thickness: 1.5px;
