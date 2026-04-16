@@ -17,7 +17,9 @@
   <exec_depend>tf2_ros</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>xacro</exec_depend>
+  <exec_depend>rviz2</exec_depend>
   <exec_depend>venom_robot_description</exec_depend>
+  <exec_depend>realsense2_camera</exec_depend>
   <exec_depend>hik_camera</exec_depend>
   <exec_depend>armor_detector</exec_depend>
   <exec_depend>armor_tracker</exec_depend>
