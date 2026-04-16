@@ -89,6 +89,27 @@ a:hover { color: var(--color-primary-dim); text-decoration: underline; }
   transition: color 0.2s;
 }
 .header-link:hover { color: var(--color-primary); text-decoration: none; }
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3.2rem;
+  height: 2rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--border-light);
+  border-radius: 999px;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1;
+  transition: all 0.15s ease;
+}
+.lang-switch:hover {
+  color: var(--color-primary);
+  border-color: var(--color-primary-dark);
+  text-decoration: none;
+}
 .mobile-menu-btn {
   display: none; background: none; border: none;
   color: var(--text); font-size: 1.3rem; cursor: pointer;

@@ -1,9 +1,17 @@
-<!-- 导航数据：新增页面只需在 _data/navigation.yml 加一行 -->
-{% assign nav_items = site.data.navigation %}
+<!-- 导航数据：新增页面只需在 _data/navigation.yml 或 navigation_en.yml 加一行 -->
+{% assign is_en = false %}
+{% if page.url == '/en/' or page.url contains '/en/' %}
+  {% assign is_en = true %}
+{% endif %}
+{% if is_en %}
+  {% assign nav_items = site.data.navigation_en %}
+{% else %}
+  {% assign nav_items = site.data.navigation %}
+{% endif %}
 {% assign current_url = page.url | relative_url | replace: '/index.html', '/' | replace: '.html', '' %}
 
 {% for group in nav_items %}
-{% if group.category == "首页" %}
+{% if group.category == "首页" or group.category == "Home" %}
   {% for item in group.items %}
     {% assign item_url = item.url | relative_url | replace: '/index.html', '/' | replace: '.html', '' %}
     {% if item_url == current_url %}

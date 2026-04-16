@@ -17,6 +17,13 @@ defaults:
       type: "pages"
     values:
       layout: "default"
+      lang: "zh"
+  - scope:
+      path: "en"
+      type: "pages"
+    values:
+      layout: "default"
+      lang: "en"
 
 # 插件（GitHub Pages 白名单）
 plugins:

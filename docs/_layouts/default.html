@@ -1,5 +1,45 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+{% assign is_en = false %}
+{% if page.url == '/en/' or page.url contains '/en/' %}
+  {% assign is_en = true %}
+{% endif %}
+{% assign lang_attr = 'zh-CN' %}
+{% assign search_placeholder = '搜索文档...  /' %}
+{% assign toc_title = '本页目录' %}
+{% assign lang_button_label = 'EN' %}
+{% assign lang_button_aria = '切换到英文' %}
+{% assign home_url = '/' %}
+{% assign copy_button_text = '复制' %}
+{% assign copy_button_success = '已复制' %}
+{% assign copy_button_failure = '复制失败' %}
+{% assign copy_button_aria = '复制代码' %}
+{% if is_en %}
+  {% assign lang_attr = 'en' %}
+  {% assign search_placeholder = 'Search docs...  /' %}
+  {% assign toc_title = 'On this page' %}
+  {% assign lang_button_label = '中文' %}
+  {% assign lang_button_aria = 'Switch to Chinese' %}
+  {% assign home_url = '/en/' %}
+  {% assign copy_button_text = 'Copy' %}
+  {% assign copy_button_success = 'Copied' %}
+  {% assign copy_button_failure = 'Copy failed' %}
+  {% assign copy_button_aria = 'Copy code' %}
+{% endif %}
+{% assign switch_url = '/en/' %}
+{% if is_en %}
+  {% if page.url == '/en/' %}
+    {% assign switch_url = '/' %}
+  {% else %}
+    {% assign switch_url = page.url | replace_first: '/en', '' %}
+  {% endif %}
+{% else %}
+  {% if page.url == '/' %}
+    {% assign switch_url = '/en/' %}
+  {% else %}
+    {% assign switch_url = '/en' | append: page.url %}
+  {% endif %}
+{% endif %}
+<html lang="{{ lang_attr }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,12 +53,13 @@
   <header class="site-header">
     <div style="display:flex;align-items:center;gap:1rem">
       <button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
-      <a href="{{ site.baseurl }}/" class="site-title">
+      <a href="{{ home_url | relative_url }}" class="site-title">
         <span class="logo">◈</span> {{ site.title }}
       </a>
     </div>
     <div class="header-right">
-      <input type="text" class="header-search" placeholder="搜索文档...  /" id="searchInput">
+      <input type="text" class="header-search" placeholder="{{ search_placeholder }}" id="searchInput">
+      <a href="{{ switch_url | relative_url }}" class="lang-switch" aria-label="{{ lang_button_aria }}">{{ lang_button_label }}</a>
       <a href="https://github.com/Venom-Algorithm/Venom_VNV" target="_blank" class="header-link">GitHub ↗</a>
     </div>
   </header>
@@ -60,7 +101,7 @@
       <!-- TOC -->
       {% if page.toc != false %}
       <aside class="toc" id="toc-sidebar">
-        <div class="toc-title">本页目录</div>
+        <div class="toc-title">{{ toc_title }}</div>
         <!-- JS 会自动生成 TOC -->
       </aside>
       {% endif %}
@@ -70,6 +111,12 @@
   <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
   <script>
+    const codeCopyLabels = {
+      idle: {{ copy_button_text | jsonify }},
+      success: {{ copy_button_success | jsonify }},
+      failure: {{ copy_button_failure | jsonify }},
+      aria: {{ copy_button_aria | jsonify }}
+    };
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
     function normalizePath(path) {
       if (!path) return '/';
@@ -110,24 +157,24 @@
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'code-copy-btn';
-        button.textContent = '复制';
-        button.setAttribute('aria-label', '复制代码');
+        button.textContent = codeCopyLabels.idle;
+        button.setAttribute('aria-label', codeCopyLabels.aria);
         button.addEventListener('click', async () => {
           const code = pre.querySelector('code');
           const text = code ? code.innerText : pre.innerText;
           try {
             await navigator.clipboard.writeText(text.replace(/\n$/, ''));
             const originalText = button.textContent;
-            button.textContent = '已复制';
+            button.textContent = codeCopyLabels.success;
             button.classList.add('copied');
             window.setTimeout(() => {
               button.textContent = originalText;
               button.classList.remove('copied');
             }, 1400);
           } catch (_) {
-            button.textContent = '复制失败';
+            button.textContent = codeCopyLabels.failure;
             window.setTimeout(() => {
-              button.textContent = '复制';
+              button.textContent = codeCopyLabels.idle;
             }, 1400);
           }
         });

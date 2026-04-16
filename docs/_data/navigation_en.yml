@@ -1,0 +1,102 @@
+- category: Home
+  items:
+    - title: Home
+      url: /en/
+    - title: Quick Start
+      url: /en/quick_start
+    - title: Launch & Use
+      url: /en/launch_usage
+
+- category: Deployment & Usage
+  items:
+    - title: Environment Setup
+      url: /en/environment
+    - title: LiDAR Setup
+      url: /en/lidar_setup
+    - title: Chassis CAN Setup
+      url: /en/chassis_can_setup
+    - title: Arm CAN Setup
+      url: /en/piper_can_setup
+    - title: rc.local
+      url: /en/rc_local
+    - title: Run Modes
+      url: /en/run_modes
+    - title: Topics & TF Overview
+      url: /en/system_overview
+
+- category: Modules & Interfaces
+  url: /en/interface_reference
+  items:
+    - title: Architecture
+      url: /en/architecture
+    - title: Drivers
+      url: /en/driver_overview
+      children:
+        - title: Livox LiDAR Driver
+          url: /en/livox_ros_driver2
+        - title: Hikrobot Camera Driver
+          url: /en/ros2_hik_camera
+        - title: Chassis Driver Overview
+          url: /en/chassis_driver
+        - title: Scout Driver
+          url: /en/scout_ros2
+        - title: Hunter Driver
+          url: /en/hunter_ros2
+        - title: UGV SDK
+          url: /en/ugv_sdk
+        - title: Piper Arm Driver
+          url: /en/piper_ros
+        - title: Serial Driver
+          url: /en/venom_serial_driver
+    - title: LIO
+      url: /en/lio_overview
+      children:
+        - title: Point-LIO
+          url: /en/point_lio
+        - title: Fast-LIO
+          url: /en/fast_lio
+    - title: Localization
+      url: /en/localization_overview
+      children:
+        - title: rf2o Laser Odometry
+          url: /en/rf2o_laser_odometry
+        - title: Relocalization
+          url: /en/small_gicp_relocalization
+    - title: Auto Aim
+      url: /en/rm_auto_aim
+      children:
+        - title: Armor Detection
+          url: /en/armor_detector
+        - title: Target Tracking
+          url: /en/armor_tracker
+    - title: System Integration
+      url: /en/integration_overview
+      children:
+        - title: System Bringup
+          url: /en/venom_bringup
+        - title: Robot Description
+          url: /en/venom_robot_description
+    - title: Interface Standards
+      url: /en/topics
+      children:
+        - title: Topic Reference
+          url: /en/topics
+        - title: TF Tree
+          url: /en/tf_tree
+
+- category: Support & Community
+  items:
+    - title: Development Notes
+      url: /en/development
+    - title: Application Scenarios
+      url: /en/application_scenarios
+    - title: FAQ
+      url: /en/faq
+    - title: Troubleshooting
+      url: /en/troubleshooting
+    - title: Updates & Migration
+      url: /en/migration_notes
+    - title: Contact
+      url: /en/contact
+    - title: Contributing
+      url: /en/contributing

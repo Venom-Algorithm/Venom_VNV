@@ -2,6 +2,10 @@
 
 基于 ROS 2 Humble 的综合通用无人系统平台，支持导航、抓取、自瞄以及无人车、无人机、无人船等多平台集成。
 
+> 文档站：
+> 中文默认版：[venom-algorithm.github.io/Venom_VNV](https://venom-algorithm.github.io/Venom_VNV/)
+> English: [venom-algorithm.github.io/Venom_VNV/en](https://venom-algorithm.github.io/Venom_VNV/en/)
+
 ## 项目定位
 
 Venom VNV 的目标不是只服务单一场景，而是沉淀一套可复用、可迁移、可快速部署的机器人系统底座。
