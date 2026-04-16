@@ -64,7 +64,7 @@ git submodule update --init --recursive
 ```bash
 cd ~/venom_ws
 source install/setup.bash
-ros2 launch venom_bringup examples/mid360_rviz.launch.py
+ros2 launch venom_bringup mid360_rviz.launch.py
 ```
 
 ### 2. Mid360 + Point-LIO
@@ -72,7 +72,7 @@ ros2 launch venom_bringup examples/mid360_rviz.launch.py
 ```bash
 cd ~/venom_ws
 source install/setup.bash
-ros2 launch venom_bringup examples/mid360_point_lio.launch.py
+ros2 launch venom_bringup mid360_point_lio.launch.py
 ```
 
 ### 3. 相机链路验证
@@ -88,7 +88,7 @@ ros2 launch venom_bringup camera.launch.py
 ```bash
 cd ~/venom_ws
 source install/setup.bash
-ros2 launch venom_bringup infantry/infantry_auto_aim.launch.py
+ros2 launch venom_bringup infantry_auto_aim.launch.py
 ```
 
 ### 5. Scout Mini 建图
@@ -96,7 +96,7 @@ ros2 launch venom_bringup infantry/infantry_auto_aim.launch.py
 ```bash
 cd ~/venom_ws
 source install/setup.bash
-ros2 launch venom_bringup scout_mini/scout_mini_mapping.launch.py
+ros2 launch venom_bringup scout_mini_mapping.launch.py
 ```
 
 ### 6. 哨兵建图
@@ -104,7 +104,7 @@ ros2 launch venom_bringup scout_mini/scout_mini_mapping.launch.py
 ```bash
 cd ~/venom_ws
 source install/setup.bash
-ros2 launch venom_bringup sentry/sentry_mapping.launch.py
+ros2 launch venom_bringup sentry_mapping.launch.py
 ```
 
 ### 7. 重定位
