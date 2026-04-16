@@ -10,10 +10,13 @@ layout: default
 
 请先确认以下工具已经可用：
 
+- Ubuntu 22.04
 - ROS 2 Humble
 - `rosdep`
 - `colcon`
 - Livox-SDK2
+
+如果你的 Ubuntu、ROS 2 Humble、`rosdep`、VS Code 等基础环境还没有准备好，请先参考 [环境准备]({{ '/environment' | relative_url }})。
 
 可以先用下面的方式确认 Livox-SDK2 已安装：
 
@@ -21,7 +24,7 @@ layout: default
 ldconfig -p | grep LivoxSdkCore
 ```
 
-如果还没有安装，请先参考 [配置雷达]({{ '/lidar_setup' | relative_url }}) 完成 Livox-SDK2 安装。
+如果还没有安装，请先参考 [雷达配置]({{ '/lidar_setup' | relative_url }}) 完成 Livox-SDK2 安装。
 
 如果 `rosdep install` 过程中报错，建议先尝试：
 
@@ -30,7 +33,15 @@ sudo rosdep init
 rosdep update
 ```
 
-## 推荐安装方式
+## 拉取仓库
+
+首次拉取推荐使用以下命令：
+
+```bash
+cd ~
+mkdir -p ~/venom_ws/src
+git clone --recurse-submodules https://github.com/Venom-Algorithm/Venom_VNV ~/venom_ws/src/venom_vnv
+```
 
 如果你之前有旧工作区，建议先清理后重新拉取：
 
@@ -41,6 +52,13 @@ cd ~
 rm -rf ~/venom_ws
 mkdir -p ~/venom_ws/src
 git clone --recurse-submodules https://github.com/Venom-Algorithm/Venom_VNV ~/venom_ws/src/venom_vnv
+```
+
+## 编译工作区
+
+拉取完成后，按以下流程完成首次编译：
+
+```bash
 cp ~/venom_ws/src/venom_vnv/driver/livox_ros_driver2/package_ROS2.xml \
    ~/venom_ws/src/venom_vnv/driver/livox_ros_driver2/package.xml
 
@@ -55,66 +73,23 @@ colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release -DROS_EDI
 source ~/venom_ws/install/setup.bash
 ```
 
-## Git 远程地址建议（主仓库 + 子模块）
+## 更新到远端最新版本
 
-如果你的机器还没配置 GitHub SSH 密钥，请先参考：
-
-- [GitHub SSH 密钥配置完整教程（RSA 版本）](https://liyihan.xyz/archives/github-ssh-mi-yao-pei-zhi)
-
-配置好 SSH 后，建议将本项目统一设置为：
-
-- `fetch/pull` 走 HTTPS（未配置 SSH 的机器也能拉取）
-- `push` 走 SSH（开发机推送更方便）
-
-在仓库根目录执行以下一键命令，可同时修改主仓库和所有子模块的 `origin`：
+如果你已经拉过仓库，后续可用下面的命令同步主仓库和子模块：
 
 ```bash
 cd ~/venom_ws/src/venom_vnv
-
-to_https() {
-  echo "$1" | sed -E \
-    's|^git@github.com:([^/]+/.+)\.git$|https://github.com/\1.git|; s|^git@github.com:([^/]+/.+)$|https://github.com/\1.git|'
-}
-
-to_ssh() {
-  echo "$1" | sed -E \
-    's|^https://github.com/([^/]+/.+)\.git$|git@github.com:\1.git|; s|^https://github.com/([^/]+/.+)$|git@github.com:\1.git|'
-}
-
-# 主仓库：pull/fetch 用 HTTPS，push 用 SSH
-main_url="$(git remote get-url origin)"
-main_https="$(to_https "$main_url")"
-main_ssh="$(to_ssh "$main_https")"
-git remote set-url origin "$main_https"
-git remote set-url --push origin "$main_ssh"
-
-# .gitmodules 里的 URL 统一改为 HTTPS，便于任何机器拉取
-if [ -f .gitmodules ]; then
-  while read -r key url; do
-    git config -f .gitmodules "$key" "$(to_https "$url")"
-  done < <(git config -f .gitmodules --get-regexp '^submodule\..*\.url$' || true)
-  git submodule sync --recursive
-fi
-
-# 子模块工作树：同样设置 origin 为 HTTPS + pushurl 为 SSH
-git submodule foreach --recursive '
-url="$(git config --get remote.origin.url 2>/dev/null || true)"
-if [ -z "$url" ]; then
-  url="$(git config -f "$toplevel/.gitmodules" --get "submodule.$name.url" 2>/dev/null || true)"
-fi
-if [ -n "$url" ]; then
-  https="$(echo "$url" | sed -E "s|^git@github.com:([^/]+/.+)\\.git$|https://github.com/\\1.git|; s|^git@github.com:([^/]+/.+)$|https://github.com/\\1.git|")"
-  ssh="$(echo "$https" | sed -E "s|^https://github.com/([^/]+/.+)\\.git$|git@github.com:\\1.git|; s|^https://github.com/([^/]+/.+)$|git@github.com:\\1.git|")"
-  git remote set-url origin "$https"
-  git remote set-url --push origin "$ssh"
-fi
-'
+git pull
+git submodule sync --recursive
+git submodule update --init --recursive
 ```
+
+如果你需要配置开发机上的 Git 远端地址规则，请继续阅读 [开发说明]({{ '/development' | relative_url }}).
 
 ## 推荐阅读顺序
 
 1. [环境准备]({{ '/environment' | relative_url }})
-2. [配置雷达]({{ '/lidar_setup' | relative_url }})
+2. [雷达配置]({{ '/lidar_setup' | relative_url }})
 3. [底盘 CAN 部署]({{ '/chassis_can_setup' | relative_url }})
 4. [启动使用]({{ '/launch_usage' | relative_url }})
 

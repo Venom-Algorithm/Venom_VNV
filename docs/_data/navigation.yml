@@ -17,10 +17,12 @@
   items:
     - title: 环境准备
       url: /environment
-    - title: 配置雷达
+    - title: 雷达配置
       url: /lidar_setup
     - title: 底盘 CAN 部署
       url: /chassis_can_setup
+    - title: 机械臂 CAN 部署
+      url: /piper_can_setup
     - title: rc.local
       url: /rc_local
     - title: 运行模式
@@ -40,8 +42,16 @@
           url: /livox_ros_driver2
         - title: 海康相机驱动
           url: /ros2_hik_camera
-        - title: 底盘驱动
+        - title: 底盘驱动总览
           url: /chassis_driver
+        - title: Scout 底盘驱动
+          url: /scout_ros2
+        - title: Hunter 底盘驱动
+          url: /hunter_ros2
+        - title: UGV SDK
+          url: /ugv_sdk
+        - title: Piper 机械臂驱动
+          url: /piper_ros
         - title: 串口通信驱动
           url: /venom_serial_driver
     - title: LIO
@@ -82,6 +92,10 @@
 
 - category: 支持与社区
   items:
+    - title: 开发说明
+      url: /development
+    - title: 应用场景
+      url: /application_scenarios
     - title: 常见问题
       url: /faq
     - title: 故障排查

@@ -166,7 +166,8 @@
     (function() {
       const tocSidebar = document.getElementById('toc-sidebar');
       if (!tocSidebar) return;
-      const headings = document.querySelectorAll('.main-content h2, .main-content h3');
+      const headings = Array.from(document.querySelectorAll('.main-content h2, .main-content h3'))
+        .filter(h => !h.closest('[data-toc-exclude]'));
       if (!headings.length) { tocSidebar.style.display = 'none'; return; }
       headings.forEach(h => {
         if (!h.id) {

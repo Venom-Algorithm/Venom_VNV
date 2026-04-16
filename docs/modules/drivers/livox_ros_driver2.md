@@ -108,7 +108,7 @@ MID360 的关键配置通常集中在：
 
 ## 相关页面
 
-- [配置雷达]({{ '/lidar_setup' | relative_url }})
+- [雷达配置]({{ '/lidar_setup' | relative_url }})
 - [Point-LIO]({{ '/point_lio' | relative_url }})
 - [Fast-LIO]({{ '/fast_lio' | relative_url }})
 

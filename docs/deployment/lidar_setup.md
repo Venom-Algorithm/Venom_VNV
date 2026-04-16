@@ -1,5 +1,5 @@
 ---
-title: 配置雷达
+title: 雷达配置
 permalink: /lidar_setup
 desc: Livox Mid360 与 livox_ros_driver2 的安装、网络配置和基础验证。
 breadcrumb: 部署与使用

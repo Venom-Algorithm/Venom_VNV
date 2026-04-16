@@ -41,7 +41,10 @@
 /* ===== Reset ===== */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height) + 1.25rem);
+}
 
 body {
   font-family: var(--font);
@@ -249,6 +252,12 @@ h4 {
   margin: 1.2rem 0 0.4rem;
 }
 
+.main-content h2,
+.main-content h3,
+.main-content h4 {
+  scroll-margin-top: calc(var(--header-height) + 1.25rem);
+}
+
 p { margin: 0.6rem 0; color: var(--text-secondary); }
 
 ul, ol { padding-left: 1.4rem; margin: 0.5rem 0; }
@@ -323,6 +332,11 @@ td {
   color: var(--text-secondary);
 }
 tr:hover td { background: var(--bg-hover); }
+
+.home-overview-table th:first-child,
+.home-overview-table td:first-child {
+  width: 11rem;
+}
 
 /* ===== Images ===== */
 .main-content img {

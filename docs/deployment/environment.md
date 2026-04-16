@@ -53,4 +53,4 @@ sudo apt install ./xxxx
 
 ## 下一步
 
-基础环境准备完成后，继续看 [配置雷达]({{ '/lidar_setup' | relative_url }}).
+基础环境准备完成后，继续看 [雷达配置]({{ '/lidar_setup' | relative_url }}).
