@@ -1,69 +1,86 @@
 /**:
     ros__parameters:
-        use_imu_as_input: False
-        prop_at_freq_of_imu: True
-        check_satu: True
-        init_map_size: 10
-        point_filter_num: 4
-        space_down_sample: True
-        filter_size_surf: 0.2
-        filter_size_map: 0.2
-        ivox_nearby_type: 6
-        runtime_pos_log_enable: False
+        use_imu_as_input: False                             # False uses the default Point-LIO output-state pipeline; True switches to the IMU-input state pipeline.
+        prop_at_freq_of_imu: True                           # True propagates the state at IMU timing; False propagates more coarsely at point/update timing.
+        check_satu: True                                    # True ignores IMU residual dimensions that are close to accelerometer/gyroscope saturation.
+        init_map_size: 100                                  # Number of initial world-frame points required before the first local map is built.
+        point_filter_num: 3                                 # Keep one point out of every N raw input points during preprocessing.
+        space_down_sample: True                            # True enables voxel downsampling on the current scan before registration.
+        filter_size_surf: 0.05                               # Voxel size for current-scan downsampling; smaller values keep more registration detail.
+        filter_size_map_internal: 0.2                       # Map voxel size used by the internal online map that supports registration.
+        filter_size_map_publish: 0.2                        # Voxel size used only by the low-frequency visualization map topic.
+        filter_size_map_save: 0.2                           # Voxel size used only when exporting the internal map to PCD.
+        ivox_nearby_type: 6                                 # Neighbor search mode in iVox: 0=center, 6/18/26 expand the search neighborhood.
+        runtime_pos_log_enable: False                       # True writes runtime pose/debug logs to the log directory.
 
         common:
-            lid_topic: "livox/lidar"
-            imu_topic: "livox/imu"
-            con_frame: False
-            con_frame_num: 1
-            cut_frame: False
-            cut_frame_time_interval: 0.1
-            time_diff_lidar_to_imu: 0.0
+            lid_topic: "livox/lidar"                        # LiDAR point cloud topic consumed by Point-LIO.
+            imu_topic: "livox/imu"                          # IMU topic consumed by Point-LIO.
+            con_frame: False                                # True merges multiple LiDAR frames before processing.
+            con_frame_num: 1                                # Number of frames to merge when con_frame is enabled.
+            cut_frame: False                                # True splits one LiDAR frame into several shorter subframes.
+            cut_frame_time_interval: 0.1                    # Subframe duration in seconds when cut_frame is enabled.
+            time_diff_lidar_to_imu: 0.0                     # Fixed time offset from LiDAR time to IMU time.
 
         preprocess:
-            lidar_type: 1
-            scan_line: 4
-            timestamp_unit: 3
-            blind: 0.5
+            lidar_type: 1                                   # LiDAR type selector; 1 is used for MID360/Livox CustomMsg input.
+            scan_line: 4                                    # Number of laser lines expected from the LiDAR packet format.
+            timestamp_unit: 3                               # Unit of point timestamps for PointCloud2 inputs: 0=s, 1=ms, 2=us, 3=ns.
+            blind: 0.5                                      # Minimum valid range in meters; closer points are discarded.
 
         mapping:
-            imu_en: True
-            extrinsic_est_en: False
-            imu_time_inte: 0.005
-            lidar_time_inte: 0.1
-            satu_acc: 3.0
-            satu_gyro: 35.0
-            acc_norm: 1.0
-            lidar_meas_cov: 0.01
-            acc_cov_output: 500.0
-            gyr_cov_output: 1000.0
-            b_acc_cov: 0.0001
-            b_gyr_cov: 0.0001
-            imu_meas_acc_cov: 0.01
-            imu_meas_omg_cov: 0.01
-            gyr_cov_input: 0.01
-            acc_cov_input: 0.1
-            plane_thr: 0.1
-            match_s: 81.0
-            ivox_grid_resolution: 2.0
-            gravity: [ 0.0, 0.0, -9.810 ]
-            gravity_init: [ 0.0, 0.0, -9.810 ]
-            # Example MID360 extrinsic, adjust for your platform.
-            extrinsic_T: [ -0.011, -0.02329, 0.04412 ]
+            imu_en: True                                    # True enables IMU-assisted Point-LIO operation.
+            extrinsic_est_en: False                         # True lets the filter estimate LiDAR-to-IMU extrinsics online.
+            imu_time_inte: 0.005                            # Nominal IMU sampling interval in seconds.
+            lidar_time_inte: 0.1                            # Nominal LiDAR frame interval in seconds.
+            satu_acc: 3.0                                   # Accelerometer saturation threshold used by IMU residual gating.
+            satu_gyro: 35.0                                 # Gyroscope saturation threshold used by IMU residual gating.
+            acc_norm: 1.0                                   # Gravity magnitude unit of the IMU acceleration input: 1.0 for g, 9.81 for m/s^2.
+            lidar_meas_cov: 0.01                            # Measurement covariance assigned to LiDAR constraints.
+            acc_cov_output: 500.0                           # Process covariance of acceleration in the output-state model.
+            gyr_cov_output: 1000.0                          # Process covariance of angular rate in the output-state model.
+            b_acc_cov: 0.0001                               # Random walk covariance of accelerometer bias.
+            b_gyr_cov: 0.0001                               # Random walk covariance of gyroscope bias.
+            imu_meas_acc_cov: 0.01                          # Measurement covariance of accelerometer observations.
+            imu_meas_omg_cov: 0.01                          # Measurement covariance of gyroscope observations.
+            gyr_cov_input: 0.01                             # Gyroscope process covariance in the IMU-input state model.
+            acc_cov_input: 0.1                              # Accelerometer process covariance in the IMU-input state model.
+            plane_thr: 0.1                                  # Plane fitting threshold; smaller values require flatter local surfaces.
+            match_s: 81.0                                   # Matching/search scale used by the registration step.
+            ivox_grid_resolution: 2.0                       # Resolution of the iVox map grid in meters.
+            gravity: [ 0.0, 0.0, -9.810 ]                   # Gravity vector used by the estimator state.
+            gravity_init: [ 0.0, 0.0, -9.810 ]              # Initial gravity guess used during startup alignment.
+            extrinsic_T: [ -0.011, -0.02329, 0.04412 ]      # LiDAR translation in the IMU/body frame, in meters.
             extrinsic_R: [ 1.0, 0.0, 0.0,
                            0.0, 1.0, 0.0,
-                           0.0, 0.0, 1.0 ]
+                           0.0, 0.0, 1.0 ]                 # LiDAR rotation in the IMU/body frame, stored as a row-major rotation matrix.
 
         odometry:
-            publish_odometry_without_downsample: False
-            enable_2d_mode: False
+            publish_odometry_without_downsample: False      # True publishes odometry at point/update timing instead of after scan downsampling.
+            enable_2d_mode: False                           # True constrains the estimator to planar motion: x, y, yaw only.
 
         publish:
-            path_en: True
-            scan_publish_en: True
-            scan_bodyframe_pub_en: False
-            tf_send_en: True
+            path_en: True                                   # True publishes the integrated path message.
+            scan_publish_en: True                           # True publishes registered point clouds in the odom/world frame.
+            scan_bodyframe_pub_en: False                    # True publishes the registered point cloud in the body frame.
+            map_publish_en: True                            # True publishes the accumulated map cloud topic.
+            map_publish_interval: 20                        # Number of mapping frames between map cloud publications.
+            tf_send_en: True                                # True broadcasts the odom-to-base_link transform.
+            odom_topic: "odom"                              # Topic name for odometry output.
+            cloud_registered_topic: "cloud_registered"      # Topic name for registered cloud output in the odom/world frame.
+            cloud_registered_body_topic: "cloud_registered_body"  # Topic name for registered cloud output in the body frame.
+            map_topic: "map_cloud"                          # Topic name for the accumulated map cloud.
+            path_topic: "path"                              # Topic name for the integrated path output.
+
+        frame:
+            odom_frame_id: "odom"                           # Frame id used by odometry and the parent TF frame.
+            base_frame_id: "base_link"                      # Frame id used as the robot body child frame.
+            cloud_registered_frame_id: "odom"               # Frame id used by the registered world-frame point cloud.
+            cloud_registered_body_frame_id: "base_link"     # Frame id used by the registered body-frame point cloud.
+            map_frame_id: "odom"                            # Frame id used by the published map cloud.
 
         pcd_save:
-            pcd_save_en: True
-            interval: -1
+            pcd_save_en: False                              # True enables PCD export from the internal online map.
+            save_on_shutdown: True                          # True saves one PCD automatically when the node exits normally or via Ctrl+C.
+            save_period_sec: 0.0                            # Periodic save interval in seconds; 0.0 disables periodic export during runtime.
+            save_path: "PCD/scans.pcd"                      # Output path of the exported PCD, relative to the package root or absolute.

@@ -29,3 +29,11 @@
 [submodule "lio/Fast-LIO"]
 	path = lio/Fast-LIO
 	url = https://github.com/Venom-Algorithm/Fast-LIO.git
+[submodule "driver/piper_ros"]
+	path = driver/piper_ros
+	url = https://github.com/agilexrobotics/piper_ros.git
+	branch = humble
+[submodule "driver/hunter_ros2"]
+	path = driver/hunter_ros2
+	url = https://github.com/agilexrobotics/hunter_ros2.git
+	branch = humble
