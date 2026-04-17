@@ -1,0 +1,12 @@
+px4_status_adapter:
+  ros__parameters:
+    odom_frame_id: map
+    base_frame_id: base_link
+    publish_period_ms: 100
+    stale_timeout_ms: 1000
+    low_battery_threshold: 0.20
+
+px4_agent_monitor:
+  ros__parameters:
+    publish_period_ms: 1000
+    timesync_timeout_ms: 1500

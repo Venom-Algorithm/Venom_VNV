@@ -37,3 +37,7 @@
 	path = driver/hunter_ros2
 	url = https://github.com/agilexrobotics/hunter_ros2.git
 	branch = humble
+[submodule "driver/px4_msgs"]
+	path = driver/px4_msgs
+	url = https://github.com/PX4/px4_msgs.git
+	branch = release/1.16
