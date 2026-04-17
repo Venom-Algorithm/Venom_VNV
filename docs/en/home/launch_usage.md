@@ -73,60 +73,19 @@ source install/setup.bash
 ros2 launch venom_bringup mid360_point_lio.launch.py
 ```
 
-### 3. Camera pipeline validation
+### 3. D435i / RealSense validation
 
 ```bash
 cd ~/venom_ws
 source install/setup.bash
-ros2 launch venom_bringup camera.launch.py
-```
-
-### 4. Infantry auto aim
-
-```bash
-cd ~/venom_ws
-source install/setup.bash
-ros2 launch venom_bringup infantry_auto_aim.launch.py
-```
-
-### 5. Scout Mini mapping
-
-```bash
-cd ~/venom_ws
-source install/setup.bash
-ros2 launch venom_bringup scout_mini_mapping.launch.py
-```
-
-### 6. Sentry mapping
-
-```bash
-cd ~/venom_ws
-source install/setup.bash
-ros2 launch venom_bringup sentry_mapping.launch.py
-```
-
-### 7. Relocalization
-
-```bash
-cd ~/venom_ws
-source install/setup.bash
-ros2 launch venom_bringup relocalization_bringup.launch.py
-```
-
-### 8. Full robot entry
-
-```bash
-cd ~/venom_ws
-source install/setup.bash
-ros2 launch venom_bringup robot_bringup.launch.py
+ros2 launch venom_bringup d435i_test.launch.py
 ```
 
 ## Suggested Order
 
 1. Validate Mid360 in RViz
 2. Bring up Mid360 + Point-LIO
-3. Choose camera, auto aim, mapping, or relocalization as needed
-4. Move to the full robot entry last
+3. If you use a RealSense camera, validate D435i / RealSense next
 
 ## Further Reading
 

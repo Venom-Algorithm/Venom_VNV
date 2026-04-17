@@ -75,52 +75,12 @@ source install/setup.bash
 ros2 launch venom_bringup mid360_point_lio.launch.py
 ```
 
-### 3. 相机链路验证
+### 3. D435i / RealSense 验证
 
 ```bash
 cd ~/venom_ws
 source install/setup.bash
-ros2 launch venom_bringup camera.launch.py
-```
-
-### 4. 步兵自瞄
-
-```bash
-cd ~/venom_ws
-source install/setup.bash
-ros2 launch venom_bringup infantry_auto_aim.launch.py
-```
-
-### 5. Scout Mini 建图
-
-```bash
-cd ~/venom_ws
-source install/setup.bash
-ros2 launch venom_bringup scout_mini_mapping.launch.py
-```
-
-### 6. 哨兵建图
-
-```bash
-cd ~/venom_ws
-source install/setup.bash
-ros2 launch venom_bringup sentry_mapping.launch.py
-```
-
-### 7. 重定位
-
-```bash
-cd ~/venom_ws
-source install/setup.bash
-ros2 launch venom_bringup relocalization_bringup.launch.py
-```
-
-### 8. 整机入口
-
-```bash
-cd ~/venom_ws
-source install/setup.bash
-ros2 launch venom_bringup robot_bringup.launch.py
+ros2 launch venom_bringup d435i_test.launch.py
 ```
 
 ## 建议阅读顺序
@@ -129,8 +89,7 @@ ros2 launch venom_bringup robot_bringup.launch.py
 
 1. 先跑 Mid360 RViz 验证
 2. 再跑 Mid360 + Point-LIO
-3. 再按任务需求选择相机、自瞄、建图或重定位
-4. 最后再进入整机入口
+3. 如果要接 RealSense，再跑 D435i / RealSense 验证
 
 ## 进一步阅读
 

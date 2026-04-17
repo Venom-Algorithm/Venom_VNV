@@ -19,6 +19,8 @@
       url: /environment
     - title: 雷达配置
       url: /lidar_setup
+    - title: RealSense 配置
+      url: /realsense_setup
     - title: 底盘 CAN 部署
       url: /chassis_can_setup
     - title: 机械臂 CAN 部署

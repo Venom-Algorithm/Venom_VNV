@@ -13,6 +13,8 @@
       url: /en/environment
     - title: LiDAR Setup
       url: /en/lidar_setup
+    - title: RealSense Setup
+      url: /en/realsense_setup
     - title: Chassis CAN Setup
       url: /en/chassis_can_setup
     - title: Arm CAN Setup
