@@ -40,3 +40,7 @@
 [submodule "driver/venom_px4_bridge"]
 	path = driver/venom_px4_bridge
 	url = https://github.com/Venom-Algorithm/venom_px4_bridge.git
+
+[submodule "simulation/venom_nav_simulation"]
+	path = simulation/venom_nav_simulation
+	url = git@github.com:Venom-Algorithm/venom_nav_simulation.git
