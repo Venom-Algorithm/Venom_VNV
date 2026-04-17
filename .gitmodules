@@ -37,3 +37,6 @@
 	path = driver/hunter_ros2
 	url = https://github.com/agilexrobotics/hunter_ros2.git
 	branch = humble
+[submodule "driver/venom_px4_bridge"]
+	path = driver/venom_px4_bridge
+	url = https://github.com/Venom-Algorithm/venom_px4_bridge.git
