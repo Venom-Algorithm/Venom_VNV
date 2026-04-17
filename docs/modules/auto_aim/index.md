@@ -117,11 +117,8 @@ layout: default
 一般不建议单独逐个节点启动，更推荐由上层统一托管：
 
 ```bash
-# 自瞄测试
-ros2 launch venom_bringup autoaim_test_bringup.launch.py
-
-# 导航 + 自瞄
-ros2 launch venom_bringup autoaim_nav_bringup.launch.py
+# 步兵自瞄链路
+ros2 launch venom_bringup infantry_auto_aim.launch.py
 ```
 
 ## 相关页面

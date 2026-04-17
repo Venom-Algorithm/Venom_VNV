@@ -54,6 +54,8 @@
           url: /ugv_sdk
         - title: Piper 机械臂驱动
           url: /piper_ros
+        - title: PX4 Bridge
+          url: /venom_px4_bridge
         - title: 串口通信驱动
           url: /venom_serial_driver
     - title: LIO

@@ -77,11 +77,8 @@ layout: default
 通常不单独启动，建议由上层统一托管：
 
 ```bash
-# 自瞄测试（推荐）
-ros2 launch venom_bringup autoaim_test_bringup.launch.py
-
-# 导航 + 自瞄
-ros2 launch venom_bringup autoaim_nav_bringup.launch.py
+# 步兵自瞄链路（推荐）
+ros2 launch venom_bringup infantry_auto_aim.launch.py
 ```
 
 如需单独调试：

@@ -48,6 +48,8 @@
           url: /en/ugv_sdk
         - title: Piper Arm Driver
           url: /en/piper_ros
+        - title: PX4 Bridge
+          url: /en/venom_px4_bridge
         - title: Serial Driver
           url: /en/venom_serial_driver
     - title: LIO

@@ -8,9 +8,9 @@ layout: default
 
 ## 建图模式
 
-- 入口：`mapping_bringup.launch.py`
-- 目标：建立局部或全局地图
-- 依赖：Livox、Point-LIO、可选 rf2o
+- 入口：`scout_mini_mapping.launch.py` 或 `sentry_mapping.launch.py`
+- 目标：建立 2D 导航地图，同时保持 Point-LIO 的 3D 里程计输出
+- 依赖：Livox、Point-LIO、pointcloud_to_laserscan、slam_toolbox、Nav2
 
 ## 重定位模式
 
@@ -20,13 +20,18 @@ layout: default
 
 ## 自瞄测试模式
 
-- 入口：`autoaim_test_bringup.launch.py`
+- 入口：`infantry_auto_aim.launch.py`
 - 目标：相机、自瞄、串口链路联调
 
-## 导航 + 自瞄模式
+## PX4 探测模式
 
-- 入口：`autoaim_nav_bringup.launch.py`
-- 目标：在完整系统内同时运行移动与打击链路
+- 入口：`px4_agent_probe.launch.py`
+- 目标：检查 Micro XRCE-DDS Agent 与 PX4 桥接链路是否打通
+
+## 整机模式
+
+- 入口：`robot_bringup.launch.py`
+- 目标：通过统一入口选择对应平台的整机 launch 组合
 
 ## 进一步阅读
 

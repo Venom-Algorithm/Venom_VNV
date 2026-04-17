@@ -89,6 +89,7 @@ Venom VNV 是一个基于 ROS 2 Humble 构建的综合通用平台。
     <tr><td>硬件驱动</td><td><code>driver/hunter_ros2</code></td><td>AgileX Hunter 系列底盘 ROS 2 驱动封装</td></tr>
     <tr><td>硬件驱动</td><td><code>driver/ugv_sdk</code></td><td>AgileX / Weston Robot 通用底盘 C++ SDK 与 CAN 工具脚本</td></tr>
     <tr><td>硬件驱动</td><td><code>driver/piper_ros</code></td><td>AgileX Piper 机械臂 ROS 2 控制、描述、MoveIt 与仿真接口</td></tr>
+    <tr><td>硬件驱动</td><td><code>driver/venom_px4_bridge</code></td><td>PX4 集成项目根目录，内部包含 vendored <code>px4_msgs</code> 与自有桥接包</td></tr>
     <tr><td>感知算法</td><td><code>perception/rm_auto_aim</code></td><td>自瞄能力总包，包含检测、跟踪、解算与接口定义</td></tr>
     <tr><td>感知算法</td><td><code>perception/rm_auto_aim/armor_detector</code></td><td>装甲板检测模块</td></tr>
     <tr><td>感知算法</td><td><code>perception/rm_auto_aim/armor_tracker</code></td><td>目标跟踪模块</td></tr>
@@ -100,6 +101,7 @@ Venom VNV 是一个基于 ROS 2 Humble 构建的综合通用平台。
     <tr><td>定位建图</td><td><code>localization/relocalization/small_gicp_relocalization</code></td><td>基于点云配准的重定位模块</td></tr>
     <tr><td>系统集成</td><td><code>venom_bringup</code></td><td>系统启动入口，包含 <code>examples</code>、<code>infantry</code>、<code>sentry</code>、<code>scout_mini</code>、<code>hunter_se</code> 等配置</td></tr>
     <tr><td>系统集成</td><td><code>venom_robot_description</code></td><td>机器人模型、URDF、TF 发布与基础描述配置</td></tr>
+    <tr><td>仿真子项目</td><td><code>simulation/venom_nav_simulation</code></td><td>独立导航仿真工作区，用于 MID360、LIO 与 Nav2 联调</td></tr>
   </tbody>
 </table>
 

@@ -15,6 +15,7 @@ layout: default
 - [Hunter 底盘驱动]({{ '/hunter_ros2' | relative_url }})
 - [UGV SDK]({{ '/ugv_sdk' | relative_url }})
 - [Piper 机械臂驱动]({{ '/piper_ros' | relative_url }})
+- [PX4 Bridge]({{ '/venom_px4_bridge' | relative_url }})
 - [串口通信驱动]({{ '/venom_serial_driver' | relative_url }})
 
 ## 当前覆盖的驱动子项目
@@ -27,6 +28,7 @@ layout: default
 | 底盘 | `hunter_ros2` | [Hunter 底盘驱动]({{ '/hunter_ros2' | relative_url }}) | Hunter 系列底盘 ROS 2 封装 |
 | 底盘 | `ugv_sdk` | [UGV SDK]({{ '/ugv_sdk' | relative_url }}) | 底层 C++ SDK、CAN 抽象与工具脚本 |
 | 机械臂 | `piper_ros` | [Piper 机械臂驱动]({{ '/piper_ros' | relative_url }}) | 机械臂控制、URDF、MoveIt 与仿真 |
+| 飞控桥接 | `venom_px4_bridge` | [PX4 Bridge]({{ '/venom_px4_bridge' | relative_url }}) | PX4 ROS 2 消息、DDS 探测与桥接状态输出 |
 | 串口 | `venom_serial_driver` | [串口通信驱动]({{ '/venom_serial_driver' | relative_url }}) | 上下位机通信 |
 
 ## 统一阅读视角

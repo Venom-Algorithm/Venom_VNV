@@ -19,10 +19,31 @@ Venom VNV can be understood as four large layers:
 
 | Layer | Responsibility |
 | --- | --- |
-| Perception | Camera, LiDAR, detector, tracker, solver, and related pipelines |
-| Localization | LIO, odometry, relocalization, and map-alignment logic |
+| Perception | `perception/rm_auto_aim` and the camera-facing detection / tracking / solving pipeline |
+| Localization | `localization/lio/*`, `localization/relocalization/*`, and map-alignment logic |
 | Decision | Bringup composition, task logic, and robot-level mode switching |
-| Actuation | Chassis, arm, serial controller, and low-level execution |
+| Actuation | Chassis, arm, serial controller, PX4 bridge, and low-level execution |
+
+## Directory Mapping
+
+| Layer | Main Directories | Description |
+| --- | --- | --- |
+| Perception | `driver/ros2_hik_camera` + `perception/rm_auto_aim` | Image input, detector, tracker, and solver |
+| Localization | `driver/livox_ros_driver2` + `localization/lio` + `localization/relocalization` | LiDAR input, LIO, odometry, and relocalization |
+| Decision | `venom_bringup` | Launch composition, mode switching, and task control |
+| Actuation | `driver/scout_ros2`, `driver/hunter_ros2`, `driver/piper_ros`, `driver/venom_serial_driver`, `driver/venom_px4_bridge` | Robot-facing control and bridge interfaces |
+
+## Simulation Side Project
+
+The repository now also carries a standalone simulation workspace:
+
+- `simulation/venom_nav_simulation`
+
+It is used for:
+
+- `MID360 + Gazebo + LIO + Nav2` integration testing
+- regression-oriented workflow validation
+- validating localization and navigation pipelines before touching hardware
 
 ## Why This Structure Matters
 

@@ -21,11 +21,17 @@ layout: default
 
 | 启动文件 | 功能 |
 | --- | --- |
-| `autoaim_test_bringup.launch.py` | 自瞄测试（相机 + 自瞄 + 串口） |
-| `autoaim_nav_bringup.launch.py` | 导航 + 自瞄（完整模式） |
-| `mapping_bringup.launch.py` | 建图与定位链路联调 |
+| `camera.launch.py` | 单独验证相机链路 |
+| `mid360_rviz.launch.py` | Mid360 驱动与 RViz 可视化验证 |
+| `mid360_point_lio.launch.py` | Mid360 + Point-LIO 联调 |
+| `d435i_test.launch.py` | RealSense D435i 验证 |
+| `infantry_auto_aim.launch.py` | 步兵自瞄链路（相机 + 自瞄 + 串口） |
+| `scout_mini_mapping.launch.py` | Scout Mini 建图与导航链路联调 |
+| `sentry_mapping.launch.py` | 哨兵建图与导航链路联调 |
 | `relocalization_bringup.launch.py` | 重定位模式 |
 | `health_aware_navigation.launch.py` | 带任务层状态感知的导航模式 |
+| `px4_agent_probe.launch.py` | PX4 DDS Agent 探测 |
+| `robot_bringup.launch.py` | 顶层整机入口 |
 
 ## 参数与配置入口
 
@@ -78,11 +84,11 @@ layout: default
 日常使用尽量从 `venom_bringup` 进入，而不是直接逐个启动底层模块：
 
 ```bash
-# 自瞄测试
-ros2 launch venom_bringup autoaim_test_bringup.launch.py
+# Mid360 + Point-LIO 联调
+ros2 launch venom_bringup mid360_point_lio.launch.py
 
-# 完整模式
-ros2 launch venom_bringup autoaim_nav_bringup.launch.py
+# 步兵自瞄链路
+ros2 launch venom_bringup infantry_auto_aim.launch.py
 ```
 
 如果是整机入口，更建议使用：
