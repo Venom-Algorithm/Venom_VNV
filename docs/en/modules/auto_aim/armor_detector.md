@@ -2,7 +2,7 @@
 title: Armor Detection
 permalink: /en/armor_detector
 desc: armor_detector — Detect armor targets and estimate their 3D position.
-breadcrumb: Auto Aim
+breadcrumb: Perception
 layout: default
 ---
 

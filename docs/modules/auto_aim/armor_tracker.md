@@ -2,7 +2,7 @@
 title: 目标跟踪
 permalink: /armor_tracker
 desc: armor_tracker — EKF 多目标跟踪，运动预测与补偿。
-breadcrumb: 自瞄算法
+breadcrumb: 感知层
 layout: default
 ---
 
@@ -91,6 +91,7 @@ ros2 run armor_tracker armor_tracker_node
 
 ## 相关页面
 
+- [感知层]({{ '/perception_overview' | relative_url }})
 - [自瞄算法总览]({{ '/rm_auto_aim' | relative_url }})
 - [装甲板检测]({{ '/armor_detector' | relative_url }})
 - [话题参考]({{ '/topics' | relative_url }})

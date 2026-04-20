@@ -2,7 +2,7 @@
 title: 重定位
 permalink: /small_gicp_relocalization
 desc: small_gicp_relocalization — 基于点云配准的全局重定位。
-breadcrumb: 定位建图
+breadcrumb: 定位层
 layout: default
 ---
 

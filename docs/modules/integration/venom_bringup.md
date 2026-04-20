@@ -2,13 +2,13 @@
 title: 系统启动
 permalink: /venom_bringup
 desc: venom_bringup — 系统启动配置与任务控制框架。
-breadcrumb: 系统集成
+breadcrumb: 系统层
 layout: default
 ---
 
 ## 模块定位
 
-`venom_bringup` 是整仓库的系统集成入口，负责：
+`venom_bringup` 是整仓库的系统层入口，负责：
 
 - 组织多模块联合启动
 - 管理不同运行模式的 launch 组合

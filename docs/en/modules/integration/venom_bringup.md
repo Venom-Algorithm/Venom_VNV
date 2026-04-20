@@ -2,13 +2,13 @@
 title: System Bringup
 permalink: /en/venom_bringup
 desc: venom_bringup — System launch composition and task-control framework.
-breadcrumb: System Integration
+breadcrumb: System
 layout: default
 ---
 
 ## Module Role
 
-`venom_bringup` is the repository-level integration entry. It is responsible for:
+`venom_bringup` is the repository-level system-layer entry. It is responsible for:
 
 - launch composition
 - mode selection

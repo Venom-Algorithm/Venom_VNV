@@ -2,7 +2,7 @@
 title: 自瞄算法总览
 permalink: /rm_auto_aim
 desc: rm_auto_aim — 装甲板检测、目标跟踪、弹道解算与统一控制输出。
-breadcrumb: 自瞄算法
+breadcrumb: 感知层
 layout: default
 ---
 
@@ -123,8 +123,10 @@ ros2 launch venom_bringup infantry_auto_aim.launch.py
 
 ## 相关页面
 
+- [感知层]({{ '/perception_overview' | relative_url }})
 - [装甲板检测]({{ '/armor_detector' | relative_url }})
 - [目标跟踪]({{ '/armor_tracker' | relative_url }})
+- [YOLO Detector]({{ '/yolo_detector' | relative_url }})
 - [串口通信驱动]({{ '/venom_serial_driver' | relative_url }})
 - [话题参考]({{ '/topics' | relative_url }})
 

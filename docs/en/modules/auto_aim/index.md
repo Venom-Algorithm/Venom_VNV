@@ -2,7 +2,7 @@
 title: Auto Aim Overview
 permalink: /en/rm_auto_aim
 desc: rm_auto_aim — Armor detection, tracking, ballistics solving, and unified control output.
-breadcrumb: Auto Aim
+breadcrumb: Perception
 layout: default
 ---
 
@@ -25,3 +25,8 @@ Camera -> detector -> tracker -> solver -> robot output
 - consistent input topics from the camera driver
 - stable detector and tracker outputs
 - unified upper-layer output conventions
+
+## Related Pages
+
+- [Perception]({{ '/en/perception_overview' | relative_url }})
+- [YOLO Detector]({{ '/en/yolo_detector' | relative_url }})

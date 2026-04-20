@@ -2,11 +2,11 @@
 title: LIO
 permalink: /en/lio_overview
 desc: Overall constraints, interface conventions, and algorithm entry points for LiDAR-inertial odometry.
-breadcrumb: Modules & Interfaces
+breadcrumb: Localization
 layout: default
 ---
 
-## Scope
+## Scope Inside The Localization Layer
 
 This section covers the LiDAR-inertial odometry modules currently used in the repository:
 
@@ -23,5 +23,6 @@ The repository aims to keep the following stable across LIO implementations:
 
 ## Related Pages
 
+- [Localization]({{ '/en/localization_overview' | relative_url }})
 - [Topic Reference]({{ '/en/topics' | relative_url }})
 - [TF Tree]({{ '/en/tf_tree' | relative_url }})

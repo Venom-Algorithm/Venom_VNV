@@ -2,7 +2,7 @@
 title: Robot Description
 permalink: /en/venom_robot_description
 desc: venom_robot_description — Robot model, URDF, and TF description package.
-breadcrumb: System Integration
+breadcrumb: System
 layout: default
 ---
 

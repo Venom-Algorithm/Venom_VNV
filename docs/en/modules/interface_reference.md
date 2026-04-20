@@ -17,12 +17,22 @@ This section is meant to answer two questions:
 
 - [Architecture]({{ '/en/architecture' | relative_url }})
 - [Drivers]({{ '/en/driver_overview' | relative_url }})
-- [LIO]({{ '/en/lio_overview' | relative_url }})
+- [Perception]({{ '/en/perception_overview' | relative_url }})
 - [Localization]({{ '/en/localization_overview' | relative_url }})
-- [Auto Aim]({{ '/en/rm_auto_aim' | relative_url }})
-- [System Integration]({{ '/en/integration_overview' | relative_url }})
+- [Planning]({{ '/en/planning_overview' | relative_url }})
+- [System]({{ '/en/integration_overview' | relative_url }})
+- [Simulation]({{ '/en/simulation_overview' | relative_url }})
 - [Topic Reference]({{ '/en/topics' | relative_url }})
 - [TF Tree]({{ '/en/tf_tree' | relative_url }})
+
+## Recommended Layering
+
+1. `driver/`: hardware-facing integration and bridges
+2. `perception/`: detection, recognition, and tracking
+3. `localization/`: LIO, odometry, and relocalization
+4. `planning/`: trajectory planners and obstacle-avoidance algorithms
+5. `system/`: bringup, robot description, and task orchestration
+6. `simulation/`: standalone simulation workspaces and baselines
 
 ## Core Principle
 

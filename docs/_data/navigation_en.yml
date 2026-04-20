@@ -52,34 +52,44 @@
           url: /en/venom_px4_bridge
         - title: Serial Driver
           url: /en/venom_serial_driver
-    - title: LIO
-      url: /en/lio_overview
+    - title: Perception
+      url: /en/perception_overview
       children:
-        - title: Point-LIO
-          url: /en/point_lio
-        - title: Fast-LIO
-          url: /en/fast_lio
-    - title: Localization
-      url: /en/localization_overview
-      children:
-        - title: rf2o Laser Odometry
-          url: /en/rf2o_laser_odometry
-        - title: Relocalization
-          url: /en/small_gicp_relocalization
-    - title: Auto Aim
-      url: /en/rm_auto_aim
-      children:
+        - title: Auto Aim Overview
+          url: /en/rm_auto_aim
         - title: Armor Detection
           url: /en/armor_detector
         - title: Target Tracking
           url: /en/armor_tracker
-    - title: System Integration
+        - title: YOLO Detector
+          url: /en/yolo_detector
+    - title: Localization
+      url: /en/localization_overview
+      children:
+        - title: LIO Overview
+          url: /en/lio_overview
+        - title: Point-LIO
+          url: /en/point_lio
+        - title: Fast-LIO
+          url: /en/fast_lio
+        - title: rf2o Laser Odometry
+          url: /en/rf2o_laser_odometry
+        - title: Relocalization
+          url: /en/small_gicp_relocalization
+    - title: Planning
+      url: /en/planning_overview
+    - title: System
       url: /en/integration_overview
       children:
         - title: System Bringup
           url: /en/venom_bringup
         - title: Robot Description
           url: /en/venom_robot_description
+    - title: Simulation
+      url: /en/simulation_overview
+      children:
+        - title: Navigation Simulation Workspace
+          url: /en/venom_nav_simulation
     - title: Interface Standards
       url: /en/topics
       children:

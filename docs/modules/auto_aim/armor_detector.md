@@ -2,7 +2,7 @@
 title: 装甲板检测
 permalink: /armor_detector
 desc: armor_detector — 基于深度学习识别装甲板并解算 3D 位置。
-breadcrumb: 自瞄算法
+breadcrumb: 感知层
 layout: default
 ---
 
@@ -102,6 +102,7 @@ ros2 launch armor_detector armor_detector.launch.py
 
 ## 相关页面
 
+- [感知层]({{ '/perception_overview' | relative_url }})
 - [自瞄算法总览]({{ '/rm_auto_aim' | relative_url }})
 - [目标跟踪]({{ '/armor_tracker' | relative_url }})
 - [话题参考]({{ '/topics' | relative_url }})
