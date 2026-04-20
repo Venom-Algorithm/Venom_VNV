@@ -2,7 +2,7 @@
 title: rf2o 激光里程计
 permalink: /rf2o_laser_odometry
 desc: rf2o_laser_odometry — 基于距离流方法的 2D 激光扫描里程计。
-breadcrumb: 定位建图
+breadcrumb: 定位层
 layout: default
 ---
 

@@ -93,5 +93,5 @@ ros2 launch venom_bringup d435i_test.launch.py
 
 ## 进一步阅读
 
-- 启动入口设计：参考 [系统集成]({{ '/integration_overview' | relative_url }})
+- 启动入口设计：参考 [系统层]({{ '/integration_overview' | relative_url }})
 - 不同模式说明：参考 [运行模式]({{ '/run_modes' | relative_url }})

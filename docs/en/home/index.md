@@ -1,7 +1,7 @@
 ---
 title: Venom VNV
 permalink: /en/
-desc: A general-purpose robotics platform for multi-vehicle systems, navigation, manipulation, auto aim, and system integration.
+desc: A general-purpose robotics platform for multi-vehicle systems, navigation, manipulation, auto aim, and multi-module coordination.
 breadcrumb: Home
 layout: default
 ---
@@ -19,13 +19,14 @@ The project aims to provide a reusable system base for:
 - UAV platforms
 - USV platforms
 
-It reduces migration cost between different robot forms by keeping the driver layer, localization layer, perception layer, task layer, and interface conventions aligned.
+It reduces migration cost between different robot forms by keeping the driver, perception, localization, planning, system, and simulation layers aligned under stable interface conventions.
 
 The repository focuses on reusable engineering capabilities such as:
 
 - Sensors, serial links, chassis platforms, and robot arm integration
+- Detection, tracking, targeting, and general object-detection pipelines
 - LIO, odometry, and relocalization
-- Detection, tracking, and targeting pipelines
+- planning-oriented modules for future robot behavior stacks
 - Shared startup conventions across multiple robot types
 
 ## Quick Start
@@ -91,6 +92,7 @@ The repository includes both built-in packages and external submodules. For a qu
     <tr><td>Drivers</td><td><code>driver/piper_ros</code></td><td>Piper arm ROS 2 control, description, MoveIt, and simulation packages</td></tr>
     <tr><td>Drivers</td><td><code>driver/venom_px4_bridge</code></td><td>PX4 integration project root containing vendored <code>px4_msgs</code> and the bridge package</td></tr>
     <tr><td>Perception</td><td><code>perception/rm_auto_aim</code></td><td>Auto aim stack including detection, tracking, solving, and interface definitions</td></tr>
+    <tr><td>Perception</td><td><code>perception/yolo_detector</code></td><td>General YOLO-based 2D detector with custom message definitions</td></tr>
     <tr><td>Perception</td><td><code>perception/rm_auto_aim/armor_detector</code></td><td>Armor detection module</td></tr>
     <tr><td>Perception</td><td><code>perception/rm_auto_aim/armor_tracker</code></td><td>Target tracking module</td></tr>
     <tr><td>Perception</td><td><code>perception/rm_auto_aim/auto_aim_solver</code></td><td>Ballistics and target solving module</td></tr>
@@ -99,8 +101,9 @@ The repository includes both built-in packages and external submodules. For a qu
     <tr><td>Localization</td><td><code>localization/lio/Fast-LIO</code></td><td>ROS 2 version of FAST-LIO</td></tr>
     <tr><td>Localization</td><td><code>localization/lio/rf2o_laser_odometry</code></td><td>2D laser odometry based on range flow</td></tr>
     <tr><td>Localization</td><td><code>localization/relocalization/small_gicp_relocalization</code></td><td>Point-cloud relocalization based on small_gicp</td></tr>
-    <tr><td>Integration</td><td><code>venom_bringup</code></td><td>Main bringup entry with example, infantry, sentry, scout_mini, and hunter_se configs</td></tr>
-    <tr><td>Integration</td><td><code>venom_robot_description</code></td><td>Robot model, URDF, and TF description package</td></tr>
+    <tr><td>Planning</td><td><code>planning/</code> (reserved)</td><td>Reserved folder for planners such as <code>ego_planner</code> and related trajectory modules</td></tr>
+    <tr><td>System</td><td><code>venom_bringup</code></td><td>Main system entry for mode composition, task orchestration, and full-stack bringup</td></tr>
+    <tr><td>System</td><td><code>venom_robot_description</code></td><td>Robot model, URDF, and TF description package</td></tr>
     <tr><td>Simulation</td><td><code>simulation/venom_nav_simulation</code></td><td>Standalone navigation simulation workspace for MID360, LIO, and Nav2 validation</td></tr>
   </tbody>
 </table>
@@ -110,7 +113,7 @@ The repository includes both built-in packages and external submodules. For a qu
 | Group | Description |
 |------|------|
 | Deployment & Usage | Environment, LiDAR, CAN setup, boot-time config, and run modes |
-| Modules & Interfaces | Drivers, LIO, localization, auto aim, integration, and interface conventions |
+| Modules & Interfaces | Drivers, perception, localization, planning, system, simulation, and interface conventions |
 | Support & Community | FAQ, troubleshooting, migration notes, contact, and contribution guidance |
 
 ## Suggested Reading

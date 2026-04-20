@@ -2,7 +2,7 @@
 title: Point-LIO
 permalink: /point_lio
 desc: Point-LIO — MID360 参数与接口说明。
-breadcrumb: 定位建图
+breadcrumb: 定位层
 layout: default
 ---
 

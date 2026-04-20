@@ -1,7 +1,7 @@
 ---
-title: System Integration
+title: System Layer
 permalink: /en/integration_overview
-desc: Overview of startup orchestration, task control, and robot-description-related modules.
+desc: Overview of startup orchestration, robot description, task composition, and robot-level entry points.
 breadcrumb: Modules & Interfaces
 layout: default
 ---
@@ -11,7 +11,13 @@ layout: default
 - [System Bringup]({{ '/en/venom_bringup' | relative_url }})
 - [Robot Description]({{ '/en/venom_robot_description' | relative_url }})
 
-## Why This Layer Matters
+## Layer Role
 
 Single packages answer “how one module runs.”  
-The integration layer answers “how the whole robot runs together.”
+The system layer answers “how the whole robot runs together.”
+
+## Why This Is Not Planning
+
+- the system layer composes modules and modes
+- it does not own trajectory-generation algorithms
+- planners such as `ego_planner` should live under `planning/`

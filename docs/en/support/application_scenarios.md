@@ -24,7 +24,7 @@ The current engineering focus includes:
 - perception and target tracking
 - auto aim and targeting
 - manipulation and end-effectors
-- multi-platform system integration
+- multi-platform system coordination
 
 ## Vehicle Types
 
