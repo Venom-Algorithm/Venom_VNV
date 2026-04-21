@@ -19,14 +19,15 @@ Venom VNV 是一个基于 ROS 2 Humble 构建的综合通用平台。
 - 无人机
 - 无人船
 
-通过统一的驱动层、感知层、定位层、规划层、系统层、仿真层与接口规范，降低不同赛事和不同平台之间的迁移成本。
+通过统一的驱动层、感知层、定位层、规划层、任务层、系统层、仿真层与接口规范，降低不同赛事和不同平台之间的迁移成本。
 
 当前仓库并不只服务于单一比赛项目，而是希望沉淀一套可复用的基础工程能力，覆盖：
 
 - 激光雷达、相机、串口、底盘、机械臂等硬件接入
 - 自瞄检测、通用目标检测、跟踪、解算等感知链路
 - LIO、里程计、重定位等定位与地图能力
-- 轨迹规划与任务执行相关的规划能力
+- 轨迹规划、controller 与机械臂运动规划
+- 行为树、waypoint、任务监听与任务管理
 - 多车型、多任务形态下的统一启动与接口规范
 
 ## 快速开始
@@ -101,8 +102,9 @@ Venom VNV 是一个基于 ROS 2 Humble 构建的综合通用平台。
     <tr><td>定位层</td><td><code>localization/lio/Fast-LIO</code></td><td>FAST-LIO 的 ROS 2 版本实现</td></tr>
     <tr><td>定位层</td><td><code>localization/lio/rf2o_laser_odometry</code></td><td>面向 2D 激光雷达的里程计模块</td></tr>
     <tr><td>定位层</td><td><code>localization/relocalization/small_gicp_relocalization</code></td><td>基于点云配准的重定位模块</td></tr>
-    <tr><td>规划层</td><td><code>planning/</code>（预留）</td><td>规划算法目录预留，计划用于 <code>ego_planner</code> 一类的局部/全局规划模块</td></tr>
-    <tr><td>系统层</td><td><code>venom_bringup</code></td><td>系统启动入口，负责模式组织、任务编排与整机联调</td></tr>
+    <tr><td>规划层</td><td><code>planning/</code></td><td>导航 planner、controller 与 MoveIt 抓取规划一类模块的统一入口，已创建 <code>navigation/</code> 与 <code>manipulation/</code> 占位目录</td></tr>
+    <tr><td>任务层</td><td><code>mission/</code></td><td>waypoint、行为树、状态监听、任务下发与任务管理一类模块的统一入口，已创建 <code>navigation/</code> 与 <code>manipulation/</code> 占位目录</td></tr>
+    <tr><td>系统层</td><td><code>venom_bringup</code></td><td>系统启动入口，负责模式组织、整机装配与联调，不直接承载新任务包</td></tr>
     <tr><td>系统层</td><td><code>venom_robot_description</code></td><td>机器人模型、URDF、TF 发布与基础描述配置</td></tr>
     <tr><td>仿真层</td><td><code>simulation/venom_nav_simulation</code></td><td>独立导航仿真工作区，用于 MID360、LIO 与 Nav2 联调</td></tr>
   </tbody>
@@ -113,7 +115,7 @@ Venom VNV 是一个基于 ROS 2 Humble 构建的综合通用平台。
 | 内容 | 说明 |
 |------|------|
 | 部署与使用 | 面向环境准备、雷达配置、底盘部署、开机自启与运行模式 |
-| 模块与接口 | 面向驱动、感知、定位、规划、系统、仿真与统一接口规范 |
+| 模块与接口 | 面向驱动、感知、定位、规划、任务、系统、仿真与统一接口规范 |
 | 支持与社区 | 面向 FAQ、故障排查、迁移记录、联系方式与协作说明 |
 
 ## 阅读建议

@@ -78,6 +78,8 @@
           url: /en/small_gicp_relocalization
     - title: Planning
       url: /en/planning_overview
+    - title: Mission
+      url: /en/mission_overview
     - title: System
       url: /en/integration_overview
       children:

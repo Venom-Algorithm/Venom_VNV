@@ -40,7 +40,9 @@ The goal is to standardize the engineering pieces that keep repeating across pro
 - hardware and sensor integration
 - detection, tracking, auto-aim, and task perception
 - LIO, odometry, and relocalization
-- system bringup, orchestration, and interface conventions
+- path planners, controllers, and manipulation motion planning
+- waypoint, behavior-tree, monitor, and mission-management logic
+- system bringup and interface conventions
 - simulation and regression workflows
 
 ## Quick Links
@@ -51,15 +53,16 @@ The goal is to standardize the engineering pieces that keep repeating across pro
 - Development Notes: [Development Notes](https://venom-algorithm.github.io/Venom_VNV/en/development)
 - Chinese docs: [中文文档](https://venom-algorithm.github.io/Venom_VNV/)
 
-## Six-Layer Architecture
+## Seven-Layer Architecture
 
 | Layer | Main directories | Purpose |
 | --- | --- | --- |
 | Driver | `driver/` | Livox, Hikrobot camera, chassis, arm, serial, and PX4 bridge integrations |
 | Perception | `perception/` | auto-aim detection, tracking, and solving pipelines |
 | Localization | `localization/` | Point-LIO, Fast-LIO, rf2o, and small_gicp relocalization |
-| Planning | `planning/` (reserved) | reserved for planners such as `ego_planner` |
-| System | `venom_bringup`, `venom_robot_description` | bringup, mode composition, TF description, and orchestration |
+| Planning | `planning/` | navigation planners, controllers, and MoveIt-side motion planning |
+| Mission | `mission/` | `venom_waypoint`, BT, monitor, and mission-management packages |
+| System | `venom_bringup`, `venom_robot_description` | bringup, mode composition, TF description, and robot assembly |
 | Simulation | `simulation/venom_nav_simulation` | standalone simulation workspace for navigation and localization |
 
 ## Core Components
@@ -72,7 +75,9 @@ The goal is to standardize the engineering pieces that keep repeating across pro
 | Perception | `perception/rm_auto_aim` | detection, tracking, solving, and interface definitions |
 | Localization | `Point-LIO`, `Fast-LIO`, `rf2o_laser_odometry` | unified 3D / 2D odometry outputs |
 | Relocalization | `small_gicp_relocalization` | recover `map -> odom` from point-cloud registration |
-| System integration | `venom_bringup` | top-level bringup and task orchestration |
+| Planning | `planning/` | entry point for `venom_eagle_planner`, `venom_teb_controller`, and `venom_moveit_grasp`-style packages |
+| Mission | `mission/` | entry point for `venom_waypoint`, `venom_nav_bt`, `venom_global_monitor`, and `venom_mission_manager` |
+| System integration | `venom_bringup` | top-level bringup and robot assembly |
 | Robot description | `venom_robot_description` | URDF, robot model, and TF publishing |
 | Simulation | `venom_nav_simulation` | `MID360 + Gazebo + LIO + Nav2` validation workspace |
 
@@ -98,7 +103,13 @@ venom_vnv/
 │   │   └── rf2o_laser_odometry/
 │   └── relocalization/
 │       └── small_gicp_relocalization/
-├── venom_bringup/                   # system layer: bringup and orchestration
+├── planning/                        # planning layer
+│   ├── navigation/                  # navigation planners and controllers
+│   └── manipulation/                # manipulation motion planning
+├── mission/                         # mission layer
+│   ├── navigation/                  # waypoint, BT, and monitoring
+│   └── manipulation/                # manipulation-task flow
+├── venom_bringup/                   # system layer: bringup and robot assembly
 ├── venom_robot_description/         # system layer: robot description and TF
 ├── simulation/
 │   └── venom_nav_simulation/        # simulation layer
@@ -181,7 +192,7 @@ More commands:
 | [Environment Setup](https://venom-algorithm.github.io/Venom_VNV/en/environment) | Ubuntu, ROS, rosdep, VS Code, and development-machine basics |
 | [LiDAR Setup](https://venom-algorithm.github.io/Venom_VNV/en/lidar_setup) | MID360 networking, config files, and Livox-SDK2 |
 | [Launch & Use](https://venom-algorithm.github.io/Venom_VNV/en/launch_usage) | common build, rebuild, and launch commands |
-| [Modules & Interfaces](https://venom-algorithm.github.io/Venom_VNV/en/interface_reference) | entry point for drivers, perception, localization, system, and simulation |
+| [Modules & Interfaces](https://venom-algorithm.github.io/Venom_VNV/en/interface_reference) | entry point for drivers, perception, localization, planning, mission, system, and simulation |
 | [Topic Reference](https://venom-algorithm.github.io/Venom_VNV/en/topics) | unified ROS 2 topic and message conventions |
 | [TF Tree](https://venom-algorithm.github.io/Venom_VNV/en/tf_tree) | core frame and TF relationships |
 | [Development Notes](https://venom-algorithm.github.io/Venom_VNV/en/development) | development environment, Git, fork / PR workflow, and submodule rules |
