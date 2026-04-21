@@ -5,10 +5,14 @@
 {% endif %}
 {% assign lang_attr = 'zh-CN' %}
 {% assign search_placeholder = '搜索文档...  /' %}
+{% assign search_loading = '正在加载搜索索引...' %}
+{% assign search_no_results = '没有找到匹配结果' %}
+{% assign search_load_error = '搜索索引加载失败，请刷新后重试' %}
 {% assign toc_title = '本页目录' %}
 {% assign lang_button_label = 'EN' %}
 {% assign lang_button_aria = '切换到英文' %}
 {% assign home_url = '/' %}
+{% assign search_index_url = '/search.json' %}
 {% assign copy_button_text = '复制' %}
 {% assign copy_button_success = '已复制' %}
 {% assign copy_button_failure = '复制失败' %}
@@ -16,10 +20,14 @@
 {% if is_en %}
   {% assign lang_attr = 'en' %}
   {% assign search_placeholder = 'Search docs...  /' %}
+  {% assign search_loading = 'Loading search index...' %}
+  {% assign search_no_results = 'No matching results' %}
+  {% assign search_load_error = 'Failed to load search index. Please refresh and try again.' %}
   {% assign toc_title = 'On this page' %}
   {% assign lang_button_label = '中文' %}
   {% assign lang_button_aria = 'Switch to Chinese' %}
   {% assign home_url = '/en/' %}
+  {% assign search_index_url = '/en/search.json' %}
   {% assign copy_button_text = 'Copy' %}
   {% assign copy_button_success = 'Copied' %}
   {% assign copy_button_failure = 'Copy failed' %}
@@ -58,7 +66,18 @@
       </a>
     </div>
     <div class="header-right">
-      <input type="text" class="header-search" placeholder="{{ search_placeholder }}" id="searchInput">
+      <div class="header-search-wrap" id="headerSearch">
+        <input
+          type="text"
+          class="header-search"
+          placeholder="{{ search_placeholder }}"
+          id="searchInput"
+          autocomplete="off"
+          spellcheck="false"
+          aria-expanded="false"
+          aria-controls="searchResults">
+        <div class="search-results" id="searchResults" hidden></div>
+      </div>
       <a href="{{ switch_url | relative_url }}" class="lang-switch" aria-label="{{ lang_button_aria }}">{{ lang_button_label }}</a>
       <a href="https://github.com/Venom-Algorithm/Venom_VNV" target="_blank" class="header-link">GitHub ↗</a>
     </div>
@@ -116,6 +135,12 @@
       success: {{ copy_button_success | jsonify }},
       failure: {{ copy_button_failure | jsonify }},
       aria: {{ copy_button_aria | jsonify }}
+    };
+    const searchLabels = {
+      indexUrl: {{ search_index_url | relative_url | jsonify }},
+      loading: {{ search_loading | jsonify }},
+      noResults: {{ search_no_results | jsonify }},
+      loadError: {{ search_load_error | jsonify }}
     };
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
     function normalizePath(path) {
@@ -246,6 +271,231 @@
         }, { rootMargin: '-80px 0px -70% 0px' });
         headingEls.forEach(h => observer.observe(h.el));
       }
+    })();
+
+    // Header search
+    (function() {
+      const searchWrap = document.getElementById('headerSearch');
+      const searchInput = document.getElementById('searchInput');
+      const searchResults = document.getElementById('searchResults');
+      if (!searchWrap || !searchInput || !searchResults) return;
+
+      let searchIndex = [];
+      let searchIndexPromise = null;
+      let currentResults = [];
+      let activeResultIndex = -1;
+      let lastQuery = '';
+      let debounceTimer = null;
+
+      function escapeHtml(text) {
+        const node = document.createElement('div');
+        node.textContent = text || '';
+        return node.innerHTML;
+      }
+
+      function normalizeSearchText(text) {
+        return (text || '').toLowerCase().replace(/\s+/g, ' ').trim();
+      }
+
+      function tokenizeQuery(query) {
+        return normalizeSearchText(query).split(' ').filter(Boolean);
+      }
+
+      function openSearchResults() {
+        searchResults.hidden = false;
+        searchInput.setAttribute('aria-expanded', 'true');
+      }
+
+      function closeSearchResults() {
+        searchResults.hidden = true;
+        searchInput.setAttribute('aria-expanded', 'false');
+        searchResults.innerHTML = '';
+        currentResults = [];
+        activeResultIndex = -1;
+      }
+
+      function renderSearchState(message, stateClass = '') {
+        searchResults.innerHTML = `<div class="search-state ${stateClass}">${escapeHtml(message)}</div>`;
+        openSearchResults();
+      }
+
+      function loadSearchIndex() {
+        if (searchIndex.length) return Promise.resolve(searchIndex);
+        if (!searchIndexPromise) {
+          searchIndexPromise = fetch(searchLabels.indexUrl, { cache: 'force-cache' })
+            .then(response => {
+              if (!response.ok) throw new Error(`HTTP ${response.status}`);
+              return response.json();
+            })
+            .then(data => {
+              searchIndex = Array.isArray(data) ? data : [];
+              return searchIndex;
+            })
+            .catch(error => {
+              searchIndexPromise = null;
+              throw error;
+            });
+        }
+        return searchIndexPromise;
+      }
+
+      function scoreSearchEntry(entry, terms) {
+        const title = normalizeSearchText(entry.title);
+        const breadcrumb = normalizeSearchText(entry.breadcrumb);
+        const desc = normalizeSearchText(entry.desc);
+        const content = normalizeSearchText(entry.content);
+        const combined = `${title} ${breadcrumb} ${desc} ${content}`;
+        let score = 0;
+        for (const term of terms) {
+          if (!combined.includes(term)) return -1;
+          if (title === term) score += 260;
+          if (title.startsWith(term)) score += 140;
+          if (title.includes(term)) score += 90;
+          if (breadcrumb.includes(term)) score += 28;
+          if (desc.includes(term)) score += 20;
+          if (content.includes(term)) score += 6;
+        }
+        return score - Math.min(content.length / 400, 10);
+      }
+
+      function buildSearchSnippet(entry, terms) {
+        const source = `${entry.desc || ''} ${entry.content || ''}`.replace(/\s+/g, ' ').trim();
+        if (!source) return '';
+        const lowered = source.toLowerCase();
+        let firstMatchIndex = source.length;
+        terms.forEach(term => {
+          const idx = lowered.indexOf(term);
+          if (idx !== -1 && idx < firstMatchIndex) firstMatchIndex = idx;
+        });
+        if (firstMatchIndex === source.length) firstMatchIndex = 0;
+        const start = Math.max(0, firstMatchIndex - 42);
+        const end = Math.min(source.length, firstMatchIndex + 110);
+        let snippet = source.slice(start, end).trim();
+        if (start > 0) snippet = `…${snippet}`;
+        if (end < source.length) snippet = `${snippet}…`;
+        return snippet;
+      }
+
+      function syncActiveSearchResult() {
+        const items = searchResults.querySelectorAll('.search-result-item');
+        items.forEach((item, index) => item.classList.toggle('active', index === activeResultIndex));
+        const activeItem = items[activeResultIndex];
+        activeItem?.scrollIntoView({ block: 'nearest' });
+      }
+
+      function renderSearchResults(results, query) {
+        const terms = tokenizeQuery(query);
+        currentResults = results;
+        if (!results.length) {
+          renderSearchState(searchLabels.noResults);
+          return;
+        }
+        activeResultIndex = 0;
+        searchResults.innerHTML = results.map((entry, index) => {
+          const meta = entry.breadcrumb || '';
+          const snippet = buildSearchSnippet(entry, terms);
+          return `
+            <a href="${entry.url}" class="search-result-item${index === 0 ? ' active' : ''}" data-search-index="${index}">
+              <span class="search-result-title">${escapeHtml(entry.title)}</span>
+              ${meta ? `<span class="search-result-meta">${escapeHtml(meta)}</span>` : ''}
+              ${snippet ? `<span class="search-result-snippet">${escapeHtml(snippet)}</span>` : ''}
+            </a>
+          `;
+        }).join('');
+        openSearchResults();
+      }
+
+      async function runSearch(query) {
+        const trimmedQuery = query.trim();
+        lastQuery = trimmedQuery;
+        const terms = tokenizeQuery(trimmedQuery);
+        if (!terms.length) {
+          closeSearchResults();
+          return;
+        }
+
+        if (!searchIndex.length) {
+          renderSearchState(searchLabels.loading);
+        }
+
+        try {
+          const index = await loadSearchIndex();
+          if (lastQuery !== trimmedQuery) return;
+          const results = index
+            .map(entry => ({ entry, score: scoreSearchEntry(entry, terms) }))
+            .filter(item => item.score >= 0)
+            .sort((a, b) => b.score - a.score || a.entry.title.length - b.entry.title.length)
+            .slice(0, 8)
+            .map(item => item.entry);
+          renderSearchResults(results, trimmedQuery);
+        } catch (_) {
+          if (lastQuery !== trimmedQuery) return;
+          renderSearchState(searchLabels.loadError, 'search-state-error');
+        }
+      }
+
+      searchInput.addEventListener('focus', () => {
+        if (searchInput.value.trim()) {
+          runSearch(searchInput.value);
+        } else {
+          loadSearchIndex().catch(() => {});
+        }
+      });
+
+      searchInput.addEventListener('input', () => {
+        clearTimeout(debounceTimer);
+        if (!searchInput.value.trim()) {
+          closeSearchResults();
+          return;
+        }
+        debounceTimer = window.setTimeout(() => runSearch(searchInput.value), 90);
+      });
+
+      searchInput.addEventListener('keydown', event => {
+        const items = searchResults.querySelectorAll('.search-result-item');
+        if (event.key === 'Escape') {
+          closeSearchResults();
+          searchInput.blur();
+          return;
+        }
+        if (!items.length) return;
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          activeResultIndex = (activeResultIndex + 1) % items.length;
+          syncActiveSearchResult();
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          activeResultIndex = (activeResultIndex - 1 + items.length) % items.length;
+          syncActiveSearchResult();
+        } else if (event.key === 'Enter') {
+          const target = items[activeResultIndex] || items[0];
+          if (target) {
+            event.preventDefault();
+            window.location.assign(target.href);
+          }
+        }
+      });
+
+      searchResults.addEventListener('mousemove', event => {
+        const item = event.target.closest('.search-result-item');
+        if (!item) return;
+        const index = Number(item.dataset.searchIndex);
+        if (Number.isNaN(index) || index === activeResultIndex) return;
+        activeResultIndex = index;
+        syncActiveSearchResult();
+      });
+
+      document.addEventListener('click', event => {
+        if (!searchWrap.contains(event.target)) {
+          closeSearchResults();
+        }
+      });
+
+      searchResults.addEventListener('click', event => {
+        if (event.target.closest('.search-result-item')) {
+          closeSearchResults();
+        }
+      });
     })();
   </script>
 </body>
