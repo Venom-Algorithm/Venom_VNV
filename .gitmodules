@@ -43,3 +43,6 @@
 [submodule "simulation/venom_nav_simulation"]
 	path = simulation/venom_nav_simulation
 	url = git@github.com:Venom-Algorithm/venom_nav_simulation.git
+[submodule "perception/yolo_detector"]
+	path = perception/yolo_detector
+	url = git@github.com:Venom-Algorithm/yolo_detector.git
