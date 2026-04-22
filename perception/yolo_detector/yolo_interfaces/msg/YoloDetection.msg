@@ -1,2 +1,0 @@
-YoloHypothesis hypothesis
-YoloBox bbox
