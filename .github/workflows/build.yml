@@ -71,7 +71,7 @@ jobs:
             .ci_build/build
             .ci_build/install
             .ci_build/log
-          key: colcon-${{ runner.os }}-${{ github.ref_name }}-${{ hashFiles('**/package.xml', '**/CMakeLists.txt', 'docker/Dockerfile.sim') }}
+          key: colcon-${{ runner.os }}-${{ github.ref_name }}-${{ hashFiles('**/package.xml') }}
           restore-keys: |
             colcon-${{ runner.os }}-${{ github.ref_name }}-
             colcon-${{ runner.os }}-master-
