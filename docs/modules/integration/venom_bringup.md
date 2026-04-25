@@ -33,6 +33,7 @@ layout: default
 | `relocalization_bringup.launch.py` | 重定位模式 |
 | `health_aware_navigation.launch.py` | 带任务层状态感知的导航模式 |
 | `px4_agent_probe.launch.py` | PX4 DDS Agent 探测 |
+| `px4_vps_bridge.launch.py` | PX4 外部位姿 / VPS 里程计桥接 |
 | `robot_bringup.launch.py` | 顶层整机入口 |
 
 ## 参数与配置入口

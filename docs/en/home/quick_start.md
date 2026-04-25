@@ -43,6 +43,23 @@ mkdir -p ~/venom_ws/src
 git clone --recurse-submodules https://github.com/Venom-Algorithm/Venom_VNV ~/venom_ws/src/venom_vnv
 ```
 
+If you only need one workflow, clone the main repository first and then initialize a profile-specific submodule set:
+
+```bash
+cd ~
+mkdir -p ~/venom_ws/src
+git clone https://github.com/Venom-Algorithm/Venom_VNV ~/venom_ws/src/venom_vnv
+cd ~/venom_ws/src/venom_vnv
+make submodules-ugv       # real UGV: chassis, LiDAR, localization, perception
+make submodules-sim       # pure simulation: simulation workspace and planning
+make submodules-ugv-sim   # UGV simulation: simulation, localization, planning, YOLO
+make submodules-auto-aim  # auto-aim development: perception, camera, serial
+make submodules-uav       # UAV: PX4 bridge and Ego Planner
+make submodules-all       # initialize all submodules
+```
+
+For first-time full deployment, `--recurse-submodules` is still the simplest path. For single-area development, the profile targets save time and disk space.
+
 If you want to remove an old workspace and start clean, move back to your home directory first:
 
 Note: if your current shell is still inside `~/venom_ws` or one of its subdirectories, switch back to `~` before removing it. Otherwise the shell may stay attached to an invalid working directory and `git` can fail with `Unable to read current working directory`.
@@ -80,6 +97,15 @@ cd ~/venom_ws/src/venom_vnv
 git pull
 git submodule sync --recursive
 git submodule update --init --recursive
+```
+
+If the workspace was initialized with a profile, rerun the matching target after syncing:
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+git pull
+git submodule sync --recursive
+make submodules-uav
 ```
 
 If you also need the recommended Git remote strategy for development machines, see [Development Notes]({{ '/en/development' | relative_url }}).

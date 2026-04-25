@@ -31,6 +31,38 @@ Keeping them separate helps:
 ## Current Mapping
 
 - `simulation/venom_nav_simulation`
+- `docker/Dockerfile.sim`
+- `docker-compose.yml`
+- `scripts/ci-colcon-build.sh`
+
+## Docker Simulation Environment
+
+The root repository now includes a Docker sim environment for consistent simulation dependencies and local CI reproduction:
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+make build
+make up
+make shell
+make rosdep
+make colcon
+```
+
+To reproduce the GitHub Actions headless build locally:
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+make ci-build
+```
+
+To clean containers and build caches:
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+make clean
+```
+
+The CI build temporarily writes `COLCON_IGNORE` files for hardware drivers, LIO submodules, and Gazebo Classic packages, and validates the subset that can build reliably inside the container.
 
 ## Related Pages
 

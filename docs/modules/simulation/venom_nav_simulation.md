@@ -57,6 +57,43 @@ ros2 launch rm_nav_bringup bringup_sim.launch.py \
   nav_rviz:=True
 ```
 
+## Docker 方式
+
+如果只是想使用主仓库提供的统一 sim 环境，可以在主仓库根目录执行：
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+make build
+make up
+make shell
+```
+
+进入容器后：
+
+```bash
+cd /ros_ws
+source /opt/ros/humble/setup.bash
+rosdep install -r --from-paths src --ignore-src --rosdistro humble -y
+colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release -DROS_EDITION=ROS2 -DHUMBLE_ROS=humble
+```
+
+也可以直接使用封装命令：
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+make rosdep
+make colcon
+```
+
+本地复现 CI 构建：
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+make ci-build
+```
+
+当前 Docker 镜像基于 `ros:humble-ros-base`，包含 Ignition Fortress、Nav2、RViz2、PCL、OpenCV、YOLO 运行依赖等。CI 会跳过硬件驱动和 Gazebo Classic 相关包。
+
 ## 为什么不直接放进主工作区
 
 这是一个独立的仿真工作区，不建议直接并进主部署工作区，原因是：

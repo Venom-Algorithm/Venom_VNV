@@ -31,6 +31,38 @@ layout: default
 ## 当前目录映射
 
 - `simulation/venom_nav_simulation`
+- `docker/Dockerfile.sim`
+- `docker-compose.yml`
+- `scripts/ci-colcon-build.sh`
+
+## Docker 仿真环境
+
+主仓库新增了 Docker sim 环境，用于统一仿真依赖和本地复现 CI 构建：
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+make build
+make up
+make shell
+make rosdep
+make colcon
+```
+
+需要模拟 GitHub Actions 的无头构建时：
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+make ci-build
+```
+
+清理容器和构建缓存：
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+make clean
+```
+
+当前 CI 会临时给硬件驱动、LIO 子模块和 Gazebo Classic 相关包写入 `COLCON_IGNORE`，只验证容器中可稳定构建的部分。
 
 ## 推荐使用方式
 
@@ -39,6 +71,7 @@ layout: default
 - `MID360 + Gazebo + LIO + Nav2`
 - 地图回归
 - 参数联调
+- Docker / CI 构建复现
 
 优先从仿真层进入，而不是把这些流程塞进 `venom_bringup` 主工作区。
 

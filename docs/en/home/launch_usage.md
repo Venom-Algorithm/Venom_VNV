@@ -81,11 +81,28 @@ source install/setup.bash
 ros2 launch venom_bringup d435i_test.launch.py
 ```
 
+### 4. PX4 VPS / external-pose bridge
+
+```bash
+cd ~/venom_ws
+source install/setup.bash
+ros2 launch venom_bringup px4_vps_bridge.launch.py
+```
+
+If the LIO or VPS output topic is not the default `/lio/vps/odometry`:
+
+```bash
+cd ~/venom_ws
+source install/setup.bash
+ros2 launch venom_bringup px4_vps_bridge.launch.py input_odom_topic:=/lio/odom
+```
+
 ## Suggested Order
 
 1. Validate Mid360 in RViz
 2. Bring up Mid360 + Point-LIO
 3. If you use a RealSense camera, validate D435i / RealSense next
+4. If external localization is fed into PX4, run the PX4 VPS / external-pose bridge
 
 ## Further Reading
 

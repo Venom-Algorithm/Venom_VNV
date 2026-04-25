@@ -50,6 +50,43 @@ ros2 launch rm_nav_bringup bringup_sim.launch.py \
   nav_rviz:=True
 ```
 
+## Docker Path
+
+If you want to use the root-level unified sim environment:
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+make build
+make up
+make shell
+```
+
+Inside the container:
+
+```bash
+cd /ros_ws
+source /opt/ros/humble/setup.bash
+rosdep install -r --from-paths src --ignore-src --rosdistro humble -y
+colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release -DROS_EDITION=ROS2 -DHUMBLE_ROS=humble
+```
+
+Or use the wrapped commands:
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+make rosdep
+make colcon
+```
+
+To reproduce the CI build locally:
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+make ci-build
+```
+
+The current Docker image is based on `ros:humble-ros-base` and includes Ignition Fortress, Nav2, RViz2, PCL, OpenCV, and YOLO runtime dependencies. CI skips hardware drivers and Gazebo Classic packages.
+
 ## Why It Stays Separate
 
 This is not meant to be merged into the main deployment workspace:

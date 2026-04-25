@@ -43,6 +43,23 @@ mkdir -p ~/venom_ws/src
 git clone --recurse-submodules https://github.com/Venom-Algorithm/Venom_VNV ~/venom_ws/src/venom_vnv
 ```
 
+如果你只需要某一类功能，也可以先不递归拉取全部子模块，再按 profile 拉取：
+
+```bash
+cd ~
+mkdir -p ~/venom_ws/src
+git clone https://github.com/Venom-Algorithm/Venom_VNV ~/venom_ws/src/venom_vnv
+cd ~/venom_ws/src/venom_vnv
+make submodules-ugv       # 无人车真机：底盘、雷达、定位、感知
+make submodules-sim       # 纯仿真：仿真工作区与规划
+make submodules-ugv-sim   # 无人车仿真：仿真、定位、规划、YOLO
+make submodules-auto-aim  # 自瞄开发：感知、相机、串口
+make submodules-uav       # 无人机：PX4 桥接与 Ego Planner
+make submodules-all       # 全量拉取所有子模块
+```
+
+第一次部署整套系统时仍推荐使用 `--recurse-submodules` 全量拉取；开发单个方向时再用上面的按需拉取方式节省时间和磁盘。
+
 如果你之前有旧工作区，建议先清理后重新拉取：
 
 注意：如果你当前终端正好停留在 `~/venom_ws` 或它的子目录里，删除前请先切回家目录，否则删完后当前 shell 会处在一个失效路径中，后续 `git` 可能报 `Unable to read current working directory`。
@@ -82,6 +99,15 @@ cd ~/venom_ws/src/venom_vnv
 git pull
 git submodule sync --recursive
 git submodule update --init --recursive
+```
+
+如果你是按需拉取的工作区，更新后可以重新执行对应 profile，例如：
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+git pull
+git submodule sync --recursive
+make submodules-uav
 ```
 
 如果你需要配置开发机上的 Git 远端地址规则，请继续阅读 [开发说明]({{ '/development' | relative_url }}).
