@@ -83,6 +83,22 @@ source install/setup.bash
 ros2 launch venom_bringup d435i_test.launch.py
 ```
 
+### 4. PX4 VPS / 外部位姿桥接
+
+```bash
+cd ~/venom_ws
+source install/setup.bash
+ros2 launch venom_bringup px4_vps_bridge.launch.py
+```
+
+如果 LIO 或 VPS 输出话题不是默认的 `/lio/vps/odometry`：
+
+```bash
+cd ~/venom_ws
+source install/setup.bash
+ros2 launch venom_bringup px4_vps_bridge.launch.py input_odom_topic:=/lio/odom
+```
+
 ## 建议阅读顺序
 
 如果你只是第一次联调，建议按这个顺序来：
@@ -90,6 +106,7 @@ ros2 launch venom_bringup d435i_test.launch.py
 1. 先跑 Mid360 RViz 验证
 2. 再跑 Mid360 + Point-LIO
 3. 如果要接 RealSense，再跑 D435i / RealSense 验证
+4. 如果要把外部定位喂给 PX4，再跑 PX4 VPS / 外部位姿桥接
 
 ## 进一步阅读
 

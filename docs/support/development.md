@@ -238,6 +238,29 @@ git checkout -b feat/<short-topic>
 
 这个仓库包含多个子模块，所以需要特别注意。
 
+### 按需拉取子模块
+
+如果只开发某一类功能，不需要每次都递归拉取全部子模块。主仓库提供了 Makefile profile：
+
+| 命令 | 适用场景 |
+| --- | --- |
+| `make submodules-ugv` | 无人车真机：底盘、机械臂、雷达、相机、串口、定位、YOLO |
+| `make submodules-sim` | 纯仿真：`venom_nav_simulation` 与 `ego-planner-swarm` |
+| `make submodules-ugv-sim` | 无人车仿真：仿真、Point-LIO、Ego Planner、YOLO |
+| `make submodules-auto-aim` | 自瞄开发：`rm_auto_aim`、海康相机、串口 |
+| `make submodules-uav` | 无人机开发：PX4 bridge 与 Ego Planner |
+| `make submodules-all` | 全量拉取所有子模块 |
+
+示例：
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+git submodule sync --recursive
+make submodules-uav
+```
+
+`.gitmodules` 里的 URL 统一保留 HTTPS，保证任何机器都可以直接拉取。开发者本地如果需要推送，可以给主仓库或子模块配置 SSH `pushurl`。
+
 ### 如果你改的是主仓库内容
 
 例如：
@@ -288,6 +311,10 @@ git checkout -b feat/<short-topic>
 - `push` 使用 SSH，便于开发机直接推送
 - `.gitmodules` 中统一保留 HTTPS 地址，保证递归拉取时兼容性更好
 
+当前新增子模块也遵守这条规则，例如 `perception/yolo_detector`、`simulation/venom_nav_simulation` 和 `planning/navigation/ego-planner-swarm` 都在 `.gitmodules` 中使用 HTTPS。
+
+CI 和 Docker 构建脚本会临时写入 `COLCON_IGNORE` 来跳过硬件相关包或不适合当前平台的仿真包，`COLCON_IGNORE` 已被 `.gitignore` 忽略，不应提交进仓库。
+
 ## 一键统一主仓库与子模块远端
 
 在仓库根目录执行以下命令，可同时修改主仓库和所有子模块的 `origin` / `pushurl`：
@@ -336,6 +363,23 @@ fi
 ```
 
 ## 常用开发命令
+
+### Docker 仿真与 CI 环境
+
+当前仓库提供了基于 Docker 的 sim 环境，用于本地复现 CI 或做无头构建验证：
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+make build     # 构建 ghcr.io/venom-algorithm/venom_vnv/sim:latest
+make up        # 启动 venom_sim 容器
+make shell     # 进入容器
+make rosdep    # 容器内安装 ROS 依赖
+make colcon    # 容器内 colcon build
+make ci-build  # 本地模拟 GitHub Actions 的无头构建
+make clean     # 删除容器和 .ci_build
+```
+
+CI 构建会排除硬件驱动和 Gazebo Classic 相关包，重点验证主仓库中可在容器内稳定构建的部分。
 
 ### 首次编译
 

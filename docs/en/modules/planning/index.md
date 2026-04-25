@@ -31,14 +31,14 @@ Modules such as `ego_planner`, TEB, custom Nav2 controllers, and MoveIt grasp pl
 
 ## Current Status
 
-The main workspace now contains a committed `planning/` directory with placeholder `navigation/` and `manipulation/` subfolders.
+The main workspace now contains a committed `planning/` directory. `planning/navigation/` already contains the `ego-planner-swarm` submodule, while `planning/manipulation/` remains the entry point for arm-side motion planning.
 
 ## Current Layout Pattern
 
 ```text
 planning/
 ├── navigation/
-│   ├── venom_eagle_planner/
+│   ├── ego-planner-swarm/
 │   ├── venom_teb_controller/
 │   └── venom_nav_controller_xxx/
 └── manipulation/
@@ -55,6 +55,7 @@ Those concerns should stay separated.
 ## Related Pages
 
 - [Architecture]({{ '/en/architecture' | relative_url }})
+- [Ego Planner Swarm]({{ '/en/ego_planner_swarm' | relative_url }})
 - [Mission]({{ '/en/mission_overview' | relative_url }})
 - [System]({{ '/en/integration_overview' | relative_url }})
 - [Simulation]({{ '/en/simulation_overview' | relative_url }})

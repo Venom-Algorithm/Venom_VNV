@@ -26,6 +26,7 @@ layout: default
 - `sentry_mapping.launch.py`
 - `relocalization_bringup.launch.py`
 - `px4_agent_probe.launch.py`
+- `px4_vps_bridge.launch.py`
 - `robot_bringup.launch.py`
 
 ## Related Pages

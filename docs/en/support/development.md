@@ -226,6 +226,29 @@ The point is practical: when many people edit the repository at the same time, o
 
 This repository includes many submodules, so the workflow matters.
 
+### Profile-Based Submodule Checkout
+
+If you only work on one area, you do not need to initialize every submodule. The root Makefile provides profile targets:
+
+| Command | Use case |
+| --- | --- |
+| `make submodules-ugv` | real UGV: chassis, arm, LiDAR, camera, serial, localization, YOLO |
+| `make submodules-sim` | pure simulation: `venom_nav_simulation` and `ego-planner-swarm` |
+| `make submodules-ugv-sim` | UGV simulation: simulation, Point-LIO, Ego Planner, YOLO |
+| `make submodules-auto-aim` | auto-aim development: `rm_auto_aim`, Hikrobot camera, serial |
+| `make submodules-uav` | UAV development: PX4 bridge and Ego Planner |
+| `make submodules-all` | initialize all submodules |
+
+Example:
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+git submodule sync --recursive
+make submodules-uav
+```
+
+URLs in `.gitmodules` stay HTTPS so any machine can clone the repository. Developers can configure SSH `pushurl` locally when they need push access.
+
 ### If you only change the main repository
 
 Examples:
@@ -266,6 +289,10 @@ Current recommendation:
 - HTTPS for `fetch` / `pull`
 - SSH for `push`
 - HTTPS URLs inside `.gitmodules`
+
+New submodules follow the same rule, including `perception/yolo_detector`, `simulation/venom_nav_simulation`, and `planning/navigation/ego-planner-swarm`.
+
+The CI and Docker build scripts may write `COLCON_IGNORE` files temporarily to skip hardware-only packages or platform-specific simulation packages. `COLCON_IGNORE` is ignored by `.gitignore` and should not be committed.
 
 SSH key reference:
 
@@ -316,6 +343,23 @@ fi
 ```
 
 ## Common Commands
+
+### Docker Simulation and CI Environment
+
+The root repository now includes a Docker-based sim environment for local CI reproduction and headless build checks:
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+make build     # build ghcr.io/venom-algorithm/venom_vnv/sim:latest
+make up        # start the venom_sim container
+make shell     # enter the container
+make rosdep    # run rosdep inside the container
+make colcon    # run colcon build inside the container
+make ci-build  # run the same headless build flow used by GitHub Actions
+make clean     # remove the container and .ci_build
+```
+
+The CI build skips hardware drivers and Gazebo Classic packages, and focuses on the parts that can be built reliably inside the container.
 
 ### First build
 

@@ -20,6 +20,7 @@ layout: default
 - [感知层]({{ '/perception_overview' | relative_url }})
 - [定位层]({{ '/localization_overview' | relative_url }})
 - [规划层]({{ '/planning_overview' | relative_url }})
+- [Ego Planner Swarm]({{ '/ego_planner_swarm' | relative_url }})
 - [任务层]({{ '/mission_overview' | relative_url }})
 - [系统层]({{ '/integration_overview' | relative_url }})
 - [仿真层]({{ '/simulation_overview' | relative_url }})
@@ -42,7 +43,7 @@ layout: default
 1. `driver/`：硬件接入与桥接
 2. `perception/`：检测、识别、跟踪等感知算法
 3. `localization/`：LIO、里程计、重定位
-4. `planning/`：导航规划、controller、机械臂运动规划
+4. `planning/`：导航规划、controller、机械臂运动规划，当前已接入 `ego-planner-swarm`
 5. `mission/`：行为树、waypoint、监听器与任务调度
 6. `system/`：系统启动、机器人描述与整机装配
 7. `simulation/`：独立仿真工作区和仿真基线

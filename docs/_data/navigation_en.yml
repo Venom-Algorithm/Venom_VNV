@@ -78,6 +78,9 @@
           url: /en/small_gicp_relocalization
     - title: Planning
       url: /en/planning_overview
+      children:
+        - title: Ego Planner Swarm
+          url: /en/ego_planner_swarm
     - title: Mission
       url: /en/mission_overview
     - title: System

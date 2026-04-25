@@ -102,7 +102,8 @@ Venom VNV 是一个基于 ROS 2 Humble 构建的综合通用平台。
     <tr><td>定位层</td><td><code>localization/lio/Fast-LIO</code></td><td>FAST-LIO 的 ROS 2 版本实现</td></tr>
     <tr><td>定位层</td><td><code>localization/lio/rf2o_laser_odometry</code></td><td>面向 2D 激光雷达的里程计模块</td></tr>
     <tr><td>定位层</td><td><code>localization/relocalization/small_gicp_relocalization</code></td><td>基于点云配准的重定位模块</td></tr>
-    <tr><td>规划层</td><td><code>planning/</code></td><td>导航 planner、controller 与 MoveIt 抓取规划一类模块的统一入口，已创建 <code>navigation/</code> 与 <code>manipulation/</code> 占位目录</td></tr>
+    <tr><td>规划层</td><td><code>planning/navigation/ego-planner-swarm</code></td><td>无人机局部规划与集群规划子模块，跟踪上游 <code>ros2_version</code> 分支</td></tr>
+    <tr><td>规划层</td><td><code>planning/manipulation</code></td><td>机械臂运动规划一类模块的统一入口，目前保留占位</td></tr>
     <tr><td>任务层</td><td><code>mission/</code></td><td>waypoint、行为树、状态监听、任务下发与任务管理一类模块的统一入口，已创建 <code>navigation/</code> 与 <code>manipulation/</code> 占位目录</td></tr>
     <tr><td>系统层</td><td><code>venom_bringup</code></td><td>系统启动入口，负责模式组织、整机装配与联调，不直接承载新任务包</td></tr>
     <tr><td>系统层</td><td><code>venom_robot_description</code></td><td>机器人模型、URDF、TF 发布与基础描述配置</td></tr>

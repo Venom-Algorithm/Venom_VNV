@@ -23,7 +23,9 @@ The first slice currently includes:
 
 - `px4_agent_monitor`
 - `px4_status_adapter`
+- `px4_external_pose_bridge`
 - `px4_agent_probe.launch.py`
+- `px4_external_pose_bridge.launch.py`
 
 Current bridge outputs:
 
@@ -31,6 +33,7 @@ Current bridge outputs:
 - `/px4_bridge/state`
 - `/px4_bridge/odom`
 - `/px4_bridge/health`
+- `/fmu/in/vehicle_visual_odometry`
 
 ## Recommended Entry
 
@@ -50,6 +53,44 @@ cd ~/venom_ws
 colcon build --symlink-install --packages-up-to px4_msgs venom_px4_bridge venom_bringup
 ```
 
+## External Pose Bridge
+
+`px4_external_pose_bridge` converts upper-layer `nav_msgs/Odometry` from LIO / VPS algorithms into PX4-facing `px4_msgs/VehicleOdometry`.
+
+Default data flow:
+
+```text
+/lio/vps/odometry
+  -> px4_external_pose_bridge
+  -> /fmu/in/vehicle_visual_odometry
+  -> PX4 EKF2 external vision / visual odometry fusion
+```
+
+Default entry point in the main workspace:
+
+```bash
+cd ~/venom_ws
+source install/setup.bash
+ros2 launch venom_bringup px4_vps_bridge.launch.py
+```
+
+Common launch arguments:
+
+| Argument | Meaning | Default |
+| --- | --- | --- |
+| `fmu_prefix` | PX4 DDS topic namespace prefix. | `"/fmu"` |
+| `input_odom_topic` | Upstream LIO / VPS `nav_msgs/Odometry` topic. | `"/lio/vps/odometry"` |
+
+Override `input_odom_topic` when the upstream localization output uses another topic:
+
+```bash
+cd ~/venom_ws
+source install/setup.bash
+ros2 launch venom_bringup px4_vps_bridge.launch.py input_odom_topic:=/lio/odom
+```
+
+PX4-side fusion still depends on EKF2 parameters, timestamps, frames, and covariance settings.
+
 ## Why This Is a Project Root
 
 This layout isolates:
@@ -64,6 +105,7 @@ Upper layers should depend on the bridge-facing outputs, not raw PX4 topic detai
 
 - [Drivers]({{ '/en/driver_overview' | relative_url }})
 - [System Bringup]({{ '/en/venom_bringup' | relative_url }})
+- [Launch & Use]({{ '/en/launch_usage' | relative_url }})
 
 ## Further Reading
 

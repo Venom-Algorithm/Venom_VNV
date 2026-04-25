@@ -33,14 +33,14 @@ planning/
 
 ## 当前状态
 
-当前主工作区已经创建 `planning/` 目录，并落地了 `navigation/` 与 `manipulation/` 两个占位子目录。
+当前主工作区已经创建 `planning/` 目录，并在 `navigation/` 下接入了 `ego-planner-swarm` 子模块。`manipulation/` 仍作为机械臂运动规划入口保留。
 
 当前采用的组织方式例如：
 
 ```text
 planning/
 ├── navigation/
-│   ├── venom_eagle_planner/
+│   ├── ego-planner-swarm/
 │   ├── venom_teb_controller/
 │   └── venom_nav_controller_xxx/
 └── manipulation/
@@ -65,7 +65,7 @@ planning/
 
 ## 预期模块
 
-- `venom_eagle_planner`
+- `ego-planner-swarm`
 - `venom_teb_controller`
 - `venom_nav_controller_xxx`
 - `venom_moveit_grasp`
@@ -73,6 +73,7 @@ planning/
 ## 相关页面
 
 - [总体架构]({{ '/architecture' | relative_url }})
+- [Ego Planner Swarm]({{ '/ego_planner_swarm' | relative_url }})
 - [任务层]({{ '/mission_overview' | relative_url }})
 - [系统层]({{ '/integration_overview' | relative_url }})
 - [仿真层]({{ '/simulation_overview' | relative_url }})
