@@ -1,0 +1,103 @@
+name: Build
+
+on:
+  push:
+    branches: [master]
+    paths-ignore:
+      - "docs/**"
+      - "**.md"
+      - ".github/workflows/pages.yml"
+  pull_request:
+    branches: [master]
+    paths-ignore:
+      - "docs/**"
+      - "**.md"
+
+# 同一个 ref 有新 push 时取消旧的 run，节省 runner 时间
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NS: venom-algorithm/venom_vnv
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # 层 1：sim 镜像（系统依赖 + Nav2 + Gazebo）
+      # 镜像只含系统依赖，不含源码，变化频率低，registry cache 命中率高
+      - name: Build and push sim image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/Dockerfile.sim
+          # PR：只构建不推送；master push：构建并推送
+          push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NS }}/sim:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NS }}/sim:${{ github.sha }}
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NS }}/sim:buildcache
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NS }}/sim:buildcache,mode=max
+
+      # 层 2：colcon 构建产物（GHA cache，按内容哈希做 key）
+      # 多数 push（只改 Python/launch 文件）命中缓存，colcon < 5 分钟
+      # restore-keys 允许跨 commit 的部分命中（stale cache 也比冷启动快）
+      - name: Cache colcon artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            .ci_build/build
+            .ci_build/install
+            .ci_build/log
+          key: colcon-${{ runner.os }}-${{ github.ref_name }}-${{ hashFiles('**/package.xml', '**/CMakeLists.txt', 'docker/Dockerfile.sim') }}
+          restore-keys: |
+            colcon-${{ runner.os }}-${{ github.ref_name }}-
+            colcon-${{ runner.os }}-master-
+
+      - name: Prepare build directories
+        run: mkdir -p .ci_build/build .ci_build/install .ci_build/log
+
+      # 层 3：在 sim 容器内增量 colcon build
+      # 源码只读 mount + 构建产物 rw mount = colcon 增量构建生效
+      # ci-colcon-build.sh 写入 COLCON_IGNORE 排除 driver/lio 包
+      - name: Run colcon build
+        run: |
+          docker run --rm \
+            --volume "${{ github.workspace }}:/ros_ws/src/venom_vnv:rw" \
+            --volume "${{ github.workspace }}/.ci_build/build:/ros_ws/build:rw" \
+            --volume "${{ github.workspace }}/.ci_build/install:/ros_ws/install:rw" \
+            --volume "${{ github.workspace }}/.ci_build/log:/ros_ws/log:rw" \
+            --env COLCON_WORKERS=2 \
+            --env MAKE_JOBS=2 \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NS }}/sim:latest \
+            bash /ros_ws/src/venom_vnv/scripts/ci-colcon-build.sh
+
+      - name: Upload colcon logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: colcon-logs-${{ github.sha }}
+          path: .ci_build/log/
+          retention-days: 7

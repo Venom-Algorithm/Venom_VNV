@@ -1,0 +1,35 @@
+# ROS 构建产物
+build/
+install/
+log/
+.ci_build/
+
+# Jekyll 文档
+_site/
+
+# Python 缓存
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+
+# 密钥/环境变量
+.env
+.env.*
+
+# 大型数据文件
+*.bag
+*.db3
+*.mcap
+*.pcd
+
+# CI 目录（容器内不需要）
+.github/
+
+# 注意：.git 和所有 submodule 目录不排除（COPY 时需要）

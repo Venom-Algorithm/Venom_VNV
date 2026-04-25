@@ -1,0 +1,44 @@
+services:
+
+  # ── 主力仿真开发服务（日常使用）──────────────────────────────
+  sim:
+    image: ghcr.io/venom-algorithm/venom_vnv/sim:latest
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.sim
+    container_name: venom_sim
+    stdin_open: true
+    tty: true
+    environment:
+      # macOS XQuartz：先运行 xhost +localhost，DISPLAY 设为 host.docker.internal:0
+      # Linux：DISPLAY 设为 :0，取消注释下面的 /tmp/.X11-unix 挂载
+      DISPLAY: ${DISPLAY:-host.docker.internal:0}
+      QT_X11_NO_MITSHM: "1"
+      ROS_DOMAIN_ID: ${ROS_DOMAIN_ID:-42}
+      RCUTILS_COLORIZED_OUTPUT: "1"
+      GAZEBO_MODEL_PATH: /ros_ws/src/venom_vnv/simulation/venom_nav_simulation/src/rm_simulation/venom_mid360_simulation/worlds/models
+    volumes:
+      # 源码热挂载（host 改动即时在容器内生效，无需重建镜像）
+      - .:/ros_ws/src/venom_vnv:rw
+      # 构建产物持久化（重启容器不重新编译）
+      - venom_build:/ros_ws/build
+      - venom_install:/ros_ws/install
+      - venom_log:/ros_ws/log
+      # Linux X11（macOS 下无效，靠上面 host.docker.internal:0）：
+      # - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    network_mode: host        # ROS 2 DDS 多播必须用 host 网络
+    cap_add:
+      - NET_ADMIN             # SocketCAN 预留
+    # GPU（需要 nvidia-container-toolkit，取消注释开启）：
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+volumes:
+  venom_build:
+  venom_install:
+  venom_log:

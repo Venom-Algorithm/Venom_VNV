@@ -1,0 +1,83 @@
+FROM ros:humble-ros-base
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+# ── 系统依赖（标准 apt，无第三方换源脚本）──────────────────────
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    # 构建工具
+    build-essential cmake git wget curl \
+    python3-pip \
+    python3-colcon-common-extensions \
+    python3-rosdep \
+    python3-vcstool \
+    # 数学/点云
+    libpcl-dev libeigen3-dev libboost-all-dev \
+    libgoogle-glog-dev libunwind-dev \
+    libopencv-dev \
+    # Gazebo：arm64（Mac M 系列）上无 Gazebo Classic，用 Ignition Fortress
+    # x86_64（Ubuntu 真机/CI）上 Gazebo Classic 包名为 gazebo11
+    # 这里安装 Ignition 供 arm64 开发，colcon build 均可通过
+    ignition-fortress \
+    ros-humble-ros-gz-sim \
+    ros-humble-ros-gz-bridge \
+    # Nav2 完整栈
+    ros-humble-navigation2 \
+    ros-humble-nav2-bringup \
+    ros-humble-slam-toolbox \
+    # ROS 核心工具
+    ros-humble-pcl-ros \
+    ros-humble-pcl-conversions \
+    ros-humble-tf2-ros \
+    ros-humble-tf2-geometry-msgs \
+    ros-humble-robot-state-publisher \
+    ros-humble-xacro \
+    ros-humble-joint-state-publisher \
+    ros-humble-rclcpp-components \
+    ros-humble-message-filters \
+    ros-humble-cv-bridge \
+    ros-humble-image-transport-plugins \
+    ros-humble-vision-opencv \
+    ros-humble-camera-info-manager \
+    ros-humble-pointcloud-to-laserscan \
+    ros-humble-imu-filter-madgwick \
+    # 可视化
+    ros-humble-rviz2 \
+    ros-humble-rqt \
+    ros-humble-rqt-common-plugins \
+    # 开发工具
+    clang clangd clang-format \
+    zsh tmux vim htop \
+    && rm -rf /var/lib/apt/lists/*
+
+# ── rosdep（标准初始化，不用 rosdepc）────────────────────────
+RUN rosdep init 2>/dev/null || true && rosdep update
+
+# ── Python：YOLO 感知开发用 ───────────────────────────────────
+RUN pip3 install --no-cache-dir ultralytics
+
+# ── zsh（沿用现有 simulation/dockerfile 的配置风格）────────────
+RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.2.0/zsh-in-docker.sh)" -- \
+    -t jispwoso \
+    -p git \
+    -p https://github.com/zsh-users/zsh-autosuggestions \
+    -p https://github.com/zsh-users/zsh-syntax-highlighting \
+    && chsh -s /bin/zsh
+
+RUN printf '%s\n' \
+    'export TERM=xterm-256color' \
+    'source /opt/ros/humble/setup.zsh' \
+    'eval "$(register-python-argcomplete3 ros2)"' \
+    'eval "$(register-python-argcomplete3 colcon)"' \
+    '[ -f /ros_ws/install/setup.zsh ] && source /ros_ws/install/setup.zsh' \
+    >> /root/.zshrc
+
+# ── 显示环境变量（运行时通过 -e DISPLAY= 注入）───────────────
+ENV QT_X11_NO_MITSHM=1
+ENV ROS_WS=/ros_ws
+
+WORKDIR ${ROS_WS}
+
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["zsh"]
