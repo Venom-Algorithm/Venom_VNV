@@ -93,6 +93,8 @@ jobs:
             --env MAKE_JOBS=2 \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NS }}/sim:latest \
             bash /ros_ws/src/venom_vnv/scripts/ci-colcon-build.sh
+          # docker runs as root; fix ownership so hashFiles can traverse .ci_build
+          sudo chown -R "$(id -u):$(id -g)" .ci_build/ || true
 
       - name: Upload colcon logs
         if: always()
