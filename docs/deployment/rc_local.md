@@ -1,9 +1,6 @@
 ---
 title: rc.local
-permalink: /rc_local
-desc: Ubuntu 22.04 中启用 rc.local，并用于开机执行网络优先级等初始化命令。
-breadcrumb: 部署与使用
-layout: default
+description: Ubuntu 22.04 中启用 rc.local，并用于开机执行网络优先级等初始化命令。
 ---
 
 ## rc.local 的基本概念
@@ -125,7 +122,7 @@ ip route add 192.168.1.133 dev enp88s0 proto kernel scope link src 192.168.1.50 
 exit 0
 ```
 
-如果你需要同时处理网络优先级和雷达配置，建议结合 [雷达配置]({{ '/lidar_setup' | relative_url }}) 一起查看。
+如果你需要同时处理网络优先级和雷达配置，建议结合 [雷达配置](lidar_setup.md) 一起查看。
 
 ## 注意事项
 

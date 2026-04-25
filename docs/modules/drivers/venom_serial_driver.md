@@ -1,9 +1,6 @@
 ---
 title: 串口通信驱动
-permalink: /venom_serial_driver
-desc: venom_serial_driver — NUC 与 DJI C 板串口通信驱动。
-breadcrumb: 硬件驱动
-layout: default
+description: venom_serial_driver — NUC 与 DJI C 板串口通信驱动。
 ---
 
 ## 模块定位
@@ -19,7 +16,7 @@ layout: default
 
 ## 输入与输出
 
-完整系统级话题参考见 [话题参考]({{ '/topics' | relative_url }})。
+完整系统级话题参考见 [话题参考](../standards/topics.md)。
 
 ### 订阅
 
@@ -45,7 +42,7 @@ ros2 launch venom_serial_driver serial_driver.launch.py
 
 当前默认配置文件：
 
-- [serial_params.yaml](/Users/liyh/venom_vnv/driver/venom_serial_driver/config/serial_params.yaml)
+- [serial_params.yaml](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/driver/venom_serial_driver/config/serial_params.yaml)
 
 | 参数名 | 作用 | 默认值 |
 | --- | --- | --- |
@@ -74,7 +71,7 @@ ros2 launch venom_serial_driver serial_driver.launch.py
 
 ## 通信协议
 
-完整二进制协议说明见 [protocol.md](protocol.md)。
+完整二进制协议说明见 [protocol.md](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/driver/venom_serial_driver/docs/protocol.md)。
 
 ### 帧格式
 

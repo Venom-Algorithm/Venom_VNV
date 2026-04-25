@@ -1,9 +1,6 @@
 ---
 title: YOLO Detector
-permalink: /yolo_detector
-desc: yolo_detector - 基于 YOLO 的通用 2D 目标检测模块与消息定义。
-breadcrumb: 感知层
-layout: default
+description: yolo_detector - 基于 YOLO 的通用 2D 目标检测模块与消息定义。
 ---
 
 ## 模块定位
@@ -30,9 +27,9 @@ layout: default
 
 对应代码入口：
 
-- 节点实现：[yolo_node.py](/Users/liyh/venom_vnv/perception/yolo_detector/yolo_detector/yolo_node.py)
-- launch 入口：[yolo_detector.launch.py](/Users/liyh/venom_vnv/perception/yolo_detector/launch/yolo_detector.launch.py)
-- 默认参数：[yolo_detector.yaml](/Users/liyh/venom_vnv/perception/yolo_detector/config/yolo_detector.yaml)
+- 节点实现：[yolo_node.py](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/perception/yolo_detector/yolo_detector/yolo_node.py)
+- launch 入口：[yolo_detector.launch.py](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/perception/yolo_detector/launch/yolo_detector.launch.py)
+- 默认参数：[yolo_detector.yaml](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/perception/yolo_detector/config/yolo_detector.yaml)
 
 ## 数据流
 
@@ -129,7 +126,7 @@ layout: default
 
 需要注意：
 
-- 当前 [yolo_detector.launch.py](/Users/liyh/venom_vnv/perception/yolo_detector/launch/yolo_detector.launch.py) 只把这三个参数传给节点
+- 当前 [yolo_detector.launch.py](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/perception/yolo_detector/launch/yolo_detector.launch.py) 只把这三个参数传给节点
 - `annotated_image_topic`、`publish_annotated_image`、`confidence_threshold`、`iou_threshold`、`device`、`class_ids` 虽然在节点里已经声明，但默认 launch 里没有单独暴露
 - 如果你要临时改这些参数，可以用 `ros2 run ... --ros-args -p ...` 的方式传入，或者后续把 launch 再扩展
 
@@ -222,7 +219,7 @@ ros2 run yolo_detector yolo_node --ros-args \
 
 ## 相关页面
 
-- [感知层]({{ '/perception_overview' | relative_url }})
-- [海康相机驱动]({{ '/ros2_hik_camera' | relative_url }})
-- [自瞄算法总览]({{ '/rm_auto_aim' | relative_url }})
-- [话题参考]({{ '/topics' | relative_url }})
+- [感知层](index.md)
+- [海康相机驱动](../drivers/ros2_hik_camera.md)
+- [自瞄算法总览](../auto_aim/index.md)
+- [话题参考](../standards/topics.md)

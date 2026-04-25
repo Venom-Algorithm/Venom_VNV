@@ -1,9 +1,7 @@
 ---
 title: Mission Layer
-permalink: /en/mission_overview
-desc: Unified entry for behavior trees, state monitoring, goal dispatch, and mission-execution modules.
-breadcrumb: Modules & Interfaces
-layout: default
+description: Unified entry for behavior trees, state monitoring, goal dispatch, and
+  mission-execution modules.
 ---
 
 ## Layer Role
@@ -65,6 +63,6 @@ Future behavior-tree, waypoint, listener, and task-dispatch packages should be p
 
 ## Related Pages
 
-- [Architecture]({{ '/en/architecture' | relative_url }})
-- [Planning]({{ '/en/planning_overview' | relative_url }})
-- [System]({{ '/en/integration_overview' | relative_url }})
+- [Architecture](../architecture.md)
+- [Planning](../planning/index.md)
+- [System](../integration/index.md)

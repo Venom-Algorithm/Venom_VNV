@@ -1,9 +1,6 @@
 ---
 title: 系统启动
-permalink: /venom_bringup
-desc: venom_bringup — 系统启动配置与任务控制框架。
-breadcrumb: 系统层
-layout: default
+description: venom_bringup — 系统启动配置与任务控制框架。
 ---
 
 ## 模块定位
@@ -67,13 +64,13 @@ layout: default
 
 任务控制器当前最直接的参数入口是：
 
-- [`mission_config.yaml`](/Users/liyh/venom_vnv/venom_bringup/config/scout_mini/mission_config.yaml)
-- [`waypoints.yaml`](/Users/liyh/venom_vnv/venom_bringup/config/scout_mini/waypoints.yaml)
+- [`mission_config.yaml`](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/venom_bringup/config/scout_mini/mission_config.yaml)
+- [`waypoints.yaml`](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/venom_bringup/config/scout_mini/waypoints.yaml)
 
 运行时代码入口包括：
 
-- [`health_aware_commander.py`](/Users/liyh/venom_vnv/venom_bringup/venom_bringup/health_aware_commander.py)
-- [`multi_waypoint_commander.py`](/Users/liyh/venom_vnv/venom_bringup/venom_bringup/multi_waypoint_commander.py)
+- [`health_aware_commander.py`](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/venom_bringup/venom_bringup/health_aware_commander.py)
+- [`multi_waypoint_commander.py`](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/venom_bringup/venom_bringup/multi_waypoint_commander.py)
 
 其中最关键的两个外部参数是：
 
@@ -110,11 +107,11 @@ ros2 launch venom_bringup robot_bringup.launch.py
 
 ## 相关页面
 
-- [启动与使用]({{ '/launch_usage' | relative_url }})
-- [运行模式]({{ '/run_modes' | relative_url }})
-- [自瞄算法总览]({{ '/rm_auto_aim' | relative_url }})
-- [定位模块总览]({{ '/localization_overview' | relative_url }})
+- [启动与使用](../../home/launch_usage.md)
+- [运行模式](../../deployment/run_modes.md)
+- [自瞄算法总览](../auto_aim/index.md)
+- [定位模块总览](../localization/index.md)
 
 ## 进一步阅读
 
-- [MISSION_CONTROLLER_README.md](../venom_bringup/MISSION_CONTROLLER_README.md)
+- [MISSION_CONTROLLER_README.md](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/venom_bringup/MISSION_CONTROLLER_README.md)

@@ -1,9 +1,6 @@
 ---
 title: 海康相机驱动
-permalink: /ros2_hik_camera
-desc: ros2_hik_camera — 海康 USB3.0 工业相机 ROS2 驱动。
-breadcrumb: 硬件驱动
-layout: default
+description: ros2_hik_camera — 海康 USB3.0 工业相机 ROS2 驱动。
 ---
 
 ## 模块定位
@@ -95,10 +92,10 @@ ros2 launch hik_camera hik_camera.launch.py
 
 ## 相关页面
 
-- [自瞄算法总览]({{ '/rm_auto_aim' | relative_url }})
-- [装甲板检测]({{ '/armor_detector' | relative_url }})
-- [话题参考]({{ '/topics' | relative_url }})
+- [自瞄算法总览](../auto_aim/index.md)
+- [装甲板检测](../auto_aim/armor_detector.md)
+- [话题参考](../standards/topics.md)
 
 ## 进一步阅读
 
-- [ros2_hik_camera README](../driver/ros2_hik_camera/README.md)
+- [ros2_hik_camera README](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/driver/ros2_hik_camera/README.md)

@@ -1,9 +1,7 @@
 ---
 title: Relocalization
-permalink: /en/small_gicp_relocalization
-desc: small_gicp_relocalization — Global relocalization through point-cloud registration.
-breadcrumb: Localization
-layout: default
+description: small_gicp_relocalization — Global relocalization through point-cloud
+  registration.
 ---
 
 ## Module Role

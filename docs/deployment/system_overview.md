@@ -1,9 +1,6 @@
 ---
 title: 话题与 TF 总览
-permalink: /system_overview
-desc: 系统级 topic map、TF 关系与关键数据流。
-breadcrumb: 部署与使用
-layout: default
+description: 系统级 topic map、TF 关系与关键数据流。
 ---
 
 ## 适合什么时候看
@@ -14,8 +11,8 @@ layout: default
 
 ## 文档入口
 
-- [话题参考]({{ '/topics' | relative_url }})
-- [TF 树]({{ '/tf_tree' | relative_url }})
+- [话题参考](../modules/standards/topics.md)
+- [TF 树](../modules/standards/tf_tree.md)
 
 ## 关键链路
 

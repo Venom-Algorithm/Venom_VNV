@@ -1,9 +1,6 @@
 ---
 title: 机械臂 CAN 部署
-permalink: /piper_can_setup
-desc: Piper 机械臂的 CAN 接口识别、命名、拉起与基础验证。
-breadcrumb: 部署与使用
-layout: default
+description: Piper 机械臂的 CAN 接口识别、命名、拉起与基础验证。
 ---
 
 ## 适用范围
@@ -205,10 +202,10 @@ can_port:=can0
 
 ### 每次重启后接口名都乱掉
 
-如果你希望开机时自动配置机械臂 CAN，可以结合 [rc.local]({{ '/rc_local' | relative_url }}) 使用，把激活命令写进去。
+如果你希望开机时自动配置机械臂 CAN，可以结合 [rc.local](rc_local.md) 使用，把激活命令写进去。
 
 ## 相关文档
 
-- [Piper 机械臂驱动]({{ '/piper_ros' | relative_url }})
-- [底盘 CAN 部署]({{ '/chassis_can_setup' | relative_url }})
-- [rc.local]({{ '/rc_local' | relative_url }})
+- [Piper 机械臂驱动](../modules/drivers/piper_ros.md)
+- [底盘 CAN 部署](chassis_can_setup.md)
+- [rc.local](rc_local.md)

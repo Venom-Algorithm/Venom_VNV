@@ -1,18 +1,15 @@
 ---
 title: 底盘驱动总览
-permalink: /chassis_driver
-desc: scout_ros2、hunter_ros2、ugv_sdk 的关系与统一接口约束。
-breadcrumb: 硬件驱动
-layout: default
+description: scout_ros2、hunter_ros2、ugv_sdk 的关系与统一接口约束。
 ---
 
 # 底盘驱动总览
 
 Venom VNV 当前的轮式底盘驱动链路主要由三部分组成：
 
-- [Scout 底盘驱动]({{ '/scout_ros2' | relative_url }})
-- [Hunter 底盘驱动]({{ '/hunter_ros2' | relative_url }})
-- [UGV SDK]({{ '/ugv_sdk' | relative_url }})
+- [Scout 底盘驱动](scout_ros2.md)
+- [Hunter 底盘驱动](hunter_ros2.md)
+- [UGV SDK](ugv_sdk.md)
 
 其中：
 
@@ -59,7 +56,7 @@ scout_ros2 或 hunter_ros2
 
 ### CAN 适配器配置
 
-更完整的步骤可参考：[底盘 CAN 部署]({{ '/chassis_can_setup' | relative_url }})
+更完整的步骤可参考：[底盘 CAN 部署](../../deployment/chassis_can_setup.md)
 
 ```bash
 sudo modprobe gs_usb
@@ -82,9 +79,9 @@ candump can0
 
 ## 阅读顺序建议
 
-1. 先看 [底盘 CAN 部署]({{ '/chassis_can_setup' | relative_url }}) 完成物理链路与网卡配置
-2. 再根据底盘型号阅读 [Scout 底盘驱动]({{ '/scout_ros2' | relative_url }}) 或 [Hunter 底盘驱动]({{ '/hunter_ros2' | relative_url }})
-3. 需要看底层协议与通信抽象时，再看 [UGV SDK]({{ '/ugv_sdk' | relative_url }})
+1. 先看 [底盘 CAN 部署](../../deployment/chassis_can_setup.md) 完成物理链路与网卡配置
+2. 再根据底盘型号阅读 [Scout 底盘驱动](scout_ros2.md) 或 [Hunter 底盘驱动](hunter_ros2.md)
+3. 需要看底层协议与通信抽象时，再看 [UGV SDK](ugv_sdk.md)
 
 ## 故障排查
 
@@ -95,6 +92,6 @@ candump can0
 
 ## 详细文档
 
-- [Scout 底盘驱动]({{ '/scout_ros2' | relative_url }})
-- [Hunter 底盘驱动]({{ '/hunter_ros2' | relative_url }})
-- [UGV SDK]({{ '/ugv_sdk' | relative_url }})
+- [Scout 底盘驱动](scout_ros2.md)
+- [Hunter 底盘驱动](hunter_ros2.md)
+- [UGV SDK](ugv_sdk.md)

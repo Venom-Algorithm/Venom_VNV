@@ -1,9 +1,6 @@
 ---
 title: 常见问题
-permalink: /faq
-desc: 初次部署与联调阶段最常见的问题汇总。
-breadcrumb: 支持与社区
-layout: default
+description: 初次部署与联调阶段最常见的问题汇总。
 ---
 
 ## 仓库拉取失败怎么办
@@ -25,5 +22,5 @@ layout: default
 
 ## 更多内容
 
-- [故障排查]({{ '/troubleshooting' | relative_url }})
-- [更新与迁移]({{ '/migration_notes' | relative_url }})
+- [故障排查](troubleshooting.md)
+- [更新与迁移](migration_notes.md)

@@ -1,9 +1,7 @@
 ---
 title: Simulation
-permalink: /en/simulation_overview
-desc: Overview of standalone simulation workspaces and simulation baselines separated from deployment packages.
-breadcrumb: Modules & Interfaces
-layout: default
+description: Overview of standalone simulation workspaces and simulation baselines
+  separated from deployment packages.
 ---
 
 ## Layer Role
@@ -16,7 +14,7 @@ The simulation layer is responsible for:
 
 ## Current Subproject
 
-- [Navigation Simulation Workspace]({{ '/en/venom_nav_simulation' | relative_url }})
+- [Navigation Simulation Workspace](venom_nav_simulation.md)
 
 ## Why This Is Separate
 
@@ -66,6 +64,6 @@ The CI build temporarily writes `COLCON_IGNORE` files for hardware drivers, LIO 
 
 ## Related Pages
 
-- [Architecture]({{ '/en/architecture' | relative_url }})
-- [Localization]({{ '/en/localization_overview' | relative_url }})
-- [Planning]({{ '/en/planning_overview' | relative_url }})
+- [Architecture](../architecture.md)
+- [Localization](../localization/index.md)
+- [Planning](../planning/index.md)

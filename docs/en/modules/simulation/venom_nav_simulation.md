@@ -1,9 +1,7 @@
 ---
 title: Navigation Simulation Workspace
-permalink: /en/venom_nav_simulation
-desc: venom_nav_simulation — Standalone workspace for MID360, Gazebo, LIO, and Nav2 validation.
-breadcrumb: Simulation
-layout: default
+description: venom_nav_simulation — Standalone workspace for MID360, Gazebo, LIO,
+  and Nav2 validation.
 ---
 
 ## Module Role
@@ -99,6 +97,6 @@ It is better treated as a simulation baseline.
 
 ## Related Pages
 
-- [Simulation]({{ '/en/simulation_overview' | relative_url }})
-- [Localization]({{ '/en/localization_overview' | relative_url }})
-- [Planning]({{ '/en/planning_overview' | relative_url }})
+- [Simulation](index.md)
+- [Localization](../localization/index.md)
+- [Planning](../planning/index.md)

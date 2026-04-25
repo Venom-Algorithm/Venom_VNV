@@ -1,9 +1,7 @@
 ---
 title: PX4 Bridge
-permalink: /en/venom_px4_bridge
-desc: venom_px4_bridge — PX4 integration project root, with vendored px4_msgs and the VNV bridge package.
-breadcrumb: Drivers
-layout: default
+description: venom_px4_bridge — PX4 integration project root, with vendored px4_msgs
+  and the VNV bridge package.
 ---
 
 ## Module Role
@@ -103,12 +101,12 @@ Upper layers should depend on the bridge-facing outputs, not raw PX4 topic detai
 
 ## Related Pages
 
-- [Drivers]({{ '/en/driver_overview' | relative_url }})
-- [System Bringup]({{ '/en/venom_bringup' | relative_url }})
-- [Launch & Use]({{ '/en/launch_usage' | relative_url }})
+- [Drivers](index.md)
+- [System Bringup](../integration/venom_bringup.md)
+- [Launch & Use](../../home/launch_usage.md)
 
 ## Further Reading
 
-- [venom_px4_bridge README](/Users/liyh/venom_vnv/driver/venom_px4_bridge/README.md)
-- [deployment.md](/Users/liyh/venom_vnv/driver/venom_px4_bridge/docs/deployment.md)
-- [COMPATIBILITY.md](/Users/liyh/venom_vnv/driver/venom_px4_bridge/COMPATIBILITY.md)
+- [venom_px4_bridge README](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/driver/venom_px4_bridge/README.md)
+- [deployment.md](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/driver/venom_px4_bridge/docs/deployment.md)
+- [COMPATIBILITY.md](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/driver/venom_px4_bridge/COMPATIBILITY.md)

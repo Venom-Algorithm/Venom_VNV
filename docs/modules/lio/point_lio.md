@@ -1,9 +1,6 @@
 ---
 title: Point-LIO
-permalink: /point_lio
-desc: Point-LIO — MID360 参数与接口说明。
-breadcrumb: 定位层
-layout: default
+description: Point-LIO — MID360 参数与接口说明。
 ---
 
 ## 模块定位
@@ -21,8 +18,8 @@ layout: default
 
 ## 当前使用的配置文件
 
-- 子模块配置：[mid360.yaml](/Users/liyh/venom_vnv/localization/lio/Point-LIO/config/mid360.yaml)
-- 建图配置：[mid360_mapping.yaml](/Users/liyh/venom_vnv/localization/lio/Point-LIO/config/mid360_mapping.yaml)
+- 子模块配置：[mid360.yaml](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/localization/lio/Point-LIO/config/mid360.yaml)
+- 建图配置：[mid360_mapping.yaml](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/localization/lio/Point-LIO/config/mid360_mapping.yaml)
 
 ## 参数说明
 
@@ -112,6 +109,6 @@ layout: default
 
 ## 进一步阅读
 
-- [LIO 总体约束]({{ '/lio_overview' | relative_url }})
-- [话题参考]({{ '/topics' | relative_url }})
-- [TF 树]({{ '/tf_tree' | relative_url }})
+- [LIO 总体约束](index.md)
+- [话题参考](../standards/topics.md)
+- [TF 树](../standards/tf_tree.md)

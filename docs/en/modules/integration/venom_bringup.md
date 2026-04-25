@@ -1,9 +1,6 @@
 ---
 title: System Bringup
-permalink: /en/venom_bringup
-desc: venom_bringup — System launch composition and task-control framework.
-breadcrumb: System
-layout: default
+description: venom_bringup — System launch composition and task-control framework.
 ---
 
 ## Module Role
@@ -31,8 +28,8 @@ layout: default
 
 ## Related Pages
 
-- [Launch & Use]({{ '/en/launch_usage' | relative_url }})
-- [Run Modes]({{ '/en/run_modes' | relative_url }})
+- [Launch & Use](../../home/launch_usage.md)
+- [Run Modes](../../deployment/run_modes.md)
 
 ## Note
 

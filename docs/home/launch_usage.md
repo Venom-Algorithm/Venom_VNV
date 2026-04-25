@@ -1,18 +1,15 @@
 ---
 title: 启动使用
-permalink: /launch_usage
-desc: 完成编译后的首次启动入口与常用运行命令。
-breadcrumb: 首页
-layout: default
+description: 完成编译后的首次启动入口与常用运行命令。
 ---
 
 ## 开始之前
 
 默认你已经完成：
 
-- [快速开始]({{ '/quick_start' | relative_url }})
-- 需要时完成 [雷达配置]({{ '/lidar_setup' | relative_url }})
-- 需要时完成 [底盘 CAN 部署]({{ '/chassis_can_setup' | relative_url }})
+- [快速开始](quick_start.md)
+- 需要时完成 [雷达配置](../deployment/lidar_setup.md)
+- 需要时完成 [底盘 CAN 部署](../deployment/chassis_can_setup.md)
 
 ## 进入工作空间
 
@@ -110,5 +107,5 @@ ros2 launch venom_bringup px4_vps_bridge.launch.py input_odom_topic:=/lio/odom
 
 ## 进一步阅读
 
-- 启动入口设计：参考 [系统层]({{ '/integration_overview' | relative_url }})
-- 不同模式说明：参考 [运行模式]({{ '/run_modes' | relative_url }})
+- 启动入口设计：参考 [系统层](../modules/integration/index.md)
+- 不同模式说明：参考 [运行模式](../deployment/run_modes.md)

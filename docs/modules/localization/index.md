@@ -1,9 +1,6 @@
 ---
 title: 定位层
-permalink: /localization_overview
-desc: LIO、2D 里程计、重定位与地图对齐相关模块总览。
-breadcrumb: 模块与接口
-layout: default
+description: LIO、2D 里程计、重定位与地图对齐相关模块总览。
 ---
 
 ## 层级职责
@@ -15,11 +12,11 @@ layout: default
 
 ## 当前模块
 
-- [LIO 总览]({{ '/lio_overview' | relative_url }})
-- [Point-LIO]({{ '/point_lio' | relative_url }})
-- [Fast-LIO]({{ '/fast_lio' | relative_url }})
-- [rf2o 激光里程计]({{ '/rf2o_laser_odometry' | relative_url }})
-- [重定位]({{ '/small_gicp_relocalization' | relative_url }})
+- [LIO 总览](../lio/index.md)
+- [Point-LIO](../lio/point_lio.md)
+- [Fast-LIO](../lio/fast_lio.md)
+- [rf2o 激光里程计](rf2o_laser_odometry.md)
+- [重定位](small_gicp_relocalization.md)
 
 ## 模块关系
 
@@ -34,7 +31,7 @@ layout: default
 
 ## 推荐阅读顺序
 
-1. [LIO 总览]({{ '/lio_overview' | relative_url }})
-2. [Point-LIO]({{ '/point_lio' | relative_url }})
-3. [重定位]({{ '/small_gicp_relocalization' | relative_url }})
-4. [rf2o 激光里程计]({{ '/rf2o_laser_odometry' | relative_url }})
+1. [LIO 总览](../lio/index.md)
+2. [Point-LIO](../lio/point_lio.md)
+3. [重定位](small_gicp_relocalization.md)
+4. [rf2o 激光里程计](rf2o_laser_odometry.md)

@@ -1,9 +1,6 @@
 ---
 title: 故障排查
-permalink: /troubleshooting
-desc: 按子系统分类的排障入口与建议检查顺序。
-breadcrumb: 支持与社区
-layout: default
+description: 按子系统分类的排障入口与建议检查顺序。
 ---
 
 ## 雷达

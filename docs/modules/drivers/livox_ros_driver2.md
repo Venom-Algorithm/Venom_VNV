@@ -1,9 +1,6 @@
 ---
 title: Livox 雷达驱动
-permalink: /livox_ros_driver2
-desc: livox_ros_driver2 — Livox Mid360 激光雷达驱动。
-breadcrumb: 硬件驱动
-layout: default
+description: livox_ros_driver2 — Livox Mid360 激光雷达驱动。
 ---
 
 ## 模块定位
@@ -30,8 +27,8 @@ layout: default
 
 这个包是以下模块的前置依赖：
 
-- [Point-LIO]({{ '/point_lio' | relative_url }})
-- [Fast-LIO]({{ '/fast_lio' | relative_url }})
+- [Point-LIO](../lio/point_lio.md)
+- [Fast-LIO](../lio/fast_lio.md)
 
 如果驱动没有正常发布数据，上层 LIO 不会工作。
 
@@ -108,10 +105,10 @@ MID360 的关键配置通常集中在：
 
 ## 相关页面
 
-- [雷达配置]({{ '/lidar_setup' | relative_url }})
-- [Point-LIO]({{ '/point_lio' | relative_url }})
-- [Fast-LIO]({{ '/fast_lio' | relative_url }})
+- [雷达配置](../../deployment/lidar_setup.md)
+- [Point-LIO](../lio/point_lio.md)
+- [Fast-LIO](../lio/fast_lio.md)
 
 ## 进一步阅读
 
-- [livox_ros_driver2 README](../driver/livox_ros_driver2/README.md)
+- [livox_ros_driver2 README](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/driver/livox_ros_driver2/README.md)

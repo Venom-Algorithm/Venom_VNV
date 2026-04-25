@@ -1,9 +1,6 @@
 ---
 title: Updates & Migration
-permalink: /en/migration_notes
-desc: Repository migration, submodule strategy, and compatibility notes.
-breadcrumb: Support & Community
-layout: default
+description: Repository migration, submodule strategy, and compatibility notes.
 ---
 
 ## What This Page Covers

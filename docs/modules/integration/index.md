@@ -1,15 +1,12 @@
 ---
 title: 系统层
-permalink: /integration_overview
-desc: 启动编排、机器人描述与整机模式入口总览。
-breadcrumb: 模块与接口
-layout: default
+description: 启动编排、机器人描述与整机模式入口总览。
 ---
 
 ## 覆盖模块
 
-- [系统启动]({{ '/venom_bringup' | relative_url }})
-- [机器人描述]({{ '/venom_robot_description' | relative_url }})
+- [系统启动](venom_bringup.md)
+- [机器人描述](venom_robot_description.md)
 
 ## 层级职责
 

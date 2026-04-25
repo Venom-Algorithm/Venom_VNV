@@ -1,18 +1,16 @@
 ---
 title: Launch & Use
-permalink: /en/launch_usage
-desc: Common build, rebuild, and launch commands after the workspace has been compiled.
-breadcrumb: Home
-layout: default
+description: Common build, rebuild, and launch commands after the workspace has been
+  compiled.
 ---
 
 ## Before You Begin
 
 This page assumes you already completed:
 
-- [Quick Start]({{ '/en/quick_start' | relative_url }})
-- [LiDAR Setup]({{ '/en/lidar_setup' | relative_url }}) when needed
-- [Chassis CAN Setup]({{ '/en/chassis_can_setup' | relative_url }}) when needed
+- [Quick Start](quick_start.md)
+- [LiDAR Setup](../deployment/lidar_setup.md) when needed
+- [Chassis CAN Setup](../deployment/chassis_can_setup.md) when needed
 
 ## Enter the Workspace
 
@@ -106,5 +104,5 @@ ros2 launch venom_bringup px4_vps_bridge.launch.py input_odom_topic:=/lio/odom
 
 ## Further Reading
 
-- [System Bringup]({{ '/en/venom_bringup' | relative_url }})
-- [Run Modes]({{ '/en/run_modes' | relative_url }})
+- [System Bringup](../modules/integration/venom_bringup.md)
+- [Run Modes](../deployment/run_modes.md)

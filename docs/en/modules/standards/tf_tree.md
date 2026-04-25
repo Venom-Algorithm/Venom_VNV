@@ -1,9 +1,6 @@
 ---
 title: TF Tree
-permalink: /en/tf_tree
-desc: System-level frame hierarchy and frame-role conventions.
-breadcrumb: Quick Start
-layout: default
+description: System-level frame hierarchy and frame-role conventions.
 ---
 
 ## Goal

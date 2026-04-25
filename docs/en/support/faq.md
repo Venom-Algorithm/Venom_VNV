@@ -1,9 +1,6 @@
 ---
 title: FAQ
-permalink: /en/faq
-desc: The most common issues during initial deployment and integration.
-breadcrumb: Support & Community
-layout: default
+description: The most common issues during initial deployment and integration.
 ---
 
 ## Repository clone fails
@@ -25,5 +22,5 @@ layout: default
 
 ## More
 
-- [Troubleshooting]({{ '/en/troubleshooting' | relative_url }})
-- [Updates & Migration]({{ '/en/migration_notes' | relative_url }})
+- [Troubleshooting](troubleshooting.md)
+- [Updates & Migration](migration_notes.md)

@@ -1,9 +1,6 @@
 ---
 title: UGV SDK
-permalink: /ugv_sdk
-desc: ugv_sdk — AgileX / Weston Robot 轮式底盘底层 C++ SDK。
-breadcrumb: 硬件驱动
-layout: default
+description: ugv_sdk — AgileX / Weston Robot 轮式底盘底层 C++ SDK。
 ---
 
 ## 模块定位
@@ -76,11 +73,11 @@ candump can0
 
 ## 相关页面
 
-- [底盘驱动总览]({{ '/chassis_driver' | relative_url }})
-- [Scout 底盘驱动]({{ '/scout_ros2' | relative_url }})
-- [Hunter 底盘驱动]({{ '/hunter_ros2' | relative_url }})
+- [底盘驱动总览](chassis_driver.md)
+- [Scout 底盘驱动](scout_ros2.md)
+- [Hunter 底盘驱动](hunter_ros2.md)
 
 ## 进一步阅读
 
-- [ugv_sdk README](../driver/ugv_sdk/README.md)
-- [ugv_sdk docs](../driver/ugv_sdk/docs/)
+- [ugv_sdk README](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/driver/ugv_sdk/README.md)
+- [ugv_sdk docs](https://github.com/Venom-Algorithm/Venom_VNV/tree/master/driver/ugv_sdk/docs)

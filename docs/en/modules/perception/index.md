@@ -1,9 +1,7 @@
 ---
 title: Perception
-permalink: /en/perception_overview
-desc: Overview of image-facing perception modules for detection, tracking, and structured target output.
-breadcrumb: Modules & Interfaces
-layout: default
+description: Overview of image-facing perception modules for detection, tracking,
+  and structured target output.
 ---
 
 ## Layer Role
@@ -25,10 +23,10 @@ In the current repository, it mainly covers:
 
 ## Current Modules
 
-- [Auto Aim Overview]({{ '/en/rm_auto_aim' | relative_url }})
-- [Armor Detection]({{ '/en/armor_detector' | relative_url }})
-- [Target Tracking]({{ '/en/armor_tracker' | relative_url }})
-- [YOLO Detector]({{ '/en/yolo_detector' | relative_url }})
+- [Auto Aim Overview](../auto_aim/index.md)
+- [Armor Detection](../auto_aim/armor_detector.md)
+- [Target Tracking](../auto_aim/armor_tracker.md)
+- [YOLO Detector](yolo_detector.md)
 
 ## Interface Guidance
 
@@ -41,5 +39,5 @@ New perception modules should preferably follow these rules:
 
 ## Related Pages
 
-- [Hikrobot Camera Driver]({{ '/en/ros2_hik_camera' | relative_url }})
-- [Topic Reference]({{ '/en/topics' | relative_url }})
+- [Hikrobot Camera Driver](../drivers/ros2_hik_camera.md)
+- [Topic Reference](../standards/topics.md)

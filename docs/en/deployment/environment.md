@@ -1,9 +1,6 @@
 ---
 title: Environment Setup
-permalink: /en/environment
-desc: Software versions, prerequisite tools, and hardware preparation notes.
-breadcrumb: Deployment & Usage
-layout: default
+description: Software versions, prerequisite tools, and hardware preparation notes.
 ---
 
 ## Recommended Software Environment
@@ -67,4 +64,4 @@ Recommended extras:
 
 ## Next Step
 
-After the software environment is ready, continue with [LiDAR Setup]({{ '/en/lidar_setup' | relative_url }}).
+After the software environment is ready, continue with [LiDAR Setup](lidar_setup.md).

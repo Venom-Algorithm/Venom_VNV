@@ -1,9 +1,7 @@
 ---
 title: LiDAR Setup
-permalink: /en/lidar_setup
-desc: Install Livox-SDK2, configure MID360 networking, and validate the LiDAR chain.
-breadcrumb: Deployment & Usage
-layout: default
+description: Install Livox-SDK2, configure MID360 networking, and validate the LiDAR
+  chain.
 ---
 
 ## Install Livox-SDK2
@@ -90,10 +88,10 @@ ros2 launch livox_ros_driver2 rviz_MID360_launch.py
 
 ## Next Step
 
-If you also need boot-time routing, network priority, or automatic startup behavior, continue with [rc.local]({{ '/en/rc_local' | relative_url }}).
+If you also need boot-time routing, network priority, or automatic startup behavior, continue with [rc.local](rc_local.md).
 
 ## Related Pages
 
-- [Environment Setup]({{ '/en/environment' | relative_url }})
-- [Livox LiDAR Driver]({{ '/en/livox_ros_driver2' | relative_url }})
-- [Quick Start]({{ '/en/quick_start' | relative_url }})
+- [Environment Setup](environment.md)
+- [Livox LiDAR Driver](../modules/drivers/livox_ros_driver2.md)
+- [Quick Start](../home/quick_start.md)

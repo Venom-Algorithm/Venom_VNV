@@ -1,9 +1,6 @@
 ---
 title: Hunter 底盘驱动
-permalink: /hunter_ros2
-desc: hunter_ros2 — AgileX Hunter 系列底盘 ROS 2 驱动。
-breadcrumb: 硬件驱动
-layout: default
+description: hunter_ros2 — AgileX Hunter 系列底盘 ROS 2 驱动。
 ---
 
 ## 模块定位
@@ -39,7 +36,7 @@ layout: default
 
 这个包依赖：
 
-- [UGV SDK]({{ '/ugv_sdk' | relative_url }})
+- [UGV SDK](ugv_sdk.md)
 - CAN 总线通信链路
 
 Hunter 是转向式底盘，虽然对上层仍然暴露 `/cmd_vel`，但内部运动学与 Scout 的差异较大，因此建议把它当成独立驱动模块理解和调试。
@@ -73,10 +70,10 @@ ros2 launch hunter_base hunter_base.launch.py
 
 ## 相关页面
 
-- [底盘驱动总览]({{ '/chassis_driver' | relative_url }})
-- [UGV SDK]({{ '/ugv_sdk' | relative_url }})
-- [底盘 CAN 部署]({{ '/chassis_can_setup' | relative_url }})
+- [底盘驱动总览](chassis_driver.md)
+- [UGV SDK](ugv_sdk.md)
+- [底盘 CAN 部署](../../deployment/chassis_can_setup.md)
 
 ## 进一步阅读
 
-- [hunter_ros2 README](../driver/hunter_ros2/README.md)
+- [hunter_ros2 README](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/driver/hunter_ros2/README.md)

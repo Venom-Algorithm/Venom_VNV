@@ -1,9 +1,6 @@
 ---
 title: Contact
-permalink: /en/contact
-desc: Issue reporting, collaboration channels, and the project home entry.
-breadcrumb: Support & Community
-layout: default
+description: Issue reporting, collaboration channels, and the project home entry.
 ---
 
 ## Recommended Channels

@@ -1,9 +1,7 @@
 ---
 title: Development Notes
-permalink: /en/development
-desc: Recommended environment baseline, common tools, Git workflow, submodule rules, and debugging notes for team development.
-breadcrumb: Support & Community
-layout: default
+description: Recommended environment baseline, common tools, Git workflow, submodule
+  rules, and debugging notes for team development.
 ---
 
 ## Scope
@@ -17,9 +15,9 @@ This page is for:
 
 For first-time deployment, start with:
 
-- [Quick Start]({{ '/en/quick_start' | relative_url }})
-- [Environment Setup]({{ '/en/environment' | relative_url }})
-- [LiDAR Setup]({{ '/en/lidar_setup' | relative_url }})
+- [Quick Start](../home/quick_start.md)
+- [Environment Setup](../deployment/environment.md)
+- [LiDAR Setup](../deployment/lidar_setup.md)
 
 ## Recommended Baseline
 
@@ -41,10 +39,10 @@ Not everyone needs every dependency. Install by task direction:
 
 - Mid360 / Point-LIO / Fast-LIO:
   - `Livox-SDK2`
-  - see [LiDAR Setup]({{ '/en/lidar_setup' | relative_url }})
+  - see [LiDAR Setup](../deployment/lidar_setup.md)
 - RealSense D435i:
   - `librealsense2`
-  - see [RealSense Setup]({{ '/en/realsense_setup' | relative_url }})
+  - see [RealSense Setup](../deployment/realsense_setup.md)
 - Chassis development:
   - `can-utils`
   - vendor SDK and driver dependencies
@@ -459,7 +457,7 @@ With many contributors working in parallel:
 
 ## Related Pages
 
-- [Quick Start]({{ '/en/quick_start' | relative_url }})
-- [Launch & Use]({{ '/en/launch_usage' | relative_url }})
-- [Contributing]({{ '/en/contributing' | relative_url }})
-- [Updates & Migration]({{ '/en/migration_notes' | relative_url }})
+- [Quick Start](../home/quick_start.md)
+- [Launch & Use](../home/launch_usage.md)
+- [Contributing](contributing.md)
+- [Updates & Migration](migration_notes.md)

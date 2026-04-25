@@ -1,9 +1,7 @@
 ---
 title: Venom VNV
-permalink: /en/
-desc: A general-purpose robotics platform for multi-vehicle systems, navigation, manipulation, auto aim, and multi-module coordination.
-breadcrumb: Home
-layout: default
+description: A general-purpose robotics platform for multi-vehicle systems, navigation,
+  manipulation, auto aim, and multi-module coordination.
 ---
 
 ## Project Positioning
@@ -33,39 +31,39 @@ The repository focuses on reusable engineering capabilities such as:
 ## Quick Start
 
 <div class="card-grid" data-toc-exclude>
-  <a href="{{ '/en/quick_start' | relative_url }}" class="card" style="text-decoration:none">
+  <a href="home/quick_start/" class="card" style="text-decoration:none">
     <h3>⚙️ Quick Start</h3>
     <p>Clone the workspace, install dependencies, and build the project for the first time.</p>
   </a>
-  <a href="{{ '/en/environment' | relative_url }}" class="card" style="text-decoration:none">
+  <a href="deployment/environment/" class="card" style="text-decoration:none">
     <h3>🧰 Environment</h3>
     <p>Prepare Ubuntu, ROS 2, rosdep, VS Code, Clash, and NoMachine.</p>
   </a>
-  <a href="{{ '/en/lidar_setup' | relative_url }}" class="card" style="text-decoration:none">
+  <a href="deployment/lidar_setup/" class="card" style="text-decoration:none">
     <h3>📡 LiDAR Setup</h3>
     <p>Install Livox-SDK2, configure MID360 networking, and verify the LiDAR link.</p>
   </a>
-  <a href="{{ '/en/launch_usage' | relative_url }}" class="card" style="text-decoration:none">
+  <a href="home/launch_usage/" class="card" style="text-decoration:none">
     <h3>🚀 Launch & Use</h3>
     <p>Check common build, rebuild, and launch commands used in daily development.</p>
   </a>
-  <a href="{{ '/en/chassis_can_setup' | relative_url }}" class="card" style="text-decoration:none">
+  <a href="deployment/chassis_can_setup/" class="card" style="text-decoration:none">
     <h3>🛞 Chassis CAN</h3>
     <p>Bring up the chassis CAN interface and verify the low-level communication chain.</p>
   </a>
-  <a href="{{ '/en/piper_can_setup' | relative_url }}" class="card" style="text-decoration:none">
+  <a href="deployment/piper_can_setup/" class="card" style="text-decoration:none">
     <h3>🦾 Arm CAN</h3>
     <p>Detect the Piper CAN adapter, name the interface, and start the arm control chain.</p>
   </a>
-  <a href="{{ '/en/rc_local' | relative_url }}" class="card" style="text-decoration:none">
+  <a href="deployment/rc_local/" class="card" style="text-decoration:none">
     <h3>🔁 rc.local</h3>
     <p>Set up boot-time commands and network-priority initialization.</p>
   </a>
-  <a href="{{ '/en/run_modes' | relative_url }}" class="card" style="text-decoration:none">
+  <a href="deployment/run_modes/" class="card" style="text-decoration:none">
     <h3>🧭 Run Modes</h3>
     <p>Understand the typical bringup combinations used for testing and full-system runs.</p>
   </a>
-  <a href="{{ '/en/system_overview' | relative_url }}" class="card" style="text-decoration:none">
+  <a href="deployment/system_overview/" class="card" style="text-decoration:none">
     <h3>🧩 Topics & TF</h3>
     <p>Review the system-level topic contracts and TF conventions.</p>
   </a>
@@ -121,6 +119,6 @@ The repository includes both built-in packages and external submodules. For a qu
 
 ## Suggested Reading
 
-1. Start from [Quick Start]({{ '/en/quick_start' | relative_url }}) for the standard workspace flow.
-2. Continue with [Environment Setup]({{ '/en/environment' | relative_url }}) and [LiDAR Setup]({{ '/en/lidar_setup' | relative_url }}) for a first deployment.
-3. Move to [Modules & Interfaces]({{ '/en/interface_reference' | relative_url }}) when you need package-level details.
+1. Start from [Quick Start](home/quick_start.md) for the standard workspace flow.
+2. Continue with [Environment Setup](deployment/environment.md) and [LiDAR Setup](deployment/lidar_setup.md) for a first deployment.
+3. Move to [Modules & Interfaces](modules/interface_reference.md) when you need package-level details.

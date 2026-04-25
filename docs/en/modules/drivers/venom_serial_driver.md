@@ -1,9 +1,7 @@
 ---
 title: Serial Driver
-permalink: /en/venom_serial_driver
-desc: venom_serial_driver — Serial communication between the onboard computer and the lower-level controller.
-breadcrumb: Drivers
-layout: default
+description: venom_serial_driver — Serial communication between the onboard computer
+  and the lower-level controller.
 ---
 
 ## Module Role
@@ -22,8 +20,8 @@ This package is often the final bridge between high-level ROS 2 decisions and cu
 
 ## Related Pages
 
-- [Driver Overview]({{ '/en/driver_overview' | relative_url }})
-- [Topic Reference]({{ '/en/topics' | relative_url }})
+- [Driver Overview](index.md)
+- [Topic Reference](../standards/topics.md)
 
 ## Note
 

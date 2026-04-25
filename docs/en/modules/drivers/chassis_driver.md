@@ -1,18 +1,16 @@
 ---
 title: Chassis Driver Overview
-permalink: /en/chassis_driver
-desc: Relationship between scout_ros2, hunter_ros2, and ugv_sdk, plus shared interface constraints.
-breadcrumb: Drivers
-layout: default
+description: Relationship between scout_ros2, hunter_ros2, and ugv_sdk, plus shared
+  interface constraints.
 ---
 
 ## Main Components
 
 The current wheeled-platform chain is built from:
 
-- [Scout Driver]({{ '/en/scout_ros2' | relative_url }})
-- [Hunter Driver]({{ '/en/hunter_ros2' | relative_url }})
-- [UGV SDK]({{ '/en/ugv_sdk' | relative_url }})
+- [Scout Driver](scout_ros2.md)
+- [Hunter Driver](hunter_ros2.md)
+- [UGV SDK](ugv_sdk.md)
 
 ## Shared Contract
 
@@ -31,7 +29,7 @@ No matter whether you use Scout or Hunter, validate the CAN link first, then lau
 
 ## Related Pages
 
-- [Chassis CAN Setup]({{ '/en/chassis_can_setup' | relative_url }})
-- [Scout Driver]({{ '/en/scout_ros2' | relative_url }})
-- [Hunter Driver]({{ '/en/hunter_ros2' | relative_url }})
-- [UGV SDK]({{ '/en/ugv_sdk' | relative_url }})
+- [Chassis CAN Setup](../../deployment/chassis_can_setup.md)
+- [Scout Driver](scout_ros2.md)
+- [Hunter Driver](hunter_ros2.md)
+- [UGV SDK](ugv_sdk.md)

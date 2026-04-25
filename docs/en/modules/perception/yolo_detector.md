@@ -1,9 +1,6 @@
 ---
 title: YOLO Detector
-permalink: /en/yolo_detector
-desc: yolo_detector - General YOLO-based 2D detection module and message set.
-breadcrumb: Perception
-layout: default
+description: yolo_detector - General YOLO-based 2D detection module and message set.
 ---
 
 ## Module Role
@@ -30,9 +27,9 @@ The directory currently contains two ROS 2 packages:
 
 Code entry points:
 
-- Node implementation: [yolo_node.py](/Users/liyh/venom_vnv/perception/yolo_detector/yolo_detector/yolo_node.py)
-- Launch entry: [yolo_detector.launch.py](/Users/liyh/venom_vnv/perception/yolo_detector/launch/yolo_detector.launch.py)
-- Default parameters: [yolo_detector.yaml](/Users/liyh/venom_vnv/perception/yolo_detector/config/yolo_detector.yaml)
+- Node implementation: [yolo_node.py](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/perception/yolo_detector/yolo_detector/yolo_node.py)
+- Launch entry: [yolo_detector.launch.py](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/perception/yolo_detector/launch/yolo_detector.launch.py)
+- Default parameters: [yolo_detector.yaml](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/perception/yolo_detector/config/yolo_detector.yaml)
 
 ## Data Flow
 
@@ -129,7 +126,7 @@ The current launch file exposes three arguments:
 
 Important detail:
 
-- the current [yolo_detector.launch.py](/Users/liyh/venom_vnv/perception/yolo_detector/launch/yolo_detector.launch.py) only forwards these three values to the node
+- the current [yolo_detector.launch.py](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/perception/yolo_detector/launch/yolo_detector.launch.py) only forwards these three values to the node
 - `annotated_image_topic`, `publish_annotated_image`, `confidence_threshold`, `iou_threshold`, `device`, and `class_ids` are already declared in the node, but are not separately exposed in the default launch file
 - if you need to override them temporarily, use `ros2 run ... --ros-args -p ...`, or extend the launch file later
 
@@ -222,7 +219,7 @@ This package is a good fit for:
 
 ## Related Pages
 
-- [Perception]({{ '/en/perception_overview' | relative_url }})
-- [Hikrobot Camera Driver]({{ '/en/ros2_hik_camera' | relative_url }})
-- [Auto Aim Overview]({{ '/en/rm_auto_aim' | relative_url }})
-- [Topic Reference]({{ '/en/topics' | relative_url }})
+- [Perception](index.md)
+- [Hikrobot Camera Driver](../drivers/ros2_hik_camera.md)
+- [Auto Aim Overview](../auto_aim/index.md)
+- [Topic Reference](../standards/topics.md)

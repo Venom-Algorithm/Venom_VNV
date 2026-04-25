@@ -1,9 +1,6 @@
 ---
 title: 应用场景
-permalink: /application_scenarios
-desc: 项目当前主要覆盖的应用方向与使用场景。
-breadcrumb: 支持与社区
-layout: default
+description: 项目当前主要覆盖的应用方向与使用场景。
 ---
 
 ## 当前应用方向

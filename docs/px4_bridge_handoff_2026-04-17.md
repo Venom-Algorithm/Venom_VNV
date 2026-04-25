@@ -1,7 +1,7 @@
 # PX4 Bridge Handoff
 
 Date: 2026-04-17
-Workspace: `/Users/liyh/venom_vnv`
+Workspace: `~/venom_ws/src/venom_vnv`
 
 ## Current Structure
 

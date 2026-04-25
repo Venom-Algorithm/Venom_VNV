@@ -1,9 +1,6 @@
 ---
 title: Ego Planner Swarm
-permalink: /en/ego_planner_swarm
-desc: ego-planner-swarm - ROS 2 UAV local planning and swarm-planning submodule.
-breadcrumb: Planning
-layout: default
+description: ego-planner-swarm - ROS 2 UAV local planning and swarm-planning submodule.
 ---
 
 ## Module Role
@@ -122,6 +119,6 @@ Arguments:
 
 ## Related Pages
 
-- [Planning]({{ '/en/planning_overview' | relative_url }})
-- [PX4 Bridge]({{ '/en/venom_px4_bridge' | relative_url }})
-- [Launch & Use]({{ '/en/launch_usage' | relative_url }})
+- [Planning](index.md)
+- [PX4 Bridge](../drivers/venom_px4_bridge.md)
+- [Launch & Use](../../home/launch_usage.md)

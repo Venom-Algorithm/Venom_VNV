@@ -1,9 +1,6 @@
 ---
 title: 联系我们
-permalink: /contact
-desc: 问题反馈、协作方式与项目主页入口。
-breadcrumb: 支持与社区
-layout: default
+description: 问题反馈、协作方式与项目主页入口。
 ---
 
 ## 建议入口

@@ -1,9 +1,6 @@
 ---
 title: Fast-LIO
-permalink: /en/fast_lio
-desc: FAST-LIO integration notes and interface constraints inside Venom VNV.
-breadcrumb: Modules & Interfaces
-layout: default
+description: FAST-LIO integration notes and interface constraints inside Venom VNV.
 ---
 
 ## Module Role

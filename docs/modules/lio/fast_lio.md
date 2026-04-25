@@ -1,9 +1,6 @@
 ---
 title: Fast-LIO
-permalink: /fast_lio
-desc: Fast-LIO 接入说明与系统内接口约束。
-breadcrumb: 定位层
-layout: default
+description: Fast-LIO 接入说明与系统内接口约束。
 ---
 
 # Fast-LIO
@@ -46,7 +43,7 @@ layout: default
 
 ## 当前使用的配置文件
 
-- 子模块配置：[mid360.yaml](/Users/liyh/venom_vnv/localization/lio/Fast-LIO/config/mid360.yaml)
+- 子模块配置：[mid360.yaml](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/localization/lio/Fast-LIO/config/mid360.yaml)
 
 ## 参数说明
 
@@ -112,5 +109,5 @@ layout: default
 
 ## 相关文档
 
-- [LIO 总览]({{ '/lio_overview' | relative_url }})
-- [Point-LIO]({{ '/point_lio' | relative_url }})
+- [LIO 总览](index.md)
+- [Point-LIO](point_lio.md)

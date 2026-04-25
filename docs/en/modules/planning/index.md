@@ -1,9 +1,7 @@
 ---
 title: Planning
-permalink: /en/planning_overview
-desc: Overview of navigation planners, controllers, and manipulation motion planning modules.
-breadcrumb: Modules & Interfaces
-layout: default
+description: Overview of navigation planners, controllers, and manipulation motion
+  planning modules.
 ---
 
 ## Layer Role
@@ -54,8 +52,8 @@ Those concerns should stay separated.
 
 ## Related Pages
 
-- [Architecture]({{ '/en/architecture' | relative_url }})
-- [Ego Planner Swarm]({{ '/en/ego_planner_swarm' | relative_url }})
-- [Mission]({{ '/en/mission_overview' | relative_url }})
-- [System]({{ '/en/integration_overview' | relative_url }})
-- [Simulation]({{ '/en/simulation_overview' | relative_url }})
+- [Architecture](../architecture.md)
+- [Ego Planner Swarm](ego_planner_swarm.md)
+- [Mission](../mission/index.md)
+- [System](../integration/index.md)
+- [Simulation](../simulation/index.md)

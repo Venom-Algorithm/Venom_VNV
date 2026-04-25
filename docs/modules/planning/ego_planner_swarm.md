@@ -1,9 +1,6 @@
 ---
 title: Ego Planner Swarm
-permalink: /ego_planner_swarm
-desc: ego-planner-swarm - ROS 2 版本无人机局部规划与集群规划子模块。
-breadcrumb: 规划层
-layout: default
+description: ego-planner-swarm - ROS 2 版本无人机局部规划与集群规划子模块。
 ---
 
 ## 模块定位
@@ -122,6 +119,6 @@ ros2 launch ego_planner single_run_in_sim.launch.py use_mockamap:=True use_dynam
 
 ## 相关页面
 
-- [规划层]({{ '/planning_overview' | relative_url }})
-- [PX4 Bridge]({{ '/venom_px4_bridge' | relative_url }})
-- [启动使用]({{ '/launch_usage' | relative_url }})
+- [规划层](index.md)
+- [PX4 Bridge](../drivers/venom_px4_bridge.md)
+- [启动使用](../../home/launch_usage.md)

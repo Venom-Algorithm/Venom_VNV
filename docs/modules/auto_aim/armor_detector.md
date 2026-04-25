@@ -1,9 +1,6 @@
 ---
 title: 装甲板检测
-permalink: /armor_detector
-desc: armor_detector — 基于深度学习识别装甲板并解算 3D 位置。
-breadcrumb: 感知层
-layout: default
+description: armor_detector — 基于深度学习识别装甲板并解算 3D 位置。
 ---
 
 ## 模块定位
@@ -38,12 +35,12 @@ layout: default
 
 当前默认参数文件：
 
-- [armor_detector.yaml](/Users/liyh/venom_vnv/perception/rm_auto_aim/armor_detector/config/armor_detector.yaml)
+- [armor_detector.yaml](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/perception/rm_auto_aim/armor_detector/config/armor_detector.yaml)
 
 实战常用覆盖入口：
 
-- [infantry/node_params.yaml](/Users/liyh/venom_vnv/venom_bringup/config/infantry/node_params.yaml)
-- [sentry/node_params.yaml](/Users/liyh/venom_vnv/venom_bringup/config/sentry/node_params.yaml)
+- [infantry/node_params.yaml](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/venom_bringup/config/infantry/node_params.yaml)
+- [sentry/node_params.yaml](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/venom_bringup/config/sentry/node_params.yaml)
 
 | 参数名 | 作用 | 默认值 |
 | --- | --- | --- |
@@ -102,11 +99,11 @@ ros2 launch armor_detector armor_detector.launch.py
 
 ## 相关页面
 
-- [感知层]({{ '/perception_overview' | relative_url }})
-- [自瞄算法总览]({{ '/rm_auto_aim' | relative_url }})
-- [目标跟踪]({{ '/armor_tracker' | relative_url }})
-- [话题参考]({{ '/topics' | relative_url }})
+- [感知层](../perception/index.md)
+- [自瞄算法总览](index.md)
+- [目标跟踪](armor_tracker.md)
+- [话题参考](../standards/topics.md)
 
 ## 进一步阅读
 
-- [armor_detector README](../../../perception/rm_auto_aim/armor_detector/README.md)
+- [armor_detector README](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/perception/rm_auto_aim/armor_detector/README.md)

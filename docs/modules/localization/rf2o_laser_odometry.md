@@ -1,9 +1,6 @@
 ---
 title: rf2o 激光里程计
-permalink: /rf2o_laser_odometry
-desc: rf2o_laser_odometry — 基于距离流方法的 2D 激光扫描里程计。
-breadcrumb: 定位层
-layout: default
+description: rf2o_laser_odometry — 基于距离流方法的 2D 激光扫描里程计。
 ---
 
 ## 模块定位
@@ -31,7 +28,7 @@ layout: default
 
 当前仓库里最直接的启动入口是：
 
-- [`rf2o_laser_odometry.launch.py`](/Users/liyh/venom_vnv/localization/lio/rf2o_laser_odometry/launch/rf2o_laser_odometry.launch.py)
+- [`rf2o_laser_odometry.launch.py`](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/localization/lio/rf2o_laser_odometry/launch/rf2o_laser_odometry.launch.py)
 
 这个 launch 里已经直接写入了常用运行参数。
 
@@ -57,7 +54,7 @@ ros2 launch rf2o_laser_odometry rf2o_laser_odometry.launch.py
 
 在当前系统里，它更像是“互补定位模块”，而不是取代 3D LIO：
 
-- [Point-LIO]({{ '/point_lio' | relative_url }}) / [Fast-LIO]({{ '/fast_lio' | relative_url }})：主 3D 激光惯性里程计
+- [Point-LIO](../lio/point_lio.md) / [Fast-LIO](../lio/fast_lio.md)：主 3D 激光惯性里程计
 - `rf2o_laser_odometry`：平面场景下的轻量补充
 
 ## 调试重点
@@ -68,9 +65,9 @@ ros2 launch rf2o_laser_odometry rf2o_laser_odometry.launch.py
 
 ## 相关页面
 
-- [定位模块总览]({{ '/localization_overview' | relative_url }})
-- [LIO 总览]({{ '/lio_overview' | relative_url }})
+- [定位模块总览](index.md)
+- [LIO 总览](../lio/index.md)
 
 ## 进一步阅读
 
-- [rf2o_laser_odometry README](../../../localization/lio/rf2o_laser_odometry/README.md)
+- [rf2o_laser_odometry README](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/localization/lio/rf2o_laser_odometry/README.md)

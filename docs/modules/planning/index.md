@@ -1,9 +1,6 @@
 ---
 title: 规划层
-permalink: /planning_overview
-desc: 导航规划、controller 与机械臂运动规划相关模块总览。
-breadcrumb: 模块与接口
-layout: default
+description: 导航规划、controller 与机械臂运动规划相关模块总览。
 ---
 
 ## 层级职责
@@ -72,8 +69,8 @@ planning/
 
 ## 相关页面
 
-- [总体架构]({{ '/architecture' | relative_url }})
-- [Ego Planner Swarm]({{ '/ego_planner_swarm' | relative_url }})
-- [任务层]({{ '/mission_overview' | relative_url }})
-- [系统层]({{ '/integration_overview' | relative_url }})
-- [仿真层]({{ '/simulation_overview' | relative_url }})
+- [总体架构](../architecture.md)
+- [Ego Planner Swarm](ego_planner_swarm.md)
+- [任务层](../mission/index.md)
+- [系统层](../integration/index.md)
+- [仿真层](../simulation/index.md)

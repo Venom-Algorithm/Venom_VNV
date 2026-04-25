@@ -1,9 +1,6 @@
 ---
 title: 话题参考
-permalink: /topics
-desc: 系统级 ROS2 话题、数据流图、自定义消息字段。
-breadcrumb: 快速开始
-layout: default
+description: 系统级 ROS2 话题、数据流图、自定义消息字段。
 ---
 
 # 话题总览

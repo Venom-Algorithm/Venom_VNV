@@ -1,9 +1,7 @@
 ---
 title: Architecture
-permalink: /en/architecture
-desc: Understand the frozen layered structure of drivers, perception, localization, planning, mission, system, and simulation.
-breadcrumb: Modules & Interfaces
-layout: default
+description: Understand the frozen layered structure of drivers, perception, localization,
+  planning, mission, system, and simulation.
 ---
 
 ## System View

@@ -1,9 +1,6 @@
 ---
 title: UGV SDK
-permalink: /en/ugv_sdk
-desc: ugv_sdk — Low-level C++ SDK for AgileX / Weston Robot wheeled platforms.
-breadcrumb: Drivers
-layout: default
+description: ugv_sdk — Low-level C++ SDK for AgileX / Weston Robot wheeled platforms.
 ---
 
 ## Module Role
@@ -30,6 +27,6 @@ scout_ros2 / hunter_ros2 -> ugv_sdk -> CAN -> chassis controller
 
 ## Recommended Reading
 
-- [Scout Driver]({{ '/en/scout_ros2' | relative_url }})
-- [Hunter Driver]({{ '/en/hunter_ros2' | relative_url }})
-- [Chassis CAN Setup]({{ '/en/chassis_can_setup' | relative_url }})
+- [Scout Driver](scout_ros2.md)
+- [Hunter Driver](hunter_ros2.md)
+- [Chassis CAN Setup](../../deployment/chassis_can_setup.md)

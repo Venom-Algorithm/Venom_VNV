@@ -1,9 +1,6 @@
 ---
 title: Topics & TF Overview
-permalink: /en/system_overview
-desc: System-level topic map, TF relationships, and key data flow conventions.
-breadcrumb: Deployment & Usage
-layout: default
+description: System-level topic map, TF relationships, and key data flow conventions.
 ---
 
 ## Why This Page Exists
@@ -34,5 +31,5 @@ Chassis / arm / controller links -> dedicated drivers -> robot actions
 
 ## Further Reading
 
-- [Topic Reference]({{ '/en/topics' | relative_url }})
-- [TF Tree]({{ '/en/tf_tree' | relative_url }})
+- [Topic Reference](../modules/standards/topics.md)
+- [TF Tree](../modules/standards/tf_tree.md)

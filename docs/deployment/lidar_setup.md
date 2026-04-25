@@ -1,9 +1,6 @@
 ---
 title: 雷达配置
-permalink: /lidar_setup
-desc: Livox Mid360 与 livox_ros_driver2 的安装、网络配置和基础验证。
-breadcrumb: 部署与使用
-layout: default
+description: Livox Mid360 与 livox_ros_driver2 的安装、网络配置和基础验证。
 ---
 
 ## 安装 Livox-SDK2
@@ -65,7 +62,7 @@ Mid360 默认地址通常为：
 
 网络优先级示意：
 
-![网络优先级]({{ '/assets/network-priority.png' | relative_url }})
+![网络优先级](../assets/network-priority.png)
 
 ## 修改 MID360 配置文件
 
@@ -96,7 +93,7 @@ Mid360 默认地址通常为：
 
 配置文件示意：
 
-![MID360 配置]({{ '/assets/mid360-config.png' | relative_url }})
+![MID360 配置](../assets/mid360-config.png)
 
 如果还需要同步检查 launch 文件中的相关配置，可参考：
 
@@ -105,7 +102,7 @@ Mid360 默认地址通常为：
 
 对应示意：
 
-![Launch 配置]({{ '/assets/mid360-launch-config.png' | relative_url }})
+![Launch 配置](../assets/mid360-launch-config.png)
 
 ## 雷达验证
 
@@ -127,14 +124,14 @@ ros2 launch livox_ros_driver2 rviz_MID360_launch.py
 
 启动前如需调整网络路由，可参考：
 
-![路由示意]({{ '/assets/route-adjustment.png' | relative_url }})
+![路由示意](../assets/route-adjustment.png)
 
 ## 下一步
 
-如果你还需要处理网络优先级、静态路由或开机自动执行这些命令，请继续阅读 [rc.local]({{ '/rc_local' | relative_url }}).
+如果你还需要处理网络优先级、静态路由或开机自动执行这些命令，请继续阅读 [rc.local](rc_local.md).
 
 ## 相关文档
 
-- [环境准备]({{ '/environment' | relative_url }})
-- [Livox 雷达驱动]({{ '/livox_ros_driver2' | relative_url }})
-- [快速开始]({{ '/quick_start' | relative_url }})
+- [环境准备](environment.md)
+- [Livox 雷达驱动](../modules/drivers/livox_ros_driver2.md)
+- [快速开始](../home/quick_start.md)

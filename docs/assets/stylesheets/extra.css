@@ -1,0 +1,28 @@
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0.8rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.card-grid .card {
+  display: block;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.4rem;
+  padding: 0.9rem;
+  color: var(--md-default-fg-color);
+}
+
+.card-grid .card:hover {
+  border-color: var(--md-accent-fg-color);
+}
+
+.card-grid .card h3 {
+  margin-top: 0;
+}
+
+.home-overview-table th:first-child,
+.home-overview-table td:first-child {
+  min-width: 7rem;
+  width: 18%;
+}

@@ -1,9 +1,7 @@
 ---
 title: Modules & Interfaces
-permalink: /en/interface_reference
-desc: High-level structure of the system modules, interface constraints, and entry points to sub-documents.
-breadcrumb: Modules & Interfaces
-layout: default
+description: High-level structure of the system modules, interface constraints, and
+  entry points to sub-documents.
 ---
 
 ## Reading Guide
@@ -15,17 +13,17 @@ This section is meant to answer two questions:
 
 ## Main Categories
 
-- [Architecture]({{ '/en/architecture' | relative_url }})
-- [Drivers]({{ '/en/driver_overview' | relative_url }})
-- [Perception]({{ '/en/perception_overview' | relative_url }})
-- [Localization]({{ '/en/localization_overview' | relative_url }})
-- [Planning]({{ '/en/planning_overview' | relative_url }})
-- [Ego Planner Swarm]({{ '/en/ego_planner_swarm' | relative_url }})
-- [Mission]({{ '/en/mission_overview' | relative_url }})
-- [System]({{ '/en/integration_overview' | relative_url }})
-- [Simulation]({{ '/en/simulation_overview' | relative_url }})
-- [Topic Reference]({{ '/en/topics' | relative_url }})
-- [TF Tree]({{ '/en/tf_tree' | relative_url }})
+- [Architecture](architecture.md)
+- [Drivers](drivers/index.md)
+- [Perception](perception/index.md)
+- [Localization](localization/index.md)
+- [Planning](planning/index.md)
+- [Ego Planner Swarm](planning/ego_planner_swarm.md)
+- [Mission](mission/index.md)
+- [System](integration/index.md)
+- [Simulation](simulation/index.md)
+- [Topic Reference](standards/topics.md)
+- [TF Tree](standards/tf_tree.md)
 
 ## Recommended Layering
 

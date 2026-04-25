@@ -1,9 +1,6 @@
 ---
 title: Robot Description
-permalink: /en/venom_robot_description
-desc: venom_robot_description — Robot model, URDF, and TF description package.
-breadcrumb: System
-layout: default
+description: venom_robot_description — Robot model, URDF, and TF description package.
 ---
 
 ## Module Role

@@ -1,9 +1,7 @@
 ---
 title: Piper Arm Driver
-permalink: /en/piper_ros
-desc: piper_ros — ROS 2 control, description, and simulation packages for the AgileX Piper arm.
-breadcrumb: Drivers
-layout: default
+description: piper_ros — ROS 2 control, description, and simulation packages for the
+  AgileX Piper arm.
 ---
 
 ## Module Role
@@ -44,6 +42,6 @@ ros2 launch piper start_single_piper_rviz.launch.py
 
 ## Related Pages
 
-- [Arm CAN Setup]({{ '/en/piper_can_setup' | relative_url }})
-- [System Bringup]({{ '/en/venom_bringup' | relative_url }})
-- [Topic Reference]({{ '/en/topics' | relative_url }})
+- [Arm CAN Setup](../../deployment/piper_can_setup.md)
+- [System Bringup](../integration/venom_bringup.md)
+- [Topic Reference](../standards/topics.md)

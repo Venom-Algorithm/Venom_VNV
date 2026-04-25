@@ -1,9 +1,6 @@
 ---
 title: 仿真层
-permalink: /simulation_overview
-desc: 与真实部署链路解耦的仿真工作区与仿真基线总览。
-breadcrumb: 模块与接口
-layout: default
+description: 与真实部署链路解耦的仿真工作区与仿真基线总览。
 ---
 
 ## 层级职责
@@ -16,7 +13,7 @@ layout: default
 
 ## 当前子项目
 
-- [导航仿真工作区]({{ '/venom_nav_simulation' | relative_url }})
+- [导航仿真工作区](venom_nav_simulation.md)
 
 ## 为什么单独成层
 
@@ -77,6 +74,6 @@ make clean
 
 ## 相关页面
 
-- [总体架构]({{ '/architecture' | relative_url }})
-- [定位层]({{ '/localization_overview' | relative_url }})
-- [规划层]({{ '/planning_overview' | relative_url }})
+- [总体架构](../architecture.md)
+- [定位层](../localization/index.md)
+- [规划层](../planning/index.md)

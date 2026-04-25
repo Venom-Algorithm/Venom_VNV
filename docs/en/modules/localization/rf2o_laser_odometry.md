@@ -1,9 +1,6 @@
 ---
 title: rf2o Laser Odometry
-permalink: /en/rf2o_laser_odometry
-desc: rf2o_laser_odometry — 2D laser odometry based on range flow.
-breadcrumb: Localization
-layout: default
+description: rf2o_laser_odometry — 2D laser odometry based on range flow.
 ---
 
 ## Module Role

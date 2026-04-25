@@ -1,9 +1,7 @@
 ---
 title: Chassis CAN Setup
-permalink: /en/chassis_can_setup
-desc: Initialize the chassis CAN adapter, bring up the interface, and validate the Scout chain.
-breadcrumb: Deployment & Usage
-layout: default
+description: Initialize the chassis CAN adapter, bring up the interface, and validate
+  the Scout chain.
 ---
 
 ## Scope
@@ -101,9 +99,9 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
 ### CAN needs to be reconfigured after every boot
 
-If you want boot-time setup, combine this page with [rc.local]({{ '/en/rc_local' | relative_url }}).
+If you want boot-time setup, combine this page with [rc.local](rc_local.md).
 
 ## Related Pages
 
-- [Chassis Driver Overview]({{ '/en/chassis_driver' | relative_url }})
-- [rc.local]({{ '/en/rc_local' | relative_url }})
+- [Chassis Driver Overview](../modules/drivers/chassis_driver.md)
+- [rc.local](rc_local.md)

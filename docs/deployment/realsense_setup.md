@@ -1,9 +1,6 @@
 ---
 title: RealSense 配置
-permalink: /realsense_setup
-desc: Intel RealSense D435 / D435i 的 librealsense、ROS 2 wrapper 与仓库内基础验证流程。
-breadcrumb: 部署与使用
-layout: default
+description: Intel RealSense D435 / D435i 的 librealsense、ROS 2 wrapper 与仓库内基础验证流程。
 ---
 
 ## 适用范围
@@ -82,7 +79,7 @@ g++ -std=c++11 filename.cpp -lrealsense2
 
 ## 安装 ROS 2 wrapper
 
-本仓库中的 [`d435i_test.launch.py`](/Users/liyh/venom_vnv/venom_bringup/launch/examples/d435i_test.launch.py) 会调用 `realsense2_camera` 包，所以还需要准备对应的 ROS 2 wrapper。
+本仓库中的 [`d435i_test.launch.py`](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/venom_bringup/launch/examples/d435i_test.launch.py) 会调用 `realsense2_camera` 包，所以还需要准备对应的 ROS 2 wrapper。
 
 官方 `realsense-ros` 文档给出的 Debian 安装方式是：
 
@@ -151,5 +148,5 @@ ros2 launch venom_bringup d435i_test.launch.py
 
 ## 相关文档
 
-- [环境准备]({{ '/environment' | relative_url }})
-- [启动使用]({{ '/launch_usage' | relative_url }})
+- [环境准备](environment.md)
+- [启动使用](../home/launch_usage.md)

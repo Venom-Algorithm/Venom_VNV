@@ -1,9 +1,6 @@
 ---
 title: 底盘 CAN 部署
-permalink: /chassis_can_setup
-desc: Scout Mini 底盘的 CAN 适配器初始化、接口拉起与 ROS 2 启动方式。
-breadcrumb: 部署与使用
-layout: default
+description: Scout Mini 底盘的 CAN 适配器初始化、接口拉起与 ROS 2 启动方式。
 ---
 
 ## 适用范围
@@ -120,9 +117,9 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
 ### 每次开机都要重新执行命令
 
-如果你希望开机后自动配置 CAN 和路由，可以结合 [rc.local]({{ '/rc_local' | relative_url }}) 处理。
+如果你希望开机后自动配置 CAN 和路由，可以结合 [rc.local](rc_local.md) 处理。
 
 ## 相关文档
 
-- [底盘驱动]({{ '/chassis_driver' | relative_url }})
-- [rc.local]({{ '/rc_local' | relative_url }})
+- [底盘驱动](../modules/drivers/chassis_driver.md)
+- [rc.local](rc_local.md)

@@ -1,9 +1,6 @@
 ---
 title: Topic Reference
-permalink: /en/topics
-desc: System-level ROS 2 topics, data flow, and important interface fields.
-breadcrumb: Quick Start
-layout: default
+description: System-level ROS 2 topics, data flow, and important interface fields.
 ---
 
 ## Goal

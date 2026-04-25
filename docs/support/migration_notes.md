@@ -1,9 +1,6 @@
 ---
 title: 更新与迁移
-permalink: /migration_notes
-desc: 仓库地址迁移、submodule 策略与版本兼容说明。
-breadcrumb: 支持与社区
-layout: default
+description: 仓库地址迁移、submodule 策略与版本兼容说明。
 ---
 
 ## 当前策略

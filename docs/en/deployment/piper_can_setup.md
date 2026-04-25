@@ -1,9 +1,6 @@
 ---
 title: Arm CAN Setup
-permalink: /en/piper_can_setup
-desc: Detect, name, bring up, and validate the Piper CAN interface.
-breadcrumb: Deployment & Usage
-layout: default
+description: Detect, name, bring up, and validate the Piper CAN interface.
 ---
 
 ## Scope
@@ -121,6 +118,6 @@ ros2 launch piper start_single_piper_rviz.launch.py can_port:=can_piper
 
 ## Related Pages
 
-- [Piper Arm Driver]({{ '/en/piper_ros' | relative_url }})
-- [Chassis CAN Setup]({{ '/en/chassis_can_setup' | relative_url }})
-- [rc.local]({{ '/en/rc_local' | relative_url }})
+- [Piper Arm Driver](../modules/drivers/piper_ros.md)
+- [Chassis CAN Setup](chassis_can_setup.md)
+- [rc.local](rc_local.md)

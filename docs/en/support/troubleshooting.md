@@ -1,9 +1,6 @@
 ---
 title: Troubleshooting
-permalink: /en/troubleshooting
-desc: A practical entry point for debugging by subsystem.
-breadcrumb: Support & Community
-layout: default
+description: A practical entry point for debugging by subsystem.
 ---
 
 ## Recommended Order
@@ -17,10 +14,10 @@ When something does not work, debug from bottom to top:
 
 ## By Subsystem
 
-- LiDAR issues: start from [LiDAR Setup]({{ '/en/lidar_setup' | relative_url }})
-- Chassis CAN issues: start from [Chassis CAN Setup]({{ '/en/chassis_can_setup' | relative_url }})
-- Arm CAN issues: start from [Arm CAN Setup]({{ '/en/piper_can_setup' | relative_url }})
-- Bringup issues: start from [System Bringup]({{ '/en/venom_bringup' | relative_url }})
+- LiDAR issues: start from [LiDAR Setup](../deployment/lidar_setup.md)
+- Chassis CAN issues: start from [Chassis CAN Setup](../deployment/chassis_can_setup.md)
+- Arm CAN issues: start from [Arm CAN Setup](../deployment/piper_can_setup.md)
+- Bringup issues: start from [System Bringup](../modules/integration/venom_bringup.md)
 
 ## Principle
 

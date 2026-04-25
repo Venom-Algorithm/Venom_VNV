@@ -1,9 +1,6 @@
 ---
 title: 导航仿真工作区
-permalink: /venom_nav_simulation
-desc: venom_nav_simulation — MID360、Gazebo、LIO 与 Nav2 联调用的独立仿真工作区。
-breadcrumb: 仿真层
-layout: default
+description: venom_nav_simulation — MID360、Gazebo、LIO 与 Nav2 联调用的独立仿真工作区。
 ---
 
 ## 模块定位
@@ -106,6 +103,6 @@ make ci-build
 
 ## 相关页面
 
-- [仿真层]({{ '/simulation_overview' | relative_url }})
-- [定位层]({{ '/localization_overview' | relative_url }})
-- [规划层]({{ '/planning_overview' | relative_url }})
+- [仿真层](index.md)
+- [定位层](../localization/index.md)
+- [规划层](../planning/index.md)

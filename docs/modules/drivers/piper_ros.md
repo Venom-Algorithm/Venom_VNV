@@ -1,9 +1,6 @@
 ---
 title: Piper 机械臂驱动
-permalink: /piper_ros
-desc: piper_ros — AgileX Piper 机械臂 ROS 2 控制、描述与仿真接口。
-breadcrumb: 硬件驱动
-layout: default
+description: piper_ros — AgileX Piper 机械臂 ROS 2 控制、描述与仿真接口。
 ---
 
 ## 模块定位
@@ -93,11 +90,11 @@ ros2 launch piper start_single_piper_rviz.launch.py
 
 ## 相关页面
 
-- [驱动层总览]({{ '/driver_overview' | relative_url }})
-- [机械臂 CAN 部署]({{ '/piper_can_setup' | relative_url }})
-- [系统启动]({{ '/venom_bringup' | relative_url }})
-- [话题参考]({{ '/topics' | relative_url }})
+- [驱动层总览](index.md)
+- [机械臂 CAN 部署](../../deployment/piper_can_setup.md)
+- [系统启动](../integration/venom_bringup.md)
+- [话题参考](../standards/topics.md)
 
 ## 进一步阅读
 
-- [piper_ros README](../driver/piper_ros/README.MD)
+- [piper_ros README](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/driver/piper_ros/README.MD)

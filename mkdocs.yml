@@ -1,0 +1,289 @@
+site_name: Venom VNV Docs
+site_description: 基于 ROS 2 Humble 的通用机器人系统文档
+site_url: https://venom-algorithm.github.io/Venom_VNV/
+repo_url: https://github.com/Venom-Algorithm/Venom_VNV
+repo_name: Venom-Algorithm/Venom_VNV
+docs_dir: docs
+site_dir: site
+use_directory_urls: true
+
+theme:
+  name: material
+  language: zh
+  features:
+    - content.code.copy
+    - navigation.sections
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - toc.follow
+  palette:
+    - scheme: slate
+      primary: teal
+      accent: cyan
+
+extra:
+  alternate:
+    - name: 中文
+      link: /Venom_VNV/
+      lang: zh
+    - name: English
+      link: /Venom_VNV/en/
+      lang: en
+
+extra_css:
+  - assets/stylesheets/extra.css
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+
+plugins:
+  - search:
+      lang:
+        - zh
+        - en
+  - redirects:
+      redirect_maps:
+        home/index.md: index.md
+        quick_start.md: home/quick_start.md
+        launch_usage.md: home/launch_usage.md
+        environment.md: deployment/environment.md
+        lidar_setup.md: deployment/lidar_setup.md
+        realsense_setup.md: deployment/realsense_setup.md
+        chassis_can_setup.md: deployment/chassis_can_setup.md
+        piper_can_setup.md: deployment/piper_can_setup.md
+        rc_local.md: deployment/rc_local.md
+        run_modes.md: deployment/run_modes.md
+        system_overview.md: deployment/system_overview.md
+        interface_reference.md: modules/interface_reference.md
+        architecture.md: modules/architecture.md
+        driver_overview.md: modules/drivers/index.md
+        livox_ros_driver2.md: modules/drivers/livox_ros_driver2.md
+        ros2_hik_camera.md: modules/drivers/ros2_hik_camera.md
+        chassis_driver.md: modules/drivers/chassis_driver.md
+        scout_ros2.md: modules/drivers/scout_ros2.md
+        hunter_ros2.md: modules/drivers/hunter_ros2.md
+        ugv_sdk.md: modules/drivers/ugv_sdk.md
+        piper_ros.md: modules/drivers/piper_ros.md
+        venom_px4_bridge.md: modules/drivers/venom_px4_bridge.md
+        venom_serial_driver.md: modules/drivers/venom_serial_driver.md
+        perception_overview.md: modules/perception/index.md
+        rm_auto_aim.md: modules/auto_aim/index.md
+        armor_detector.md: modules/auto_aim/armor_detector.md
+        armor_tracker.md: modules/auto_aim/armor_tracker.md
+        yolo_detector.md: modules/perception/yolo_detector.md
+        localization_overview.md: modules/localization/index.md
+        lio_overview.md: modules/lio/index.md
+        point_lio.md: modules/lio/point_lio.md
+        fast_lio.md: modules/lio/fast_lio.md
+        rf2o_laser_odometry.md: modules/localization/rf2o_laser_odometry.md
+        small_gicp_relocalization.md: modules/localization/small_gicp_relocalization.md
+        planning_overview.md: modules/planning/index.md
+        ego_planner_swarm.md: modules/planning/ego_planner_swarm.md
+        mission_overview.md: modules/mission/index.md
+        integration_overview.md: modules/integration/index.md
+        venom_bringup.md: modules/integration/venom_bringup.md
+        venom_robot_description.md: modules/integration/venom_robot_description.md
+        simulation_overview.md: modules/simulation/index.md
+        venom_nav_simulation.md: modules/simulation/venom_nav_simulation.md
+        topics.md: modules/standards/topics.md
+        tf_tree.md: modules/standards/tf_tree.md
+        development.md: support/development.md
+        application_scenarios.md: support/application_scenarios.md
+        faq.md: support/faq.md
+        troubleshooting.md: support/troubleshooting.md
+        migration_notes.md: support/migration_notes.md
+        contact.md: support/contact.md
+        contributing.md: support/contributing.md
+        en/home/index.md: en/index.md
+        en/quick_start.md: en/home/quick_start.md
+        en/launch_usage.md: en/home/launch_usage.md
+        en/environment.md: en/deployment/environment.md
+        en/lidar_setup.md: en/deployment/lidar_setup.md
+        en/realsense_setup.md: en/deployment/realsense_setup.md
+        en/chassis_can_setup.md: en/deployment/chassis_can_setup.md
+        en/piper_can_setup.md: en/deployment/piper_can_setup.md
+        en/rc_local.md: en/deployment/rc_local.md
+        en/run_modes.md: en/deployment/run_modes.md
+        en/system_overview.md: en/deployment/system_overview.md
+        en/interface_reference.md: en/modules/interface_reference.md
+        en/architecture.md: en/modules/architecture.md
+        en/driver_overview.md: en/modules/drivers/index.md
+        en/livox_ros_driver2.md: en/modules/drivers/livox_ros_driver2.md
+        en/ros2_hik_camera.md: en/modules/drivers/ros2_hik_camera.md
+        en/chassis_driver.md: en/modules/drivers/chassis_driver.md
+        en/scout_ros2.md: en/modules/drivers/scout_ros2.md
+        en/hunter_ros2.md: en/modules/drivers/hunter_ros2.md
+        en/ugv_sdk.md: en/modules/drivers/ugv_sdk.md
+        en/piper_ros.md: en/modules/drivers/piper_ros.md
+        en/venom_px4_bridge.md: en/modules/drivers/venom_px4_bridge.md
+        en/venom_serial_driver.md: en/modules/drivers/venom_serial_driver.md
+        en/perception_overview.md: en/modules/perception/index.md
+        en/rm_auto_aim.md: en/modules/auto_aim/index.md
+        en/armor_detector.md: en/modules/auto_aim/armor_detector.md
+        en/armor_tracker.md: en/modules/auto_aim/armor_tracker.md
+        en/yolo_detector.md: en/modules/perception/yolo_detector.md
+        en/localization_overview.md: en/modules/localization/index.md
+        en/lio_overview.md: en/modules/lio/index.md
+        en/point_lio.md: en/modules/lio/point_lio.md
+        en/fast_lio.md: en/modules/lio/fast_lio.md
+        en/rf2o_laser_odometry.md: en/modules/localization/rf2o_laser_odometry.md
+        en/small_gicp_relocalization.md: en/modules/localization/small_gicp_relocalization.md
+        en/planning_overview.md: en/modules/planning/index.md
+        en/ego_planner_swarm.md: en/modules/planning/ego_planner_swarm.md
+        en/mission_overview.md: en/modules/mission/index.md
+        en/integration_overview.md: en/modules/integration/index.md
+        en/venom_bringup.md: en/modules/integration/venom_bringup.md
+        en/venom_robot_description.md: en/modules/integration/venom_robot_description.md
+        en/simulation_overview.md: en/modules/simulation/index.md
+        en/venom_nav_simulation.md: en/modules/simulation/venom_nav_simulation.md
+        en/topics.md: en/modules/standards/topics.md
+        en/tf_tree.md: en/modules/standards/tf_tree.md
+        en/development.md: en/support/development.md
+        en/application_scenarios.md: en/support/application_scenarios.md
+        en/faq.md: en/support/faq.md
+        en/troubleshooting.md: en/support/troubleshooting.md
+        en/migration_notes.md: en/support/migration_notes.md
+        en/contact.md: en/support/contact.md
+        en/contributing.md: en/support/contributing.md
+
+nav:
+  - 首页:
+      - 项目首页: index.md
+      - 快速开始: home/quick_start.md
+      - 启动使用: home/launch_usage.md
+  - 部署与使用:
+      - 环境准备: deployment/environment.md
+      - 雷达配置: deployment/lidar_setup.md
+      - RealSense 配置: deployment/realsense_setup.md
+      - 底盘 CAN 部署: deployment/chassis_can_setup.md
+      - 机械臂 CAN 部署: deployment/piper_can_setup.md
+      - rc.local: deployment/rc_local.md
+      - 运行模式: deployment/run_modes.md
+      - 话题与 TF 总览: deployment/system_overview.md
+  - 模块与接口:
+      - 总体入口: modules/interface_reference.md
+      - 总体架构: modules/architecture.md
+      - 驱动层:
+          - 驱动层总览: modules/drivers/index.md
+          - Livox 雷达驱动: modules/drivers/livox_ros_driver2.md
+          - 海康相机驱动: modules/drivers/ros2_hik_camera.md
+          - 底盘驱动总览: modules/drivers/chassis_driver.md
+          - Scout 底盘驱动: modules/drivers/scout_ros2.md
+          - Hunter 底盘驱动: modules/drivers/hunter_ros2.md
+          - UGV SDK: modules/drivers/ugv_sdk.md
+          - Piper 机械臂驱动: modules/drivers/piper_ros.md
+          - PX4 Bridge: modules/drivers/venom_px4_bridge.md
+          - 串口通信驱动: modules/drivers/venom_serial_driver.md
+      - 感知层:
+          - 感知层总览: modules/perception/index.md
+          - 自瞄算法总览: modules/auto_aim/index.md
+          - 装甲板检测: modules/auto_aim/armor_detector.md
+          - 目标跟踪: modules/auto_aim/armor_tracker.md
+          - YOLO Detector: modules/perception/yolo_detector.md
+      - 定位层:
+          - 定位层总览: modules/localization/index.md
+          - LIO 总览: modules/lio/index.md
+          - Point-LIO: modules/lio/point_lio.md
+          - Fast-LIO: modules/lio/fast_lio.md
+          - rf2o 激光里程计: modules/localization/rf2o_laser_odometry.md
+          - 重定位: modules/localization/small_gicp_relocalization.md
+      - 规划层:
+          - 规划层总览: modules/planning/index.md
+          - Ego Planner Swarm: modules/planning/ego_planner_swarm.md
+      - 任务层: modules/mission/index.md
+      - 系统层:
+          - 系统层总览: modules/integration/index.md
+          - 系统启动: modules/integration/venom_bringup.md
+          - 机器人描述: modules/integration/venom_robot_description.md
+      - 仿真层:
+          - 仿真层总览: modules/simulation/index.md
+          - 导航仿真工作区: modules/simulation/venom_nav_simulation.md
+      - 接口规范:
+          - 话题参考: modules/standards/topics.md
+          - TF 树: modules/standards/tf_tree.md
+  - 支持与社区:
+      - 开发说明: support/development.md
+      - 应用场景: support/application_scenarios.md
+      - 常见问题: support/faq.md
+      - 故障排查: support/troubleshooting.md
+      - 更新与迁移: support/migration_notes.md
+      - 联系我们: support/contact.md
+      - 贡献指南: support/contributing.md
+      - 交接记录:
+          - Point-LIO 交接: point_lio_handoff_2026-04-16.md
+          - PX4 Bridge 交接: px4_bridge_handoff_2026-04-17.md
+  - English:
+      - Home: en/index.md
+      - Quick Start: en/home/quick_start.md
+      - Launch & Use: en/home/launch_usage.md
+      - Deployment & Usage:
+          - Environment Setup: en/deployment/environment.md
+          - LiDAR Setup: en/deployment/lidar_setup.md
+          - RealSense Setup: en/deployment/realsense_setup.md
+          - Chassis CAN Setup: en/deployment/chassis_can_setup.md
+          - Arm CAN Setup: en/deployment/piper_can_setup.md
+          - rc.local: en/deployment/rc_local.md
+          - Run Modes: en/deployment/run_modes.md
+          - Topics & TF Overview: en/deployment/system_overview.md
+      - Modules & Interfaces:
+          - Main Entry: en/modules/interface_reference.md
+          - Architecture: en/modules/architecture.md
+          - Drivers:
+              - Drivers Overview: en/modules/drivers/index.md
+              - Livox LiDAR Driver: en/modules/drivers/livox_ros_driver2.md
+              - Hikrobot Camera Driver: en/modules/drivers/ros2_hik_camera.md
+              - Chassis Driver Overview: en/modules/drivers/chassis_driver.md
+              - Scout Driver: en/modules/drivers/scout_ros2.md
+              - Hunter Driver: en/modules/drivers/hunter_ros2.md
+              - UGV SDK: en/modules/drivers/ugv_sdk.md
+              - Piper Arm Driver: en/modules/drivers/piper_ros.md
+              - PX4 Bridge: en/modules/drivers/venom_px4_bridge.md
+              - Serial Driver: en/modules/drivers/venom_serial_driver.md
+          - Perception:
+              - Perception Overview: en/modules/perception/index.md
+              - Auto Aim Overview: en/modules/auto_aim/index.md
+              - Armor Detection: en/modules/auto_aim/armor_detector.md
+              - Target Tracking: en/modules/auto_aim/armor_tracker.md
+              - YOLO Detector: en/modules/perception/yolo_detector.md
+          - Localization:
+              - Localization Overview: en/modules/localization/index.md
+              - LIO Overview: en/modules/lio/index.md
+              - Point-LIO: en/modules/lio/point_lio.md
+              - Fast-LIO: en/modules/lio/fast_lio.md
+              - rf2o Laser Odometry: en/modules/localization/rf2o_laser_odometry.md
+              - Relocalization: en/modules/localization/small_gicp_relocalization.md
+          - Planning:
+              - Planning Overview: en/modules/planning/index.md
+              - Ego Planner Swarm: en/modules/planning/ego_planner_swarm.md
+          - Mission: en/modules/mission/index.md
+          - System:
+              - System Overview: en/modules/integration/index.md
+              - System Bringup: en/modules/integration/venom_bringup.md
+              - Robot Description: en/modules/integration/venom_robot_description.md
+          - Simulation:
+              - Simulation Overview: en/modules/simulation/index.md
+              - Navigation Simulation Workspace: en/modules/simulation/venom_nav_simulation.md
+          - Interface Standards:
+              - Topic Reference: en/modules/standards/topics.md
+              - TF Tree: en/modules/standards/tf_tree.md
+      - Support & Community:
+          - Development Notes: en/support/development.md
+          - Application Scenarios: en/support/application_scenarios.md
+          - FAQ: en/support/faq.md
+          - Troubleshooting: en/support/troubleshooting.md
+          - Updates & Migration: en/support/migration_notes.md
+          - Contact: en/support/contact.md
+          - Contributing: en/support/contributing.md

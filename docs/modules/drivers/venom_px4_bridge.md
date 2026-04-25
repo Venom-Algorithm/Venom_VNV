@@ -1,9 +1,6 @@
 ---
 title: PX4 Bridge
-permalink: /venom_px4_bridge
-desc: venom_px4_bridge — PX4 集成项目根目录，以及 bridge 包与 px4_msgs 的职责划分。
-breadcrumb: 硬件驱动
-layout: default
+description: venom_px4_bridge — PX4 集成项目根目录，以及 bridge 包与 px4_msgs 的职责划分。
 ---
 
 ## 模块定位
@@ -116,12 +113,12 @@ ros2 launch venom_bringup px4_vps_bridge.launch.py input_odom_topic:=/lio/odom
 
 ## 相关文档
 
-- [驱动层]({{ '/driver_overview' | relative_url }})
-- [系统启动]({{ '/venom_bringup' | relative_url }})
-- [启动使用]({{ '/launch_usage' | relative_url }})
+- [驱动层](index.md)
+- [系统启动](../integration/venom_bringup.md)
+- [启动使用](../../home/launch_usage.md)
 
 ## 进一步阅读
 
-- [venom_px4_bridge README](/Users/liyh/venom_vnv/driver/venom_px4_bridge/README.md)
-- [deployment.md](/Users/liyh/venom_vnv/driver/venom_px4_bridge/docs/deployment.md)
-- [COMPATIBILITY.md](/Users/liyh/venom_vnv/driver/venom_px4_bridge/COMPATIBILITY.md)
+- [venom_px4_bridge README](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/driver/venom_px4_bridge/README.md)
+- [deployment.md](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/driver/venom_px4_bridge/docs/deployment.md)
+- [COMPATIBILITY.md](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/driver/venom_px4_bridge/COMPATIBILITY.md)

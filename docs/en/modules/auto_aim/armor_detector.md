@@ -1,9 +1,6 @@
 ---
 title: Armor Detection
-permalink: /en/armor_detector
-desc: armor_detector — Detect armor targets and estimate their 3D position.
-breadcrumb: Perception
-layout: default
+description: armor_detector — Detect armor targets and estimate their 3D position.
 ---
 
 ## Module Role

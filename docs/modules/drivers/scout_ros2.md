@@ -1,9 +1,6 @@
 ---
 title: Scout 底盘驱动
-permalink: /scout_ros2
-desc: scout_ros2 — AgileX Scout / Scout Mini 系列底盘 ROS 2 驱动。
-breadcrumb: 硬件驱动
-layout: default
+description: scout_ros2 — AgileX Scout / Scout Mini 系列底盘 ROS 2 驱动。
 ---
 
 ## 模块定位
@@ -42,7 +39,7 @@ layout: default
 
 这个包依赖：
 
-- [UGV SDK]({{ '/ugv_sdk' | relative_url }})
+- [UGV SDK](ugv_sdk.md)
 - CAN 适配器与底盘通信链路
 
 如果底层 CAN 或 `ugv_sdk` 没通，`scout_ros2` 不会正常输出里程计和状态。
@@ -86,10 +83,10 @@ ros2 launch scout_base scout_mini_omni_base.launch.py
 
 ## 相关页面
 
-- [底盘驱动总览]({{ '/chassis_driver' | relative_url }})
-- [UGV SDK]({{ '/ugv_sdk' | relative_url }})
-- [底盘 CAN 部署]({{ '/chassis_can_setup' | relative_url }})
+- [底盘驱动总览](chassis_driver.md)
+- [UGV SDK](ugv_sdk.md)
+- [底盘 CAN 部署](../../deployment/chassis_can_setup.md)
 
 ## 进一步阅读
 
-- [scout_ros2 README](../driver/scout_ros2/README.md)
+- [scout_ros2 README](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/driver/scout_ros2/README.md)

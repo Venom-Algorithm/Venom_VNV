@@ -1,9 +1,6 @@
 ---
 title: Livox LiDAR Driver
-permalink: /en/livox_ros_driver2
-desc: livox_ros_driver2 — Livox MID360 LiDAR driver.
-breadcrumb: Drivers
-layout: default
+description: livox_ros_driver2 — Livox MID360 LiDAR driver.
 ---
 
 ## Module Role
@@ -29,9 +26,9 @@ layout: default
 
 ## Recommended Reading
 
-- [LiDAR Setup]({{ '/en/lidar_setup' | relative_url }})
-- [Point-LIO]({{ '/en/point_lio' | relative_url }})
-- [Fast-LIO]({{ '/en/fast_lio' | relative_url }})
+- [LiDAR Setup](../../deployment/lidar_setup.md)
+- [Point-LIO](../lio/point_lio.md)
+- [Fast-LIO](../lio/fast_lio.md)
 
 ## Note
 

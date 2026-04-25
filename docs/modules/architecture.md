@@ -1,9 +1,6 @@
 ---
 title: 总体架构
-permalink: /architecture
-desc: 从系统层面理解驱动、感知、定位、规划、任务、系统与仿真的冻结分层。
-breadcrumb: 模块与接口
-layout: default
+description: 从系统层面理解驱动、感知、定位、规划、任务、系统与仿真的冻结分层。
 ---
 
 ## 七层结构
@@ -40,10 +37,10 @@ layout: default
 
 ## 建议阅读顺序
 
-- [驱动层]({{ '/driver_overview' | relative_url }})
-- [感知层]({{ '/perception_overview' | relative_url }})
-- [定位层]({{ '/localization_overview' | relative_url }})
-- [规划层]({{ '/planning_overview' | relative_url }})
-- [任务层]({{ '/mission_overview' | relative_url }})
-- [系统层]({{ '/integration_overview' | relative_url }})
-- [仿真层]({{ '/simulation_overview' | relative_url }})
+- [驱动层](drivers/index.md)
+- [感知层](perception/index.md)
+- [定位层](localization/index.md)
+- [规划层](planning/index.md)
+- [任务层](mission/index.md)
+- [系统层](integration/index.md)
+- [仿真层](simulation/index.md)

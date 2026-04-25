@@ -1,9 +1,6 @@
 ---
 title: Run Modes
-permalink: /en/run_modes
-desc: Typical bringup combinations and when each mode should be used.
-breadcrumb: Deployment & Usage
-layout: default
+description: Typical bringup combinations and when each mode should be used.
 ---
 
 ## Purpose
@@ -38,5 +35,5 @@ For day-to-day work, do not jump into a full bringup first. A safer order is:
 
 ## Related Pages
 
-- [Launch & Use]({{ '/en/launch_usage' | relative_url }})
-- [System Bringup]({{ '/en/venom_bringup' | relative_url }})
+- [Launch & Use](../home/launch_usage.md)
+- [System Bringup](../modules/integration/venom_bringup.md)

@@ -1,9 +1,6 @@
 ---
 title: 任务层
-permalink: /mission_overview
-desc: 任务编排、行为树、状态监听、目标下发与任务执行相关模块的统一入口。
-breadcrumb: 模块与接口
-layout: default
+description: 任务编排、行为树、状态监听、目标下发与任务执行相关模块的统一入口。
 ---
 
 ## 层级职责
@@ -69,6 +66,6 @@ mission/
 
 ## 相关页面
 
-- [总体架构]({{ '/architecture' | relative_url }})
-- [规划层]({{ '/planning_overview' | relative_url }})
-- [系统层]({{ '/integration_overview' | relative_url }})
+- [总体架构](../architecture.md)
+- [规划层](../planning/index.md)
+- [系统层](../integration/index.md)

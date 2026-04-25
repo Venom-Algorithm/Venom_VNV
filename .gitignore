@@ -15,6 +15,8 @@ build/
 install/
 log/
 _site/
+site/
+.venv-docs/
 
 # Editor and IDE
 .vscode/

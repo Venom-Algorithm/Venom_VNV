@@ -1,9 +1,6 @@
 ---
 title: 感知层
-permalink: /perception_overview
-desc: 图像输入、检测、识别、跟踪与目标语义输出相关模块总览。
-breadcrumb: 模块与接口
-layout: default
+description: 图像输入、检测、识别、跟踪与目标语义输出相关模块总览。
 ---
 
 ## 层级职责
@@ -25,10 +22,10 @@ layout: default
 
 ## 当前模块
 
-- [自瞄算法总览]({{ '/rm_auto_aim' | relative_url }})
-- [装甲板检测]({{ '/armor_detector' | relative_url }})
-- [目标跟踪]({{ '/armor_tracker' | relative_url }})
-- [YOLO Detector]({{ '/yolo_detector' | relative_url }})
+- [自瞄算法总览](../auto_aim/index.md)
+- [装甲板检测](../auto_aim/armor_detector.md)
+- [目标跟踪](../auto_aim/armor_tracker.md)
+- [YOLO Detector](yolo_detector.md)
 
 ## 接口约束
 
@@ -49,12 +46,12 @@ layout: default
 
 ## 推荐阅读顺序
 
-1. [YOLO Detector]({{ '/yolo_detector' | relative_url }})
-2. [自瞄算法总览]({{ '/rm_auto_aim' | relative_url }})
-3. [装甲板检测]({{ '/armor_detector' | relative_url }})
-4. [目标跟踪]({{ '/armor_tracker' | relative_url }})
+1. [YOLO Detector](yolo_detector.md)
+2. [自瞄算法总览](../auto_aim/index.md)
+3. [装甲板检测](../auto_aim/armor_detector.md)
+4. [目标跟踪](../auto_aim/armor_tracker.md)
 
 ## 相关页面
 
-- [海康相机驱动]({{ '/ros2_hik_camera' | relative_url }})
-- [话题参考]({{ '/topics' | relative_url }})
+- [海康相机驱动](../drivers/ros2_hik_camera.md)
+- [话题参考](../standards/topics.md)

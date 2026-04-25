@@ -1,9 +1,6 @@
 ---
 title: 运行模式
-permalink: /run_modes
-desc: 不同 bringup 模式的适用场景与输入输出关系。
-breadcrumb: 部署与使用
-layout: default
+description: 不同 bringup 模式的适用场景与输入输出关系。
 ---
 
 ## 建图模式
@@ -35,5 +32,5 @@ layout: default
 
 ## 进一步阅读
 
-- [系统启动]({{ '/venom_bringup' | relative_url }})
-- [自瞄算法]({{ '/rm_auto_aim' | relative_url }})
+- [系统启动](../modules/integration/venom_bringup.md)
+- [自瞄算法](../modules/auto_aim/index.md)

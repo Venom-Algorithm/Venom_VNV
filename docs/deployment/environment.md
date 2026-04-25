@@ -1,9 +1,6 @@
 ---
 title: 环境准备
-permalink: /environment
-desc: 软件版本、依赖项和硬件前置条件。
-breadcrumb: 部署与使用
-layout: default
+description: 软件版本、依赖项和硬件前置条件。
 ---
 
 ## Ubuntu 安装参考
@@ -53,4 +50,4 @@ sudo apt install ./xxxx
 
 ## 下一步
 
-基础环境准备完成后，继续看 [雷达配置]({{ '/lidar_setup' | relative_url }}).
+基础环境准备完成后，继续看 [雷达配置](lidar_setup.md).

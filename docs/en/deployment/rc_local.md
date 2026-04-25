@@ -1,9 +1,7 @@
 ---
 title: rc.local
-permalink: /en/rc_local
-desc: Enable rc.local on Ubuntu 22.04 and use it for boot-time initialization such as network priority.
-breadcrumb: Deployment & Usage
-layout: default
+description: Enable rc.local on Ubuntu 22.04 and use it for boot-time initialization
+  such as network priority.
 ---
 
 ## What `rc.local` Is Used For
@@ -82,6 +80,6 @@ Make sure `exit 0` is present at the end.
 
 ## Related Pages
 
-- [LiDAR Setup]({{ '/en/lidar_setup' | relative_url }})
-- [Chassis CAN Setup]({{ '/en/chassis_can_setup' | relative_url }})
-- [Arm CAN Setup]({{ '/en/piper_can_setup' | relative_url }})
+- [LiDAR Setup](lidar_setup.md)
+- [Chassis CAN Setup](chassis_can_setup.md)
+- [Arm CAN Setup](piper_can_setup.md)

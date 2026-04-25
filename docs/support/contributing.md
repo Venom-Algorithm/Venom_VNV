@@ -1,9 +1,6 @@
 ---
 title: 贡献指南
-permalink: /contributing
-desc: 面向协作者的 fork、分支、Pull Request、文档同步与子模块提交流程约定。
-breadcrumb: 支持与社区
-layout: default
+description: 面向协作者的 fork、分支、Pull Request、文档同步与子模块提交流程约定。
 ---
 
 ## 基本原则
@@ -91,6 +88,6 @@ PR 描述里最好说明：
 
 ## 相关文档
 
-- [开发说明]({{ '/development' | relative_url }})
-- [快速开始]({{ '/quick_start' | relative_url }})
-- [更新与迁移]({{ '/migration_notes' | relative_url }})
+- [开发说明](development.md)
+- [快速开始](../home/quick_start.md)
+- [更新与迁移](migration_notes.md)

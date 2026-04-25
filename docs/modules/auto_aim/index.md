@@ -1,9 +1,6 @@
 ---
 title: 自瞄算法总览
-permalink: /rm_auto_aim
-desc: rm_auto_aim — 装甲板检测、目标跟踪、弹道解算与统一控制输出。
-breadcrumb: 感知层
-layout: default
+description: rm_auto_aim — 装甲板检测、目标跟踪、弹道解算与统一控制输出。
 ---
 
 ## 模块定位
@@ -30,9 +27,9 @@ layout: default
 
 这套链路里的参数分散在几个地方：
 
-- 检测器参数：[armor_detector.yaml](/Users/liyh/venom_vnv/perception/rm_auto_aim/armor_detector/config/armor_detector.yaml)
-- 实战配置入口：[node_params.yaml](/Users/liyh/venom_vnv/venom_bringup/config/infantry/node_params.yaml)
-- 弹道解算节点参数：[`solver_node.py`](/Users/liyh/venom_vnv/perception/rm_auto_aim/auto_aim_solver/auto_aim_solver/solver_node.py)
+- 检测器参数：[armor_detector.yaml](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/perception/rm_auto_aim/armor_detector/config/armor_detector.yaml)
+- 实战配置入口：[node_params.yaml](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/venom_bringup/config/infantry/node_params.yaml)
+- 弹道解算节点参数：[`solver_node.py`](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/perception/rm_auto_aim/auto_aim_solver/auto_aim_solver/solver_node.py)
 
 ## 数据流
 
@@ -107,10 +104,10 @@ layout: default
 
 ## 调参顺序
 
-- 图像侧不稳，先调 [装甲板检测]({{ '/armor_detector' | relative_url }})
-- 目标会跳、会丢，先调 [目标跟踪]({{ '/armor_tracker' | relative_url }})
+- 图像侧不稳，先调 [装甲板检测](armor_detector.md)
+- 目标会跳、会丢，先调 [目标跟踪](armor_tracker.md)
 - 检测和跟踪都正常但云台打不准，再调 `auto_aim_solver`
-- 最终姿态方向不对或控制没下发，再查 [串口通信驱动]({{ '/venom_serial_driver' | relative_url }})
+- 最终姿态方向不对或控制没下发，再查 [串口通信驱动](../drivers/venom_serial_driver.md)
 
 ## 推荐启动方式
 
@@ -123,14 +120,14 @@ ros2 launch venom_bringup infantry_auto_aim.launch.py
 
 ## 相关页面
 
-- [感知层]({{ '/perception_overview' | relative_url }})
-- [装甲板检测]({{ '/armor_detector' | relative_url }})
-- [目标跟踪]({{ '/armor_tracker' | relative_url }})
-- [YOLO Detector]({{ '/yolo_detector' | relative_url }})
-- [串口通信驱动]({{ '/venom_serial_driver' | relative_url }})
-- [话题参考]({{ '/topics' | relative_url }})
+- [感知层](../perception/index.md)
+- [装甲板检测](armor_detector.md)
+- [目标跟踪](armor_tracker.md)
+- [YOLO Detector](../perception/yolo_detector.md)
+- [串口通信驱动](../drivers/venom_serial_driver.md)
+- [话题参考](../standards/topics.md)
 
 ## 进一步阅读
 
-- [armor_detector README](../../../perception/rm_auto_aim/armor_detector/README.md)
-- [armor_tracker README](../../../perception/rm_auto_aim/armor_tracker/README.md)
+- [armor_detector README](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/perception/rm_auto_aim/armor_detector/README.md)
+- [armor_tracker README](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/perception/rm_auto_aim/armor_tracker/README.md)

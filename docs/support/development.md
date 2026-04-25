@@ -1,9 +1,6 @@
 ---
 title: 开发说明
-permalink: /development
-desc: 面向多人协作开发的环境基线、常用软件、Git 流程、子模块协作与调试建议。
-breadcrumb: 支持与社区
-layout: default
+description: 面向多人协作开发的环境基线、常用软件、Git 流程、子模块协作与调试建议。
 ---
 
 ## 适用对象
@@ -17,9 +14,9 @@ layout: default
 
 如果你只是第一次部署本项目，优先阅读：
 
-- [快速开始]({{ '/quick_start' | relative_url }})
-- [环境准备]({{ '/environment' | relative_url }})
-- [雷达配置]({{ '/lidar_setup' | relative_url }})
+- [快速开始](../home/quick_start.md)
+- [环境准备](../deployment/environment.md)
+- [雷达配置](../deployment/lidar_setup.md)
 
 ## 推荐开发机基线
 
@@ -41,17 +38,17 @@ layout: default
 
 - Mid360 / Point-LIO / Fast-LIO 方向：
   - `Livox-SDK2`
-  - 参考 [雷达配置]({{ '/lidar_setup' | relative_url }})
+  - 参考 [雷达配置](../deployment/lidar_setup.md)
 - RealSense D435i 方向：
   - `librealsense2`
-  - 参考 [RealSense 配置]({{ '/realsense_setup' | relative_url }})
+  - 参考 [RealSense 配置](../deployment/realsense_setup.md)
 - 底盘方向：
   - `can-utils`
   - 对应底盘驱动与 SDK
-  - 参考 [底盘 CAN 部署]({{ '/chassis_can_setup' | relative_url }})
+  - 参考 [底盘 CAN 部署](../deployment/chassis_can_setup.md)
 - 机械臂方向：
   - Piper 机械臂相关 CAN 环境
-  - 参考 [机械臂 CAN 部署]({{ '/piper_can_setup' | relative_url }})
+  - 参考 [机械臂 CAN 部署](../deployment/piper_can_setup.md)
 - PX4 / 无人机方向：
   - PX4、Micro XRCE-DDS Agent、桥接相关依赖
 - 文档维护方向：
@@ -481,7 +478,7 @@ http://localhost:4001/Venom_VNV/
 
 ## 相关文档
 
-- [快速开始]({{ '/quick_start' | relative_url }})
-- [启动使用]({{ '/launch_usage' | relative_url }})
-- [贡献指南]({{ '/contributing' | relative_url }})
-- [更新与迁移]({{ '/migration_notes' | relative_url }})
+- [快速开始](../home/quick_start.md)
+- [启动使用](../home/launch_usage.md)
+- [贡献指南](contributing.md)
+- [更新与迁移](migration_notes.md)

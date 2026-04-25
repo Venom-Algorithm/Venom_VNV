@@ -1,15 +1,13 @@
 ---
 title: System Layer
-permalink: /en/integration_overview
-desc: Overview of startup orchestration, robot description, and robot-level entry points.
-breadcrumb: Modules & Interfaces
-layout: default
+description: Overview of startup orchestration, robot description, and robot-level
+  entry points.
 ---
 
 ## Covered Modules
 
-- [System Bringup]({{ '/en/venom_bringup' | relative_url }})
-- [Robot Description]({{ '/en/venom_robot_description' | relative_url }})
+- [System Bringup](venom_bringup.md)
+- [Robot Description](venom_robot_description.md)
 
 ## Layer Role
 

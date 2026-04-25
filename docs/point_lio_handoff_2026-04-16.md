@@ -1,9 +1,9 @@
 # Point-LIO Handoff Context
 
 Date: 2026-04-16
-Workspace: `/Users/liyh/venom_vnv`
-Primary package: `/Users/liyh/venom_vnv/localization/lio/Point-LIO`
-Primary bringup: `/Users/liyh/venom_vnv/venom_bringup`
+Workspace: `~/venom_ws/src/venom_vnv`
+Primary package: `~/venom_ws/src/venom_vnv/localization/lio/Point-LIO`
+Primary bringup: `~/venom_ws/src/venom_vnv/venom_bringup`
 
 ## User Goal
 
@@ -29,9 +29,9 @@ The user wants to investigate and improve Point-LIO performance, especially drif
   - `include/*`
   - bundled third-party headers (`IKFoM`, `ivox`, `matplotlibcpp`)
 - The actual user test launch was identified as:
-  - `/Users/liyh/venom_vnv/venom_bringup/launch/examples/mid360_point_lio.launch.py`
+  - `~/venom_ws/src/venom_vnv/venom_bringup/launch/examples/mid360_point_lio.launch.py`
 - That launch loads this YAML, not the package-internal default:
-  - `/Users/liyh/venom_vnv/venom_bringup/config/examples/point_lio_mapping.yaml`
+  - `~/venom_ws/src/venom_vnv/venom_bringup/config/examples/point_lio_mapping.yaml`
 
 ## Important Technical Findings
 
@@ -39,12 +39,12 @@ The user wants to investigate and improve Point-LIO performance, especially drif
 
 The bringup YAML already had:
 
-- `/Users/liyh/venom_vnv/venom_bringup/config/examples/point_lio_mapping.yaml`
+- `~/venom_ws/src/venom_vnv/venom_bringup/config/examples/point_lio_mapping.yaml`
   - `common.time_diff_lidar_to_imu: 0.0`
 
 The package also read this parameter in:
 
-- `/Users/liyh/venom_vnv/localization/lio/Point-LIO/src/parameters.cpp`
+- `~/venom_ws/src/venom_vnv/localization/lio/Point-LIO/src/parameters.cpp`
 
 But before this session it was not effectively connected into the IMU timestamp correction path for the current branch.
 
@@ -76,7 +76,7 @@ This is especially suspicious under high dynamic motion because it can manifest 
 ### A. Fixed vector sizing bug
 
 File:
-- `/Users/liyh/venom_vnv/localization/lio/Point-LIO/src/laserMapping.cpp`
+- `~/venom_ws/src/venom_vnv/localization/lio/Point-LIO/src/laserMapping.cpp`
 
 Change:
 - Replaced:
@@ -89,31 +89,31 @@ Change:
 ### B. Wired fixed LiDAR->IMU time offset into IMU callback
 
 File:
-- `/Users/liyh/venom_vnv/localization/lio/Point-LIO/src/li_initialization.cpp`
+- `~/venom_ws/src/venom_vnv/localization/lio/Point-LIO/src/li_initialization.cpp`
 
 Change:
 - IMU timestamp correction now subtracts `time_diff_lidar_to_imu` in `imu_cbk()`
 
 Current relevant line area:
-- `/Users/liyh/venom_vnv/localization/lio/Point-LIO/src/li_initialization.cpp:160`
+- `~/venom_ws/src/venom_vnv/localization/lio/Point-LIO/src/li_initialization.cpp:160`
 
 ### C. Added startup log for configured fixed time offset
 
 File:
-- `/Users/liyh/venom_vnv/localization/lio/Point-LIO/src/parameters.cpp`
+- `~/venom_ws/src/venom_vnv/localization/lio/Point-LIO/src/parameters.cpp`
 
 Change:
 - Added startup log showing the active fixed LiDAR->IMU offset
 
 Current relevant line area:
-- `/Users/liyh/venom_vnv/localization/lio/Point-LIO/src/parameters.cpp:303`
+- `~/venom_ws/src/venom_vnv/localization/lio/Point-LIO/src/parameters.cpp:303`
 
 ## Bringup / Recording Changes Already Made
 
 ### Added raw Mid360 recording launch
 
 File:
-- `/Users/liyh/venom_vnv/venom_bringup/launch/examples/mid360_record_raw.launch.py`
+- `~/venom_ws/src/venom_vnv/venom_bringup/launch/examples/mid360_record_raw.launch.py`
 
 Purpose:
 - Start `livox_ros_driver2`
@@ -132,7 +132,7 @@ Recorded topics:
 ### Deleted unneeded launch
 
 Deleted file:
-- `/Users/liyh/venom_vnv/venom_bringup/launch/examples/mid360_point_lio_record.launch.py`
+- `~/venom_ws/src/venom_vnv/venom_bringup/launch/examples/mid360_point_lio_record.launch.py`
 
 This was removed because the user explicitly said it was not needed.
 
@@ -141,28 +141,28 @@ This was removed because the user explicitly said it was not needed.
 ### Record raw Mid360 bag
 
 ```bash
-source /Users/liyh/venom_vnv/install/setup.bash
+source ~/venom_ws/src/venom_vnv/install/setup.bash
 ros2 launch venom_bringup mid360_record_raw.launch.py
 ```
 
 ### Record raw Mid360 bag to a named directory
 
 ```bash
-source /Users/liyh/venom_vnv/install/setup.bash
+source ~/venom_ws/src/venom_vnv/install/setup.bash
 ros2 launch venom_bringup mid360_record_raw.launch.py bag_dir:=/Users/liyh/venom_bags/mid360_raw/high_speed_turn_01
 ```
 
 ### Replay a raw bag
 
 ```bash
-source /Users/liyh/venom_vnv/install/setup.bash
+source ~/venom_ws/src/venom_vnv/install/setup.bash
 ros2 bag play /Users/liyh/venom_bags/mid360_raw/high_speed_turn_01 --clock
 ```
 
 ### Start current Point-LIO bringup for testing
 
 ```bash
-source /Users/liyh/venom_vnv/install/setup.bash
+source ~/venom_ws/src/venom_vnv/install/setup.bash
 ros2 launch venom_bringup mid360_point_lio.launch.py
 ```
 
@@ -191,7 +191,7 @@ These were the most relevant likely causes after time offset was ruled out as th
 1. Real-time load under aggressive settings
    - User's active bringup YAML is more aggressive than package default
    - Especially:
-     - `/Users/liyh/venom_vnv/venom_bringup/config/examples/point_lio_mapping.yaml:9`
+     - `~/venom_ws/src/venom_vnv/venom_bringup/config/examples/point_lio_mapping.yaml:9`
        - `filter_size_surf: 0.05`
    - This may improve geometry but can hurt real-time behavior at high speed
 
@@ -210,7 +210,7 @@ These were the most relevant likely causes after time offset was ruled out as th
 1. Do not spend more time on automatic LiDAR-IMU fixed time offset estimation unless new evidence appears.
 2. Use the new raw-record launch to build a reproducible bag suite.
 3. Create a structured replay-based test plan using the user's actual bringup:
-   - `/Users/liyh/venom_vnv/venom_bringup/launch/examples/mid360_point_lio.launch.py`
+   - `~/venom_ws/src/venom_vnv/venom_bringup/launch/examples/mid360_point_lio.launch.py`
 4. Compare parameter sets on the same raw bags.
 5. Prioritize profiling / timing visibility next.
 
@@ -223,15 +223,15 @@ Recommended immediate work items:
    - map incremental time
    - total frame time
 2. Create a dedicated high-dynamic YAML variant alongside:
-   - `/Users/liyh/venom_vnv/venom_bringup/config/examples/point_lio_mapping.yaml`
+   - `~/venom_ws/src/venom_vnv/venom_bringup/config/examples/point_lio_mapping.yaml`
 3. Evaluate whether `filter_size_surf: 0.05` is too aggressive for stable real-time performance during high-speed rotation.
 
 ## Files Most Relevant For Follow-Up
 
-- `/Users/liyh/venom_vnv/venom_bringup/launch/examples/mid360_point_lio.launch.py`
-- `/Users/liyh/venom_vnv/venom_bringup/launch/examples/mid360_record_raw.launch.py`
-- `/Users/liyh/venom_vnv/venom_bringup/config/examples/point_lio_mapping.yaml`
-- `/Users/liyh/venom_vnv/localization/lio/Point-LIO/src/laserMapping.cpp`
-- `/Users/liyh/venom_vnv/localization/lio/Point-LIO/src/li_initialization.cpp`
-- `/Users/liyh/venom_vnv/localization/lio/Point-LIO/src/parameters.cpp`
-- `/Users/liyh/venom_vnv/localization/lio/Point-LIO/src/IMU_Processing.cpp`
+- `~/venom_ws/src/venom_vnv/venom_bringup/launch/examples/mid360_point_lio.launch.py`
+- `~/venom_ws/src/venom_vnv/venom_bringup/launch/examples/mid360_record_raw.launch.py`
+- `~/venom_ws/src/venom_vnv/venom_bringup/config/examples/point_lio_mapping.yaml`
+- `~/venom_ws/src/venom_vnv/localization/lio/Point-LIO/src/laserMapping.cpp`
+- `~/venom_ws/src/venom_vnv/localization/lio/Point-LIO/src/li_initialization.cpp`
+- `~/venom_ws/src/venom_vnv/localization/lio/Point-LIO/src/parameters.cpp`
+- `~/venom_ws/src/venom_vnv/localization/lio/Point-LIO/src/IMU_Processing.cpp`

@@ -1,9 +1,7 @@
 ---
 title: Point-LIO
-permalink: /en/point_lio
-desc: Point-LIO integration notes, MID360-facing behavior, and repository-specific interface conventions.
-breadcrumb: Localization
-layout: default
+description: Point-LIO integration notes, MID360-facing behavior, and repository-specific
+  interface conventions.
 ---
 
 ## Module Role

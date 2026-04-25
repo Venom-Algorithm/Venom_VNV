@@ -1,9 +1,7 @@
 ---
 title: Contributing
-permalink: /en/contributing
-desc: Fork, branch, pull request, documentation-sync, and submodule submission rules for contributors.
-breadcrumb: Support & Community
-layout: default
+description: Fork, branch, pull request, documentation-sync, and submodule submission
+  rules for contributors.
 ---
 
 ## Core Rules
@@ -91,6 +89,6 @@ Avoid pointing the main repository at a submodule commit that exists only in a p
 
 ## Related Pages
 
-- [Development Notes]({{ '/en/development' | relative_url }})
-- [Quick Start]({{ '/en/quick_start' | relative_url }})
-- [Updates & Migration]({{ '/en/migration_notes' | relative_url }})
+- [Development Notes](development.md)
+- [Quick Start](../home/quick_start.md)
+- [Updates & Migration](migration_notes.md)

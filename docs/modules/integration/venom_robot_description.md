@@ -1,9 +1,6 @@
 ---
 title: 机器人描述
-permalink: /venom_robot_description
-desc: venom_robot_description — TF 树发布包，定义坐标变换关系。
-breadcrumb: 系统层
-layout: default
+description: venom_robot_description — TF 树发布包，定义坐标变换关系。
 ---
 
 ## 模块定位
@@ -30,13 +27,13 @@ layout: default
 
 代码入口在：
 
-- [`dynamic_tf_publisher.py`](/Users/liyh/venom_vnv/venom_robot_description/venom_robot_description/dynamic_tf_publisher.py)
+- [`dynamic_tf_publisher.py`](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/venom_robot_description/venom_robot_description/dynamic_tf_publisher.py)
 
 常用配置文件包括：
 
-- [infantry.yaml](/Users/liyh/venom_vnv/venom_robot_description/config/infantry.yaml)
-- [scout_mini.yaml](/Users/liyh/venom_vnv/venom_robot_description/config/scout_mini.yaml)
-- [sentry.yaml](/Users/liyh/venom_vnv/venom_robot_description/config/sentry.yaml)
+- [infantry.yaml](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/venom_robot_description/config/infantry.yaml)
+- [scout_mini.yaml](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/venom_robot_description/config/scout_mini.yaml)
+- [sentry.yaml](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/venom_robot_description/config/sentry.yaml)
 
 ## 参数说明
 
@@ -72,7 +69,7 @@ layout: default
 
 系统级 TF 结构见：
 
-- [TF 树]({{ '/tf_tree' | relative_url }})
+- [TF 树](../standards/tf_tree.md)
 
 ## 推荐启动方式
 
@@ -124,10 +121,10 @@ dynamic_transforms:
 
 ## 相关页面
 
-- [TF 树]({{ '/tf_tree' | relative_url }})
-- [话题参考]({{ '/topics' | relative_url }})
-- [venom_serial_driver]({{ '/venom_serial_driver' | relative_url }})
+- [TF 树](../standards/tf_tree.md)
+- [话题参考](../standards/topics.md)
+- [venom_serial_driver](../drivers/venom_serial_driver.md)
 
 ## 进一步阅读
 
-- [venom_robot_description README](../venom_robot_description/README.md)
+- [venom_robot_description README](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/venom_robot_description/README.md)

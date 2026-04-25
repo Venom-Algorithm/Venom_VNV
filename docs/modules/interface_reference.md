@@ -1,34 +1,31 @@
 ---
 title: 模块与接口
-permalink: /interface_reference
-desc: 系统模块的总体框架、分类约束与子文档入口。
-breadcrumb: 模块与接口
-layout: default
+description: 系统模块的总体框架、分类约束与子文档入口。
 ---
 
 ## 总体框架
 
 这一部分是整个系统的模块与接口总入口，阅读顺序建议是：
 
-1. 先看 [总体架构]({{ '/architecture' | relative_url }})
-2. 再按层级进入某个模块大类，例如 [驱动层]({{ '/driver_overview' | relative_url }})、[感知层]({{ '/perception_overview' | relative_url }})、[定位层]({{ '/localization_overview' | relative_url }})
+1. 先看 [总体架构](architecture.md)
+2. 再按层级进入某个模块大类，例如 [驱动层](drivers/index.md)、[感知层](perception/index.md)、[定位层](localization/index.md)
 3. 最后查看各个子算法、子包或子工作区的具体页面
 
 ## 分类入口
 
-- [驱动层]({{ '/driver_overview' | relative_url }})
-- [感知层]({{ '/perception_overview' | relative_url }})
-- [定位层]({{ '/localization_overview' | relative_url }})
-- [规划层]({{ '/planning_overview' | relative_url }})
-- [Ego Planner Swarm]({{ '/ego_planner_swarm' | relative_url }})
-- [任务层]({{ '/mission_overview' | relative_url }})
-- [系统层]({{ '/integration_overview' | relative_url }})
-- [仿真层]({{ '/simulation_overview' | relative_url }})
+- [驱动层](drivers/index.md)
+- [感知层](perception/index.md)
+- [定位层](localization/index.md)
+- [规划层](planning/index.md)
+- [Ego Planner Swarm](planning/ego_planner_swarm.md)
+- [任务层](mission/index.md)
+- [系统层](integration/index.md)
+- [仿真层](simulation/index.md)
 
 ## 接口规范
 
-- [话题参考]({{ '/topics' | relative_url }})
-- [TF 树]({{ '/tf_tree' | relative_url }})
+- [话题参考](standards/topics.md)
+- [TF 树](standards/tf_tree.md)
 
 ## 模块文档组织方式
 
@@ -50,5 +47,5 @@ layout: default
 
 ## 进一步阅读
 
-- [系统启动]({{ '/venom_bringup' | relative_url }})
-- [话题与 TF 总览]({{ '/system_overview' | relative_url }})
+- [系统启动](integration/venom_bringup.md)
+- [话题与 TF 总览](../deployment/system_overview.md)

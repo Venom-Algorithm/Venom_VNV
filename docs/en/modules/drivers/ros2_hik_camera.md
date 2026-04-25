@@ -1,9 +1,6 @@
 ---
 title: Hikrobot Camera Driver
-permalink: /en/ros2_hik_camera
-desc: ros2_hik_camera — ROS 2 driver for Hikrobot USB3 industrial cameras.
-breadcrumb: Drivers
-layout: default
+description: ros2_hik_camera — ROS 2 driver for Hikrobot USB3 industrial cameras.
 ---
 
 ## Module Role
@@ -29,9 +26,9 @@ layout: default
 
 ## Related Pages
 
-- [Auto Aim Overview]({{ '/en/rm_auto_aim' | relative_url }})
-- [Armor Detection]({{ '/en/armor_detector' | relative_url }})
-- [Topic Reference]({{ '/en/topics' | relative_url }})
+- [Auto Aim Overview](../auto_aim/index.md)
+- [Armor Detection](../auto_aim/armor_detector.md)
+- [Topic Reference](../standards/topics.md)
 
 ## Note
 

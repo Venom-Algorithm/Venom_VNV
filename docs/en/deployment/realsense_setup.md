@@ -1,9 +1,7 @@
 ---
 title: RealSense Setup
-permalink: /en/realsense_setup
-desc: Install librealsense, the ROS 2 wrapper, and validate D435 / D435i in this repository.
-breadcrumb: Deployment & Usage
-layout: default
+description: Install librealsense, the ROS 2 wrapper, and validate D435 / D435i in
+  this repository.
 ---
 
 ## Scope
@@ -118,5 +116,5 @@ This launch currently uses:
 
 ## Related Pages
 
-- [Environment Setup]({{ '/en/environment' | relative_url }})
-- [Launch & Use]({{ '/en/launch_usage' | relative_url }})
+- [Environment Setup](environment.md)
+- [Launch & Use](../home/launch_usage.md)

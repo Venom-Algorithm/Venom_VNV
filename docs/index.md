@@ -1,9 +1,6 @@
 ---
 title: Venom VNV
-permalink: /
-desc: 面向多载体机器人系统的通用平台，支持导航、抓取、自瞄与多模块协同。
-breadcrumb: 首页
-layout: default
+description: 面向多载体机器人系统的通用平台，支持导航、抓取、自瞄与多模块协同。
 ---
 
 ## 项目定位
@@ -33,39 +30,39 @@ Venom VNV 是一个基于 ROS 2 Humble 构建的综合通用平台。
 ## 快速开始
 
 <div class="card-grid" data-toc-exclude>
-  <a href="{{ '/quick_start' | relative_url }}" class="card" style="text-decoration:none">
+  <a href="home/quick_start/" class="card" style="text-decoration:none">
     <h3>⚙️ 快速开始</h3>
     <p>按标准流程拉取仓库、安装依赖并完成首次编译。</p>
   </a>
-  <a href="{{ '/environment' | relative_url }}" class="card" style="text-decoration:none">
+  <a href="deployment/environment/" class="card" style="text-decoration:none">
     <h3>🧰 环境配置</h3>
     <p>准备 Ubuntu、SSH、ROS、rosdep、VS Code、Clash 与 NoMachine。</p>
   </a>
-  <a href="{{ '/lidar_setup' | relative_url }}" class="card" style="text-decoration:none">
+  <a href="deployment/lidar_setup/" class="card" style="text-decoration:none">
     <h3>📡 雷达配置</h3>
     <p>安装 Livox-SDK2、配置 MID360 网络参数并验证雷达链路。</p>
   </a>
-  <a href="{{ '/launch_usage' | relative_url }}" class="card" style="text-decoration:none">
+  <a href="home/launch_usage/" class="card" style="text-decoration:none">
     <h3>🚀 启动使用</h3>
     <p>查看常用 build、重编译和整机启动命令。</p>
   </a>
-  <a href="{{ '/chassis_can_setup' | relative_url }}" class="card" style="text-decoration:none">
+  <a href="deployment/chassis_can_setup/" class="card" style="text-decoration:none">
     <h3>🛞 底盘 CAN 部署</h3>
     <p>初始化底盘 CAN 适配器，拉起接口并完成基础验证。</p>
   </a>
-  <a href="{{ '/piper_can_setup' | relative_url }}" class="card" style="text-decoration:none">
+  <a href="deployment/piper_can_setup/" class="card" style="text-decoration:none">
     <h3>🦾 机械臂 CAN 部署</h3>
     <p>识别 Piper CAN 模块、命名接口并启动机械臂链路。</p>
   </a>
-  <a href="{{ '/rc_local' | relative_url }}" class="card" style="text-decoration:none">
+  <a href="deployment/rc_local/" class="card" style="text-decoration:none">
     <h3>🔁 rc.local</h3>
     <p>配置开机自启动与网络优先级相关命令。</p>
   </a>
-  <a href="{{ '/run_modes' | relative_url }}" class="card" style="text-decoration:none">
+  <a href="deployment/run_modes/" class="card" style="text-decoration:none">
     <h3>🧭 运行模式</h3>
     <p>查看不同联调、测试与整机模式下的使用方式。</p>
   </a>
-  <a href="{{ '/system_overview' | relative_url }}" class="card" style="text-decoration:none">
+  <a href="deployment/system_overview/" class="card" style="text-decoration:none">
     <h3>🧩 话题与 TF 总览</h3>
     <p>快速查看系统级话题接口与核心 TF 约定。</p>
   </a>

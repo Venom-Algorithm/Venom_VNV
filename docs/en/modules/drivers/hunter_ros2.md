@@ -1,9 +1,6 @@
 ---
 title: Hunter Driver
-permalink: /en/hunter_ros2
-desc: hunter_ros2 — ROS 2 wrapper for AgileX Hunter platforms.
-breadcrumb: Drivers
-layout: default
+description: hunter_ros2 — ROS 2 wrapper for AgileX Hunter platforms.
 ---
 
 ## Module Role
@@ -32,6 +29,6 @@ ros2 launch hunter_base hunter_base.launch.py
 
 ## Related Pages
 
-- [Chassis Driver Overview]({{ '/en/chassis_driver' | relative_url }})
-- [UGV SDK]({{ '/en/ugv_sdk' | relative_url }})
-- [Chassis CAN Setup]({{ '/en/chassis_can_setup' | relative_url }})
+- [Chassis Driver Overview](chassis_driver.md)
+- [UGV SDK](ugv_sdk.md)
+- [Chassis CAN Setup](../../deployment/chassis_can_setup.md)

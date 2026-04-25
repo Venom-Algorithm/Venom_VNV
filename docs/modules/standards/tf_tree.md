@@ -1,9 +1,6 @@
 ---
 title: TF 树
-permalink: /tf_tree
-desc: 系统级坐标系层级结构与帧说明。
-breadcrumb: 快速开始
-layout: default
+description: 系统级坐标系层级结构与帧说明。
 ---
 
 # TF Tree

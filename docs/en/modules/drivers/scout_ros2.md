@@ -1,9 +1,6 @@
 ---
 title: Scout Driver
-permalink: /en/scout_ros2
-desc: scout_ros2 — ROS 2 wrapper for AgileX Scout and Scout Mini platforms.
-breadcrumb: Drivers
-layout: default
+description: scout_ros2 — ROS 2 wrapper for AgileX Scout and Scout Mini platforms.
 ---
 
 ## Module Role
@@ -36,6 +33,6 @@ ros2 launch scout_base scout_mini_omni_base.launch.py
 
 ## Related Pages
 
-- [Chassis Driver Overview]({{ '/en/chassis_driver' | relative_url }})
-- [UGV SDK]({{ '/en/ugv_sdk' | relative_url }})
-- [Chassis CAN Setup]({{ '/en/chassis_can_setup' | relative_url }})
+- [Chassis Driver Overview](chassis_driver.md)
+- [UGV SDK](ugv_sdk.md)
+- [Chassis CAN Setup](../../deployment/chassis_can_setup.md)
