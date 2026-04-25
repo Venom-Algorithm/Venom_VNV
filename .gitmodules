@@ -46,3 +46,7 @@
 [submodule "perception/yolo_detector"]
 	path = perception/yolo_detector
 	url = https://github.com/Venom-Algorithm/yolo_detector.git
+[submodule "planning/navigation/ego-planner-swarm"]
+	path = planning/navigation/ego-planner-swarm
+	url = https://github.com/ZJU-FAST-Lab/ego-planner-swarm.git
+	branch = ros2_version
