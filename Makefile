@@ -3,13 +3,24 @@ REGISTRY  := ghcr.io/venom-algorithm/venom_vnv
 CONTAINER := venom_sim
 ROS_WS    := /ros_ws
 
-.PHONY: help submodules build up down shell colcon rosdep \
+.PHONY: help \
+        submodules submodules-all submodules-ugv submodules-sim \
+        submodules-ugv-sim submodules-auto-aim submodules-uav \
+        build up down shell colcon rosdep \
         gazebo rviz2 ci-build clean push
 
 help:
-	@echo "Venom VNV Docker（仿真开发）"
+	@echo "Venom VNV — 子模块按需拉取（clone 后不加 --recurse-submodules）"
 	@echo ""
-	@echo "  make submodules   初始化所有 git submodule"
+	@echo "  make submodules-ugv       无人车真机（底盘+激光+定位+感知）"
+	@echo "  make submodules-sim       纯仿真（Gazebo + Nav2 + 规划）"
+	@echo "  make submodules-ugv-sim   无人车仿真（仿真+定位，无需真机驱动）"
+	@echo "  make submodules-auto-aim  自瞄开发（感知+相机+串口）"
+	@echo "  make submodules-uav       无人机（PX4 桥接+群体规划）"
+	@echo "  make submodules-all       全量拉取所有子模块"
+	@echo "  make submodules           同 submodules-all（向后兼容）"
+	@echo ""
+	@echo "Docker 开发："
 	@echo "  make build        构建 sim 镜像（首次约 10-15 分钟）"
 	@echo "  make up           启动 sim 容器（后台）"
 	@echo "  make shell        进入容器 zsh"
@@ -21,9 +32,50 @@ help:
 	@echo "  make clean        删除容器 + named volumes（构建缓存）"
 	@echo "  make push         推送镜像到 ghcr.io"
 
-submodules:
+# ── 子模块按需拉取 ─────────────────────────────────────────────
+
+submodules: submodules-all
+
+submodules-all:
 	git submodule sync --recursive
 	git submodule update --init --recursive
+
+submodules-ugv:
+	git submodule update --init -- \
+	    driver/ugv_sdk \
+	    driver/scout_ros2 \
+	    driver/hunter_ros2 \
+	    driver/piper_ros \
+	    driver/livox_ros_driver2 \
+	    driver/ros2_hik_camera \
+	    driver/venom_serial_driver \
+	    localization/lio/Point-LIO \
+	    localization/lio/rf2o_laser_odometry \
+	    localization/relocalization/small_gicp_relocalization \
+	    perception/yolo_detector
+
+submodules-sim:
+	git submodule update --init -- \
+	    simulation/venom_nav_simulation \
+	    planning/navigation/ego-planner-swarm
+
+submodules-ugv-sim:
+	git submodule update --init -- \
+	    simulation/venom_nav_simulation \
+	    localization/lio/Point-LIO \
+	    planning/navigation/ego-planner-swarm \
+	    perception/yolo_detector
+
+submodules-auto-aim:
+	git submodule update --init -- \
+	    perception/rm_auto_aim \
+	    driver/ros2_hik_camera \
+	    driver/venom_serial_driver
+
+submodules-uav:
+	git submodule update --init -- \
+	    driver/venom_px4_bridge \
+	    planning/navigation/ego-planner-swarm
 
 build:
 	docker build \
