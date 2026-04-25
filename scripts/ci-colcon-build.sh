@@ -43,7 +43,6 @@ rosdep install \
 
 # ── 4. colcon build ───────────────────────────────────────────
 MAKEFLAGS="-j${MAKE_JOBS:-2}" colcon build \
-    --symlink-install \
     --cmake-args \
         -DCMAKE_BUILD_TYPE=Release \
         -DROS_EDITION=ROS2 \

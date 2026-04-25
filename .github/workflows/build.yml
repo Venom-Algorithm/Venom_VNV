@@ -93,8 +93,6 @@ jobs:
             --env MAKE_JOBS=2 \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NS }}/sim:latest \
             bash /ros_ws/src/venom_vnv/scripts/ci-colcon-build.sh
-          # docker runs as root; fix ownership of ALL workspace files (COLCON_IGNORE + build artifacts)
-          sudo chown -R "$(id -u):$(id -g)" . || true
 
       - name: Upload colcon logs
         if: always()
