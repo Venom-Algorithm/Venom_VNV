@@ -92,6 +92,7 @@ The repository includes both built-in packages and external submodules. For a qu
     <tr><td>Drivers</td><td><code>driver/venom_px4_bridge</code></td><td>PX4 integration project root containing vendored <code>px4_msgs</code> and the bridge package</td></tr>
     <tr><td>Perception</td><td><code>perception/rm_auto_aim</code></td><td>Auto aim stack including detection, tracking, solving, and interface definitions</td></tr>
     <tr><td>Perception</td><td><code>perception/yolo_detector</code></td><td>General YOLO-based 2D detector with custom message definitions</td></tr>
+    <tr><td>Perception</td><td><code>perception/zbar_ros</code></td><td>ZBar-based QR and barcode recognition with structured detection outputs</td></tr>
     <tr><td>Perception</td><td><code>perception/rm_auto_aim/armor_detector</code></td><td>Armor detection module</td></tr>
     <tr><td>Perception</td><td><code>perception/rm_auto_aim/armor_tracker</code></td><td>Target tracking module</td></tr>
     <tr><td>Perception</td><td><code>perception/rm_auto_aim/auto_aim_solver</code></td><td>Ballistics and target solving module</td></tr>
