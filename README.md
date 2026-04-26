@@ -49,7 +49,7 @@ Venom VNV 不是单一赛题工程，而是面向多种机器人载体和任务�
 
 - 文档首页：[venom-algorithm.github.io/Venom_VNV](https://venom-algorithm.github.io/Venom_VNV/)
 - 快速开始：[Quick Start / 快速开始](https://venom-algorithm.github.io/Venom_VNV/quick_start)
-- 模块与接口：[Modules & Interfaces / 模块与接口](https://venom-algorithm.github.io/Venom_VNV/interface_reference)
+- 模块与接口：[Modules & Interfaces / 模块与接口](https://venom-algorithm.github.io/Venom_VNV/modules/)
 - 开发说明：[Development Notes / 开发说明](https://venom-algorithm.github.io/Venom_VNV/development)
 - 英文文档：[venom-algorithm.github.io/Venom_VNV/en](https://venom-algorithm.github.io/Venom_VNV/en/)
 
@@ -192,7 +192,7 @@ ros2 launch venom_bringup px4_agent_probe.launch.py
 | [环境准备](https://venom-algorithm.github.io/Venom_VNV/environment) | Ubuntu、ROS、rosdep、VS Code、开发机基础环境 |
 | [雷达配置](https://venom-algorithm.github.io/Venom_VNV/lidar_setup) | MID360 网络、配置文件与 Livox-SDK2 |
 | [启动使用](https://venom-algorithm.github.io/Venom_VNV/launch_usage) | 常用 build、重编译与启动命令 |
-| [模块与接口](https://venom-algorithm.github.io/Venom_VNV/interface_reference) | 驱动、感知、定位、规划、任务、系统、仿真等模块入口 |
+| [模块与接口](https://venom-algorithm.github.io/Venom_VNV/modules/) | 驱动、感知、定位、规划、任务、系统、仿真等模块入口 |
 | [话题参考](https://venom-algorithm.github.io/Venom_VNV/topics) | 统一 ROS 2 话题与消息约束 |
 | [TF 树](https://venom-algorithm.github.io/Venom_VNV/tf_tree) | 系统核心坐标系与 TF 关系 |
 | [开发说明](https://venom-algorithm.github.io/Venom_VNV/development) | 开发环境、Git、fork / PR、子模块协作规则 |

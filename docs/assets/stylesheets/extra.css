@@ -26,3 +26,8 @@
   min-width: 7rem;
   width: 18%;
 }
+
+/* English pages stay in nav for sidebar generation, but language switching lives in the header selector. */
+.md-tabs__item:last-child {
+  display: none;
+}

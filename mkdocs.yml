@@ -12,7 +12,10 @@ theme:
   language: zh
   features:
     - content.code.copy
+    - navigation.indexes
     - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.top
     - search.highlight
     - search.suggest
@@ -67,7 +70,8 @@ plugins:
         rc_local.md: deployment/rc_local.md
         run_modes.md: deployment/run_modes.md
         system_overview.md: deployment/system_overview.md
-        interface_reference.md: modules/interface_reference.md
+        interface_reference.md: modules/index.md
+        modules/interface_reference.md: modules/index.md
         architecture.md: modules/architecture.md
         driver_overview.md: modules/drivers/index.md
         livox_ros_driver2.md: modules/drivers/livox_ros_driver2.md
@@ -118,7 +122,8 @@ plugins:
         en/rc_local.md: en/deployment/rc_local.md
         en/run_modes.md: en/deployment/run_modes.md
         en/system_overview.md: en/deployment/system_overview.md
-        en/interface_reference.md: en/modules/interface_reference.md
+        en/interface_reference.md: en/modules/index.md
+        en/modules/interface_reference.md: en/modules/index.md
         en/architecture.md: en/modules/architecture.md
         en/driver_overview.md: en/modules/drivers/index.md
         en/livox_ros_driver2.md: en/modules/drivers/livox_ros_driver2.md
@@ -161,10 +166,11 @@ plugins:
 
 nav:
   - 首页:
-      - 项目首页: index.md
+      - index.md
       - 快速开始: home/quick_start.md
       - 启动使用: home/launch_usage.md
   - 部署与使用:
+      - deployment/index.md
       - 环境准备: deployment/environment.md
       - 雷达配置: deployment/lidar_setup.md
       - RealSense 配置: deployment/realsense_setup.md
@@ -174,7 +180,7 @@ nav:
       - 运行模式: deployment/run_modes.md
       - 话题与 TF 总览: deployment/system_overview.md
   - 模块与接口:
-      - 总体入口: modules/interface_reference.md
+      - modules/index.md
       - 总体架构: modules/architecture.md
       - 驱动层:
           - 驱动层总览: modules/drivers/index.md
@@ -214,22 +220,24 @@ nav:
       - 接口规范:
           - 话题参考: modules/standards/topics.md
           - TF 树: modules/standards/tf_tree.md
-  - 支持与社区:
+  - 开发协作:
       - 开发说明: support/development.md
-      - 应用场景: support/application_scenarios.md
-      - 常见问题: support/faq.md
-      - 故障排查: support/troubleshooting.md
       - 更新与迁移: support/migration_notes.md
-      - 联系我们: support/contact.md
       - 贡献指南: support/contributing.md
       - 交接记录:
           - Point-LIO 交接: point_lio_handoff_2026-04-16.md
           - PX4 Bridge 交接: px4_bridge_handoff_2026-04-17.md
+  - 支持社区:
+      - 应用场景: support/application_scenarios.md
+      - 常见问题: support/faq.md
+      - 故障排查: support/troubleshooting.md
+      - 联系我们: support/contact.md
   - English:
       - Home: en/index.md
       - Quick Start: en/home/quick_start.md
       - Launch & Use: en/home/launch_usage.md
       - Deployment & Usage:
+          - en/deployment/index.md
           - Environment Setup: en/deployment/environment.md
           - LiDAR Setup: en/deployment/lidar_setup.md
           - RealSense Setup: en/deployment/realsense_setup.md
@@ -239,7 +247,7 @@ nav:
           - Run Modes: en/deployment/run_modes.md
           - Topics & TF Overview: en/deployment/system_overview.md
       - Modules & Interfaces:
-          - Main Entry: en/modules/interface_reference.md
+          - en/modules/index.md
           - Architecture: en/modules/architecture.md
           - Drivers:
               - Drivers Overview: en/modules/drivers/index.md

@@ -121,4 +121,4 @@ The repository includes both built-in packages and external submodules. For a qu
 
 1. Start from [Quick Start](home/quick_start.md) for the standard workspace flow.
 2. Continue with [Environment Setup](deployment/environment.md) and [LiDAR Setup](deployment/lidar_setup.md) for a first deployment.
-3. Move to [Modules & Interfaces](modules/interface_reference.md) when you need package-level details.
+3. Move to [Modules & Interfaces](modules/index.md) when you need package-level details.
