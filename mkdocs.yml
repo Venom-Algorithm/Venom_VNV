@@ -88,6 +88,7 @@ plugins:
         armor_detector.md: modules/auto_aim/armor_detector.md
         armor_tracker.md: modules/auto_aim/armor_tracker.md
         yolo_detector.md: modules/perception/yolo_detector.md
+        zbar_ros.md: modules/perception/zbar_ros.md
         localization_overview.md: modules/localization/index.md
         lio_overview.md: modules/lio/index.md
         point_lio.md: modules/lio/point_lio.md
@@ -140,6 +141,7 @@ plugins:
         en/armor_detector.md: en/modules/auto_aim/armor_detector.md
         en/armor_tracker.md: en/modules/auto_aim/armor_tracker.md
         en/yolo_detector.md: en/modules/perception/yolo_detector.md
+        en/zbar_ros.md: en/modules/perception/zbar_ros.md
         en/localization_overview.md: en/modules/localization/index.md
         en/lio_overview.md: en/modules/lio/index.md
         en/point_lio.md: en/modules/lio/point_lio.md
@@ -199,6 +201,7 @@ nav:
           - 装甲板检测: modules/auto_aim/armor_detector.md
           - 目标跟踪: modules/auto_aim/armor_tracker.md
           - YOLO Detector: modules/perception/yolo_detector.md
+          - ZBar ROS: modules/perception/zbar_ros.md
       - 定位层:
           - 定位层总览: modules/localization/index.md
           - LIO 总览: modules/lio/index.md
@@ -266,6 +269,7 @@ nav:
               - Armor Detection: en/modules/auto_aim/armor_detector.md
               - Target Tracking: en/modules/auto_aim/armor_tracker.md
               - YOLO Detector: en/modules/perception/yolo_detector.md
+              - ZBar ROS: en/modules/perception/zbar_ros.md
           - Localization:
               - Localization Overview: en/modules/localization/index.md
               - LIO Overview: en/modules/lio/index.md

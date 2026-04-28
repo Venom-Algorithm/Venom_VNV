@@ -91,6 +91,7 @@ Venom VNV 是一个基于 ROS 2 Humble 构建的综合通用平台。
     <tr><td>驱动层</td><td><code>driver/venom_px4_bridge</code></td><td>PX4 集成项目根目录，内部包含 vendored <code>px4_msgs</code> 与自有桥接包</td></tr>
     <tr><td>感知层</td><td><code>perception/rm_auto_aim</code></td><td>自瞄能力总包，包含检测、跟踪、解算与接口定义</td></tr>
     <tr><td>感知层</td><td><code>perception/yolo_detector</code></td><td>通用 YOLO 2D 目标检测模块与自定义消息定义</td></tr>
+    <tr><td>感知层</td><td><code>perception/zbar_ros</code></td><td>基于 ZBar 的二维码 / 条码识别模块，输出结构化识别结果</td></tr>
     <tr><td>感知层</td><td><code>perception/rm_auto_aim/armor_detector</code></td><td>装甲板检测模块</td></tr>
     <tr><td>感知层</td><td><code>perception/rm_auto_aim/armor_tracker</code></td><td>目标跟踪模块</td></tr>
     <tr><td>感知层</td><td><code>perception/rm_auto_aim/auto_aim_solver</code></td><td>弹道与目标解算模块</td></tr>
