@@ -32,9 +32,9 @@ target_link_libraries(barcode_reader_node
   ${OpenCV_LIBRARIES}
   zbar)
 
-add_executable(qr_code_detector src/barcode_reader_main.cpp)
-ament_target_dependencies(qr_code_detector rclcpp)
-target_link_libraries(qr_code_detector barcode_reader_node)
+add_executable(barcode_reader src/barcode_reader_main.cpp)
+ament_target_dependencies(barcode_reader rclcpp)
+target_link_libraries(barcode_reader barcode_reader_node)
 
 add_executable(dataset_image_publisher src/dataset_image_publisher.cpp)
 target_include_directories(dataset_image_publisher PRIVATE ${OpenCV_INCLUDE_DIRS})
@@ -46,7 +46,7 @@ ament_target_dependencies(dataset_image_publisher
 target_link_libraries(dataset_image_publisher ${OpenCV_LIBRARIES})
 
 install(TARGETS
-  qr_code_detector
+  barcode_reader
   dataset_image_publisher
   barcode_reader_node
   EXPORT export_${PROJECT_NAME}

@@ -47,7 +47,7 @@ const cv::Scalar kLabelColor(0, 255, 255);
 }  // namespace
 
 BarcodeReaderNode::BarcodeReaderNode()
-: Node("qr_code_detector")
+: Node("barcode_reader")
 {
   publish_debug_image_ = this->declare_parameter<bool>("publish_debug_image", true);
   qrcode_only_ = this->declare_parameter<bool>("qrcode_only", true);
