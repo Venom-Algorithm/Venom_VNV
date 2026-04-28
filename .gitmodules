@@ -53,3 +53,6 @@
 [submodule "perception/zbar_ros"]
 	path = perception/zbar_ros
 	url = git@github.com:Venom-Algorithm/zbar_ros.git
+[submodule "planning/navigation/venom_teb_controller"]
+	path = planning/navigation/venom_teb_controller
+	url = git@github.com:Venom-Algorithm/venom_teb_controller.git
