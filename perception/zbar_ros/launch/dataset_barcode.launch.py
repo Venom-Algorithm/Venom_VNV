@@ -78,8 +78,8 @@ def generate_launch_description():
             ),
             Node(
                 package="zbar_ros",
-                executable="qr_code_detector",
-                name="qr_code_detector",
+                executable="barcode_reader",
+                name="barcode_reader",
                 output="screen",
                 parameters=[
                     {

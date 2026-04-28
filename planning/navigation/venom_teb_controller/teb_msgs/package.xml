@@ -5,7 +5,7 @@
   <version>0.0.1</version>
   <description>A package containing message definitions for teb_local_planner.</description>
   <maintainer email="vinnam.kim@gmail.com">Vinnam Kim</maintainer>
-  <license>Apache License 2.0</license>
+  <license>BSD</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
