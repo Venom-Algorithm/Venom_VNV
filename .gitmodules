@@ -50,3 +50,6 @@
 	path = planning/navigation/ego-planner-swarm
 	url = https://github.com/ZJU-FAST-Lab/ego-planner-swarm.git
 	branch = ros2_version
+[submodule "perception/zbar_ros"]
+	path = perception/zbar_ros
+	url = git@github.com:Venom-Algorithm/zbar_ros.git
