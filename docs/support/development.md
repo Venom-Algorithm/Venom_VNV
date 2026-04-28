@@ -241,11 +241,11 @@ git checkout -b feat/<short-topic>
 
 | 命令 | 适用场景 |
 | --- | --- |
-| `make submodules-ugv` | 无人车真机：底盘、机械臂、雷达、相机、串口、定位、YOLO |
-| `make submodules-sim` | 纯仿真：`venom_nav_simulation` 与 `ego-planner-swarm` |
-| `make submodules-ugv-sim` | 无人车仿真：仿真、Point-LIO、Ego Planner、YOLO |
-| `make submodules-auto-aim` | 自瞄开发：`rm_auto_aim`、海康相机、串口 |
-| `make submodules-uav` | 无人机开发：PX4 bridge 与 Ego Planner |
+| `make submodules-ugv` | 无人车真机：底盘、机械臂、雷达、相机、串口、定位、TEB controller、YOLO、ZBar |
+| `make submodules-sim` | 纯仿真：`venom_nav_simulation`、`ego-planner-swarm`、`venom_teb_controller` |
+| `make submodules-ugv-sim` | 无人车仿真：仿真、Point-LIO、Ego Planner、TEB controller、YOLO、ZBar |
+| `make submodules-auto-aim` | 自瞄/视觉感知开发：`rm_auto_aim`、YOLO、ZBar、海康相机、串口 |
+| `make submodules-uav` | 无人机开发：PX4 bridge、Ego Planner、YOLO、ZBar |
 | `make submodules-all` | 全量拉取所有子模块 |
 
 示例：
@@ -308,7 +308,7 @@ make submodules-uav
 - `push` 使用 SSH，便于开发机直接推送
 - `.gitmodules` 中统一保留 HTTPS 地址，保证递归拉取时兼容性更好
 
-当前新增子模块也遵守这条规则，例如 `perception/yolo_detector`、`simulation/venom_nav_simulation` 和 `planning/navigation/ego-planner-swarm` 都在 `.gitmodules` 中使用 HTTPS。
+当前新增子模块也遵守这条规则，例如 `perception/yolo_detector`、`perception/zbar_ros`、`simulation/venom_nav_simulation`、`planning/navigation/ego-planner-swarm` 和 `planning/navigation/venom_teb_controller` 都在 `.gitmodules` 中使用 HTTPS。
 
 CI 和 Docker 构建脚本会临时写入 `COLCON_IGNORE` 来跳过硬件相关包或不适合当前平台的仿真包，`COLCON_IGNORE` 已被 `.gitignore` 忽略，不应提交进仓库。
 

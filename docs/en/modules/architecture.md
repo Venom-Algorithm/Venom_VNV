@@ -21,9 +21,9 @@ Venom VNV can be understood as seven layers:
 | Layer | Responsibility |
 | --- | --- |
 | Drivers | `driver/` packages for sensors, chassis, arms, serial links, and PX4 bridges |
-| Perception | `perception/` packages for detection, recognition, tracking, and auto aim |
+| Perception | `perception/` packages for auto aim, YOLO detection, QR/barcode recognition, and tracking |
 | Localization | `localization/` packages for LIO, odometry, and relocalization |
-| Planning | `planning/` for planners, controllers, and manipulation motion planning |
+| Planning | `planning/` for Ego Planner, TEB controller, Nav2 controllers, and manipulation motion planning |
 | Mission | `mission/` for waypoint, behavior-tree, monitor, and task-management packages |
 | System | bringup, robot description, and mode composition |
 | Simulation | standalone simulation workspaces and regression baselines |
@@ -33,9 +33,9 @@ Venom VNV can be understood as seven layers:
 | Layer | Main Directories | Description |
 | --- | --- | --- |
 | Drivers | `driver/` | Hardware-facing drivers and bridges |
-| Perception | `perception/` | Detection, auto aim, and general vision modules |
+| Perception | `perception/` | Auto aim, YOLO detection, QR/barcode recognition, and general vision modules |
 | Localization | `localization/` | LIO, 2D odometry, and relocalization |
-| Planning | `planning/` | Home for navigation planners, controllers, and MoveIt-side motion planning |
+| Planning | `planning/` | Home for Ego Planner, TEB controller, Nav2 controllers, and MoveIt-side motion planning |
 | Mission | `mission/` | Home for waypoint, BT, monitor, and mission-management packages |
 | System | `venom_bringup`, `venom_robot_description` | Robot-level composition and description, not mission-package ownership |
 | Simulation | `simulation/venom_nav_simulation` | Simulation workspace for navigation and LIO validation |

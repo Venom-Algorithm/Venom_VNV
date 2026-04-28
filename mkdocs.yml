@@ -7,6 +7,10 @@ docs_dir: docs
 site_dir: site
 use_directory_urls: true
 
+validation:
+  nav:
+    omitted_files: ignore
+
 theme:
   name: material
   language: zh
@@ -97,6 +101,7 @@ plugins:
         small_gicp_relocalization.md: modules/localization/small_gicp_relocalization.md
         planning_overview.md: modules/planning/index.md
         ego_planner_swarm.md: modules/planning/ego_planner_swarm.md
+        venom_teb_controller.md: modules/planning/venom_teb_controller.md
         mission_overview.md: modules/mission/index.md
         integration_overview.md: modules/integration/index.md
         venom_bringup.md: modules/integration/venom_bringup.md
@@ -150,6 +155,7 @@ plugins:
         en/small_gicp_relocalization.md: en/modules/localization/small_gicp_relocalization.md
         en/planning_overview.md: en/modules/planning/index.md
         en/ego_planner_swarm.md: en/modules/planning/ego_planner_swarm.md
+        en/venom_teb_controller.md: en/modules/planning/venom_teb_controller.md
         en/mission_overview.md: en/modules/mission/index.md
         en/integration_overview.md: en/modules/integration/index.md
         en/venom_bringup.md: en/modules/integration/venom_bringup.md
@@ -212,6 +218,7 @@ nav:
       - 规划层:
           - 规划层总览: modules/planning/index.md
           - Ego Planner Swarm: modules/planning/ego_planner_swarm.md
+          - TEB Controller: modules/planning/venom_teb_controller.md
       - 任务层: modules/mission/index.md
       - 系统层:
           - 系统层总览: modules/integration/index.md
@@ -235,67 +242,3 @@ nav:
       - 常见问题: support/faq.md
       - 故障排查: support/troubleshooting.md
       - 联系我们: support/contact.md
-  - English:
-      - Home: en/index.md
-      - Quick Start: en/home/quick_start.md
-      - Launch & Use: en/home/launch_usage.md
-      - Deployment & Usage:
-          - en/deployment/index.md
-          - Environment Setup: en/deployment/environment.md
-          - LiDAR Setup: en/deployment/lidar_setup.md
-          - RealSense Setup: en/deployment/realsense_setup.md
-          - Chassis CAN Setup: en/deployment/chassis_can_setup.md
-          - Arm CAN Setup: en/deployment/piper_can_setup.md
-          - rc.local: en/deployment/rc_local.md
-          - Run Modes: en/deployment/run_modes.md
-          - Topics & TF Overview: en/deployment/system_overview.md
-      - Modules & Interfaces:
-          - en/modules/index.md
-          - Architecture: en/modules/architecture.md
-          - Drivers:
-              - Drivers Overview: en/modules/drivers/index.md
-              - Livox LiDAR Driver: en/modules/drivers/livox_ros_driver2.md
-              - Hikrobot Camera Driver: en/modules/drivers/ros2_hik_camera.md
-              - Chassis Driver Overview: en/modules/drivers/chassis_driver.md
-              - Scout Driver: en/modules/drivers/scout_ros2.md
-              - Hunter Driver: en/modules/drivers/hunter_ros2.md
-              - UGV SDK: en/modules/drivers/ugv_sdk.md
-              - Piper Arm Driver: en/modules/drivers/piper_ros.md
-              - PX4 Bridge: en/modules/drivers/venom_px4_bridge.md
-              - Serial Driver: en/modules/drivers/venom_serial_driver.md
-          - Perception:
-              - Perception Overview: en/modules/perception/index.md
-              - Auto Aim Overview: en/modules/auto_aim/index.md
-              - Armor Detection: en/modules/auto_aim/armor_detector.md
-              - Target Tracking: en/modules/auto_aim/armor_tracker.md
-              - YOLO Detector: en/modules/perception/yolo_detector.md
-              - ZBar ROS: en/modules/perception/zbar_ros.md
-          - Localization:
-              - Localization Overview: en/modules/localization/index.md
-              - LIO Overview: en/modules/lio/index.md
-              - Point-LIO: en/modules/lio/point_lio.md
-              - Fast-LIO: en/modules/lio/fast_lio.md
-              - rf2o Laser Odometry: en/modules/localization/rf2o_laser_odometry.md
-              - Relocalization: en/modules/localization/small_gicp_relocalization.md
-          - Planning:
-              - Planning Overview: en/modules/planning/index.md
-              - Ego Planner Swarm: en/modules/planning/ego_planner_swarm.md
-          - Mission: en/modules/mission/index.md
-          - System:
-              - System Overview: en/modules/integration/index.md
-              - System Bringup: en/modules/integration/venom_bringup.md
-              - Robot Description: en/modules/integration/venom_robot_description.md
-          - Simulation:
-              - Simulation Overview: en/modules/simulation/index.md
-              - Navigation Simulation Workspace: en/modules/simulation/venom_nav_simulation.md
-          - Interface Standards:
-              - Topic Reference: en/modules/standards/topics.md
-              - TF Tree: en/modules/standards/tf_tree.md
-      - Support & Community:
-          - Development Notes: en/support/development.md
-          - Application Scenarios: en/support/application_scenarios.md
-          - FAQ: en/support/faq.md
-          - Troubleshooting: en/support/troubleshooting.md
-          - Updates & Migration: en/support/migration_notes.md
-          - Contact: en/support/contact.md
-          - Contributing: en/support/contributing.md

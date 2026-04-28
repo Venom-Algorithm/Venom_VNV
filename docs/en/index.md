@@ -24,7 +24,7 @@ The repository focuses on reusable engineering capabilities such as:
 - Sensors, serial links, chassis platforms, and robot arm integration
 - Detection, tracking, targeting, and general object-detection pipelines
 - LIO, odometry, and relocalization
-- planning-oriented modules for planners, controllers, and manipulation motion generation
+- planning-oriented modules for Ego Planner, TEB controllers, trajectory planning, and manipulation motion generation
 - mission-oriented modules for waypoint, BT, monitor, and task progression
 - Shared startup conventions across multiple robot types
 
@@ -102,6 +102,7 @@ The repository includes both built-in packages and external submodules. For a qu
     <tr><td>Localization</td><td><code>localization/lio/rf2o_laser_odometry</code></td><td>2D laser odometry based on range flow</td></tr>
     <tr><td>Localization</td><td><code>localization/relocalization/small_gicp_relocalization</code></td><td>Point-cloud relocalization based on small_gicp</td></tr>
     <tr><td>Planning</td><td><code>planning/navigation/ego-planner-swarm</code></td><td>UAV local planning and swarm-planning submodule tracking the upstream <code>ros2_version</code> branch</td></tr>
+    <tr><td>Planning</td><td><code>planning/navigation/venom_teb_controller</code></td><td>TEB local planner integrated as a Nav2 controller plugin, including <code>teb_local_planner</code> and <code>teb_msgs</code></td></tr>
     <tr><td>Planning</td><td><code>planning/manipulation</code></td><td>Entry point for manipulation-side motion planning modules, currently kept as a placeholder</td></tr>
     <tr><td>Mission</td><td><code>mission/</code></td><td>Entry point for waypoint, behavior-tree, monitor, and mission-management packages, with placeholder <code>navigation/</code> and <code>manipulation/</code> subfolders already created</td></tr>
     <tr><td>System</td><td><code>venom_bringup</code></td><td>Main system entry for mode composition, robot assembly, and full-stack bringup</td></tr>

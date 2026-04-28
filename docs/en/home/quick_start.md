@@ -48,11 +48,11 @@ cd ~
 mkdir -p ~/venom_ws/src
 git clone https://github.com/Venom-Algorithm/Venom_VNV ~/venom_ws/src/venom_vnv
 cd ~/venom_ws/src/venom_vnv
-make submodules-ugv       # real UGV: chassis, LiDAR, localization, perception
-make submodules-sim       # pure simulation: simulation workspace and planning
-make submodules-ugv-sim   # UGV simulation: simulation, localization, planning, YOLO
-make submodules-auto-aim  # auto-aim development: perception, camera, serial
-make submodules-uav       # UAV: PX4 bridge and Ego Planner
+make submodules-ugv       # real UGV: chassis, LiDAR, localization, navigation, general perception
+make submodules-sim       # pure simulation: simulation workspace, Ego Planner, TEB controller
+make submodules-ugv-sim   # UGV simulation: simulation, localization, TEB controller, general perception
+make submodules-auto-aim  # auto-aim / vision development: auto aim, YOLO, ZBar, camera, serial
+make submodules-uav       # UAV: PX4 bridge, Ego Planner, YOLO, ZBar
 make submodules-all       # initialize all submodules
 ```
 

@@ -47,11 +47,11 @@ cd ~
 mkdir -p ~/venom_ws/src
 git clone https://github.com/Venom-Algorithm/Venom_VNV ~/venom_ws/src/venom_vnv
 cd ~/venom_ws/src/venom_vnv
-make submodules-ugv       # 无人车真机：底盘、雷达、定位、感知
-make submodules-sim       # 纯仿真：仿真工作区与规划
-make submodules-ugv-sim   # 无人车仿真：仿真、定位、规划、YOLO
-make submodules-auto-aim  # 自瞄开发：感知、相机、串口
-make submodules-uav       # 无人机：PX4 桥接与 Ego Planner
+make submodules-ugv       # 无人车真机：底盘、雷达、定位、导航、通用感知
+make submodules-sim       # 纯仿真：仿真工作区、Ego Planner、TEB controller
+make submodules-ugv-sim   # 无人车仿真：仿真、定位、TEB controller、通用感知
+make submodules-auto-aim  # 自瞄/视觉感知开发：自瞄、YOLO、ZBar、相机、串口
+make submodules-uav       # 无人机：PX4 桥接、Ego Planner、YOLO、ZBar
 make submodules-all       # 全量拉取所有子模块
 ```
 

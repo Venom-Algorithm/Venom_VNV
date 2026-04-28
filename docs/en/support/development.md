@@ -230,11 +230,11 @@ If you only work on one area, you do not need to initialize every submodule. The
 
 | Command | Use case |
 | --- | --- |
-| `make submodules-ugv` | real UGV: chassis, arm, LiDAR, camera, serial, localization, YOLO |
-| `make submodules-sim` | pure simulation: `venom_nav_simulation` and `ego-planner-swarm` |
-| `make submodules-ugv-sim` | UGV simulation: simulation, Point-LIO, Ego Planner, YOLO |
-| `make submodules-auto-aim` | auto-aim development: `rm_auto_aim`, Hikrobot camera, serial |
-| `make submodules-uav` | UAV development: PX4 bridge and Ego Planner |
+| `make submodules-ugv` | real UGV: chassis, arm, LiDAR, camera, serial, localization, TEB controller, YOLO, ZBar |
+| `make submodules-sim` | pure simulation: `venom_nav_simulation`, `ego-planner-swarm`, and `venom_teb_controller` |
+| `make submodules-ugv-sim` | UGV simulation: simulation, Point-LIO, Ego Planner, TEB controller, YOLO, ZBar |
+| `make submodules-auto-aim` | auto-aim / vision development: `rm_auto_aim`, YOLO, ZBar, Hikrobot camera, serial |
+| `make submodules-uav` | UAV development: PX4 bridge, Ego Planner, YOLO, ZBar |
 | `make submodules-all` | initialize all submodules |
 
 Example:
@@ -288,7 +288,7 @@ Current recommendation:
 - SSH for `push`
 - HTTPS URLs inside `.gitmodules`
 
-New submodules follow the same rule, including `perception/yolo_detector`, `simulation/venom_nav_simulation`, and `planning/navigation/ego-planner-swarm`.
+New submodules follow the same rule, including `perception/yolo_detector`, `perception/zbar_ros`, `simulation/venom_nav_simulation`, `planning/navigation/ego-planner-swarm`, and `planning/navigation/venom_teb_controller`.
 
 The CI and Docker build scripts may write `COLCON_IGNORE` files temporarily to skip hardware-only packages or platform-specific simulation packages. `COLCON_IGNORE` is ignored by `.gitignore` and should not be committed.
 

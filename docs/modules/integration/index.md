@@ -20,7 +20,7 @@ description: 启动编排、机器人描述与整机模式入口总览。
 
 - 它负责整机编排和模式装配
 - 不负责局部/全局轨迹规划本身
-- 类似 `ego_planner` 这类模块应进入 `planning/`
+- 类似 `ego-planner-swarm`、`venom_teb_controller` 这类模块应进入 `planning/`
 
 ## 为什么也不叫“任务层”
 

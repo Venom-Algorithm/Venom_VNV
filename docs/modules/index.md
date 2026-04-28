@@ -18,6 +18,7 @@ description: 系统模块的总体框架、分类约束与子文档入口。
 - [定位层](localization/index.md)
 - [规划层](planning/index.md)
 - [Ego Planner Swarm](planning/ego_planner_swarm.md)
+- [TEB Controller](planning/venom_teb_controller.md)
 - [任务层](mission/index.md)
 - [系统层](integration/index.md)
 - [仿真层](simulation/index.md)
@@ -40,7 +41,7 @@ description: 系统模块的总体框架、分类约束与子文档入口。
 1. `driver/`：硬件接入与桥接
 2. `perception/`：检测、识别、跟踪等感知算法
 3. `localization/`：LIO、里程计、重定位
-4. `planning/`：导航规划、controller、机械臂运动规划，当前已接入 `ego-planner-swarm`
+4. `planning/`：导航规划、controller、机械臂运动规划，当前已接入 `ego-planner-swarm` 与 `venom_teb_controller`
 5. `mission/`：行为树、waypoint、监听器与任务调度
 6. `system/`：系统启动、机器人描述与整机装配
 7. `simulation/`：独立仿真工作区和仿真基线

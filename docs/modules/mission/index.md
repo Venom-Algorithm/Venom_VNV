@@ -45,7 +45,7 @@ mission/
 
 例如：
 
-- `venom_eagle_planner`、`venom_teb_controller` 应进入 `planning/navigation/`
+- `ego-planner-swarm`、`venom_teb_controller` 应进入 `planning/navigation/`
 - `venom_waypoint`、`venom_nav_bt`、`venom_global_monitor` 应进入 `mission/navigation/`
 - `venom_moveit_grasp` 应进入 `planning/manipulation/`
 - `venom_grasp_mission` 应进入 `mission/manipulation/`

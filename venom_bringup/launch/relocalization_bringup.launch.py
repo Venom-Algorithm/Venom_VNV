@@ -21,7 +21,7 @@ def generate_launch_description():
         'pcd_file',
         default_value=PathJoinSubstitution([
             EnvironmentVariable("HOME"),
-            "venom_ws/src/venom_vnv/lio/Point-LIO/PCD/scans.pcd"
+            "venom_ws/src/venom_vnv/localization/lio/Point-LIO/PCD/scans.pcd"
         ]),
         description='Path to prior map PCD file'
     )
@@ -37,7 +37,7 @@ def generate_launch_description():
         'map_2d_file',
         default_value=PathJoinSubstitution([
             EnvironmentVariable("HOME"),
-            "venom_ws/src/venom_vnv/lio/Point-LIO/PCD/map_2d"
+            "venom_ws/src/venom_vnv/localization/lio/Point-LIO/PCD/map_2d"
         ]),
         description='Path to 2D slam_toolbox serialized map (without extension)'
     )

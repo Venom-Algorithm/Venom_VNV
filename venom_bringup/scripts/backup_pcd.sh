@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PCD_DIR="lio/Point-LIO/PCD"
+PCD_DIR="${PCD_DIR:-$HOME/venom_ws/src/venom_vnv/localization/lio/Point-LIO/PCD}"
 TIMESTAMP=$(date +"%Y%m%d_%H%M")
 
 # 备份3D点云

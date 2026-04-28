@@ -18,7 +18,7 @@ The system layer answers “how the whole robot runs together.”
 
 - the system layer composes modules and modes
 - it does not own trajectory-generation algorithms
-- planners such as `ego_planner` should live under `planning/`
+- planners such as `ego-planner-swarm` and `venom_teb_controller` should live under `planning/`
 
 ## Why This Is Not Mission
 

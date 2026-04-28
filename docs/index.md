@@ -23,7 +23,7 @@ Venom VNV 是一个基于 ROS 2 Humble 构建的综合通用平台。
 - 激光雷达、相机、串口、底盘、机械臂等硬件接入
 - 自瞄检测、通用目标检测、跟踪、解算等感知链路
 - LIO、里程计、重定位等定位与地图能力
-- 轨迹规划、controller 与机械臂运动规划
+- Ego Planner、TEB controller、轨迹规划与机械臂运动规划
 - 行为树、waypoint、任务监听与任务管理
 - 多车型、多任务形态下的统一启动与接口规范
 
@@ -101,6 +101,7 @@ Venom VNV 是一个基于 ROS 2 Humble 构建的综合通用平台。
     <tr><td>定位层</td><td><code>localization/lio/rf2o_laser_odometry</code></td><td>面向 2D 激光雷达的里程计模块</td></tr>
     <tr><td>定位层</td><td><code>localization/relocalization/small_gicp_relocalization</code></td><td>基于点云配准的重定位模块</td></tr>
     <tr><td>规划层</td><td><code>planning/navigation/ego-planner-swarm</code></td><td>无人机局部规划与集群规划子模块，跟踪上游 <code>ros2_version</code> 分支</td></tr>
+    <tr><td>规划层</td><td><code>planning/navigation/venom_teb_controller</code></td><td>Nav2 controller 插件形式的 TEB 局部规划器，包含 <code>teb_local_planner</code> 与 <code>teb_msgs</code></td></tr>
     <tr><td>规划层</td><td><code>planning/manipulation</code></td><td>机械臂运动规划一类模块的统一入口，目前保留占位</td></tr>
     <tr><td>任务层</td><td><code>mission/</code></td><td>waypoint、行为树、状态监听、任务下发与任务管理一类模块的统一入口，已创建 <code>navigation/</code> 与 <code>manipulation/</code> 占位目录</td></tr>
     <tr><td>系统层</td><td><code>venom_bringup</code></td><td>系统启动入口，负责模式组织、整机装配与联调，不直接承载新任务包</td></tr>

@@ -32,6 +32,8 @@ The repository has been moving from personal ownership toward organization-manag
 | Change | Meaning |
 | --- | --- |
 | `planning/navigation/ego-planner-swarm` | new Ego Planner Swarm ROS 2 submodule tracking `ros2_version` |
+| `planning/navigation/venom_teb_controller` | new TEB local planner integrated as a Nav2 controller plugin |
+| `perception/zbar_ros` | new QR/barcode recognition module with structured 2D outputs |
 | `venom_bringup/launch/examples/px4_vps_bridge.launch.py` | new PX4 external-pose bridge entry point |
 | `docker/Dockerfile.sim`, `docker-compose.yml` | new Docker sim environment |
 | root `Makefile` profiles | new `submodules-ugv`, `submodules-sim`, `submodules-uav`, and related selective checkout targets |

@@ -42,7 +42,7 @@ mission/
 
 Examples:
 
-- `venom_eagle_planner` and `venom_teb_controller` belong under `planning/navigation/`
+- `ego-planner-swarm` and `venom_teb_controller` belong under `planning/navigation/`
 - `venom_waypoint`, `venom_nav_bt`, and `venom_global_monitor` belong under `mission/navigation/`
 - `venom_moveit_grasp` belongs under `planning/manipulation/`
 - `venom_grasp_mission` belongs under `mission/manipulation/`

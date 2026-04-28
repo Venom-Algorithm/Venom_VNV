@@ -1,11 +1,12 @@
 #!/bin/bash
 
-# 地图保存路径
-MAP_PATH="/home/venom/venom_ws/src/venom_vnv/lio/Point-LIO/PCD/map_2d"
+# 地图保存路径。可通过环境变量 MAP_PATH 覆盖。
+MAP_PATH="${MAP_PATH:-$HOME/venom_ws/src/venom_vnv/localization/lio/Point-LIO/PCD/map_2d}"
 SAVE_INTERVAL=5  # 每5秒保存一次
+LAUNCH_FILE="${1:-scout_mini_mapping.launch.py}"
 
 # 启动 mapping launch 文件
-ros2 launch venom_bringup mapping_bringup.launch.py &
+ros2 launch venom_bringup "$LAUNCH_FILE" &
 LAUNCH_PID=$!
 
 # 定期保存地图的后台任务

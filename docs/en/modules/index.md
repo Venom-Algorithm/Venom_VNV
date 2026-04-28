@@ -19,6 +19,7 @@ This section is meant to answer two questions:
 - [Localization](localization/index.md)
 - [Planning](planning/index.md)
 - [Ego Planner Swarm](planning/ego_planner_swarm.md)
+- [TEB Controller](planning/venom_teb_controller.md)
 - [Mission](mission/index.md)
 - [System](integration/index.md)
 - [Simulation](simulation/index.md)
@@ -30,7 +31,7 @@ This section is meant to answer two questions:
 1. `driver/`: hardware-facing integration and bridges
 2. `perception/`: detection, recognition, and tracking
 3. `localization/`: LIO, odometry, and relocalization
-4. `planning/`: navigation planners, controllers, and manipulation motion planning, currently including `ego-planner-swarm`
+4. `planning/`: navigation planners, controllers, and manipulation motion planning, currently including `ego-planner-swarm` and `venom_teb_controller`
 5. `mission/`: waypoint, behavior-tree, monitor, and mission-dispatch packages
 6. `system/`: bringup, robot description, and robot-level assembly
 7. `simulation/`: standalone simulation workspaces and baselines

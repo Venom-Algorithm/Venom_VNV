@@ -12,11 +12,11 @@ ROS_WS    := /ros_ws
 help:
 	@echo "Venom VNV — 子模块按需拉取（clone 后不加 --recurse-submodules）"
 	@echo ""
-	@echo "  make submodules-ugv       无人车真机（底盘+激光+定位+感知）"
-	@echo "  make submodules-sim       纯仿真（Gazebo + Nav2 + 规划）"
-	@echo "  make submodules-ugv-sim   无人车仿真（仿真+定位，无需真机驱动）"
-	@echo "  make submodules-auto-aim  自瞄开发（感知+相机+串口）"
-	@echo "  make submodules-uav       无人机（PX4 桥接+群体规划）"
+	@echo "  make submodules-ugv       无人车真机（底盘+激光+定位+导航+通用感知）"
+	@echo "  make submodules-sim       纯仿真（Gazebo + Nav2 + 规划/controller）"
+	@echo "  make submodules-ugv-sim   无人车仿真（仿真+定位+controller+通用感知）"
+	@echo "  make submodules-auto-aim  自瞄/视觉感知开发（自瞄+YOLO+ZBar+相机+串口）"
+	@echo "  make submodules-uav       无人机（PX4 桥接+Ego Planner+任务感知）"
 	@echo "  make submodules-all       全量拉取所有子模块"
 	@echo "  make submodules           同 submodules-all（向后兼容）"
 	@echo ""
@@ -52,30 +52,39 @@ submodules-ugv:
 	    localization/lio/Point-LIO \
 	    localization/lio/rf2o_laser_odometry \
 	    localization/relocalization/small_gicp_relocalization \
-	    perception/yolo_detector
+	    planning/navigation/venom_teb_controller \
+	    perception/yolo_detector \
+	    perception/zbar_ros
 
 submodules-sim:
 	git submodule update --init -- \
 	    simulation/venom_nav_simulation \
-	    planning/navigation/ego-planner-swarm
+	    planning/navigation/ego-planner-swarm \
+	    planning/navigation/venom_teb_controller
 
 submodules-ugv-sim:
 	git submodule update --init -- \
 	    simulation/venom_nav_simulation \
 	    localization/lio/Point-LIO \
 	    planning/navigation/ego-planner-swarm \
-	    perception/yolo_detector
+	    planning/navigation/venom_teb_controller \
+	    perception/yolo_detector \
+	    perception/zbar_ros
 
 submodules-auto-aim:
 	git submodule update --init -- \
 	    perception/rm_auto_aim \
+	    perception/yolo_detector \
+	    perception/zbar_ros \
 	    driver/ros2_hik_camera \
 	    driver/venom_serial_driver
 
 submodules-uav:
 	git submodule update --init -- \
 	    driver/venom_px4_bridge \
-	    planning/navigation/ego-planner-swarm
+	    planning/navigation/ego-planner-swarm \
+	    perception/yolo_detector \
+	    perception/zbar_ros
 
 build:
 	docker build \

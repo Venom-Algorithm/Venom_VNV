@@ -25,11 +25,11 @@ It is not responsible for:
 planning/
 ```
 
-Modules such as `ego_planner`, TEB, custom Nav2 controllers, and MoveIt grasp planning should live here.
+Modules such as `ego-planner-swarm`, `venom_teb_controller`, custom Nav2 controllers, and MoveIt grasp planning live here.
 
 ## Current Status
 
-The main workspace now contains a committed `planning/` directory. `planning/navigation/` already contains the `ego-planner-swarm` submodule, while `planning/manipulation/` remains the entry point for arm-side motion planning.
+The main workspace now contains a committed `planning/` directory. `planning/navigation/` already contains `ego-planner-swarm` and `venom_teb_controller`, while `planning/manipulation/` remains the entry point for arm-side motion planning.
 
 ## Current Layout Pattern
 
@@ -54,6 +54,7 @@ Those concerns should stay separated.
 
 - [Architecture](../architecture.md)
 - [Ego Planner Swarm](ego_planner_swarm.md)
+- [TEB Controller](venom_teb_controller.md)
 - [Mission](../mission/index.md)
 - [System](../integration/index.md)
 - [Simulation](../simulation/index.md)
