@@ -1,0 +1,106 @@
+# Template for future real competition maps.
+# Copy this file, rename it for the map/event, then replace x/y/yaw from RViz.
+map:
+  name: competition_map_tbd
+  frame_id: map
+  source: replace_with_actual_map_yaml
+  coordinate_workflow:
+    - Start Gazebo/Nav2/RViz with the target map.
+    - Use RViz Publish Point or 2D Goal Pose to record reachable map-frame coordinates.
+    - Keep task names stable so task plugins do not need to change when the map changes.
+    - Validate each waypoint manually in RViz before running the full mission.
+
+mission:
+  id: competition_simple_commander_demo
+  loop: false
+  stop_on_task_failure: true
+
+waypoints:
+  - name: start_area
+    description: 起停区；实图接入时把这里改成真实起点位姿。
+    frame_id: map
+    x: 0.0
+    y: 0.0
+    yaw: 0.0
+    skip_navigation: true
+    tasks:
+      - name: start_delay
+        type: wait
+        seconds: 0.5
+
+  - name: task_point_1_pick
+    description: 任务点一；识别物品并夹取。
+    frame_id: map
+    x: 0.0
+    y: 0.0
+    yaw: 0.0
+    tasks:
+      - name: detect_item_at_point_1
+        type: detect_item
+        target: competition_object
+        mock_confidence: 0.92
+        mock_delay_sec: 0.3
+      - name: grasp_item_at_point_1
+        type: grasp_item
+        source: detected_item
+        gripper: piper
+        mock_delay_sec: 0.4
+
+  - name: task_point_2_meter_voice
+    description: 任务点二；识别电表图像并执行语音播报。
+    frame_id: map
+    x: 0.0
+    y: 0.0
+    yaw: 0.0
+    tasks:
+      - name: read_meter_at_point_2
+        type: read_meter
+        meter_id: competition_meter
+        mock_value: "220.0V"
+        mock_confidence: 0.9
+        mock_delay_sec: 0.3
+      - name: voice_report_meter
+        type: voice_report
+        mock_delay_sec: 0.2
+
+  - name: task_point_3_flame_tracking
+    description: 任务点三；识别火焰图片并追踪。
+    frame_id: map
+    x: 0.0
+    y: 0.0
+    yaw: 0.0
+    tasks:
+      - name: detect_flame_at_point_3
+        type: detect_flame
+        mock_confidence: 0.88
+        mock_delay_sec: 0.3
+      - name: track_flame_at_point_3
+        type: track_flame
+        source: flame_detection
+        mock_tracking_steps: 3
+        mock_step_delay_sec: 0.2
+
+  - name: task_point_4_classify_place
+    description: 任务点四；把夹取物品分类放置。
+    frame_id: map
+    x: 0.0
+    y: 0.0
+    yaw: 0.0
+    tasks:
+      - name: classify_and_place_object
+        type: classify_place
+        source: grasped_object
+        mock_category: competition_category_a
+        place_zone: bin_a
+        mock_delay_sec: 0.4
+
+  - name: return_start_area
+    description: 回到起停区；实图接入时建议填真实起点位姿，不要依赖 skip_navigation。
+    frame_id: map
+    x: 0.0
+    y: 0.0
+    yaw: 0.0
+    tasks:
+      - name: finish_delay
+        type: wait
+        seconds: 0.5
