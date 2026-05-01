@@ -1,0 +1,70 @@
+manipulation_commander:
+  ros__parameters:
+    use_sim_time: true
+    planning_frame: base_link
+    arm_group_name: arm
+    gripper_group_name: gripper
+    arm_end_effector_link: gripper_grasp_center
+    arm_velocity_scaling: 0.12
+    arm_acceleration_scaling: 0.08
+    gripper_velocity_scaling: 0.35
+    gripper_acceleration_scaling: 0.25
+    arm_planning_time_sec: 180.0
+    gripper_planning_time_sec: 60.0
+    arm_execution_timeout_sec: 180.0
+    gripper_execution_timeout_sec: 60.0
+    controller_ready_timeout_sec: 600.0
+    post_grasp_settle_sec: 0.8
+    post_release_settle_sec: 0.5
+    enable_gazebo_attachment: false
+    gazebo_attachment_frame: gripper_grasp_center
+    gazebo_attach_update_hz: 30.0
+    gazebo_service_timeout_sec: 3.0
+    enable_scene_objects: true
+    enable_pickup_stand_collision: true
+    enable_place_stand_collision: true
+    generate_pick_targets_from_block: true
+    pickup_stand:
+      x: 0.281
+      y: 0.0
+      z: 0.423
+      size_x: 0.22
+      size_y: 0.18
+      size_z: 0.02
+    place_stand:
+      x: -0.02
+      y: 0.38
+      z: 0.423
+      size_x: 0.22
+      size_y: 0.18
+      size_z: 0.02
+    pickup_block:
+      id: pick_target_block
+      x: 0.281
+      y: 0.0
+      z: 0.4505
+      size_x: 0.018
+      size_y: 0.018
+      size_z: 0.035
+      touch_links: [link7, link8]
+    pick_target_orientation_rpy: [3.14159, 0.0, 0.0]
+    top_grasp_candidate_yaws: [0.0, 1.5708, -1.5708, 3.14159]
+    pregrasp_offset_xyz: [0.0, 0.0, 0.05]
+    grasp_offset_xyz: [0.0, 0.0, 0.005]
+    lift_offset_xyz: [0.0, 0.0, 0.18]
+    transit_offset_xyz: [-0.14, 0.0, 0.18]
+    tcp_offset_xyz: [0.0, 0.0, 0.0]
+    grasp_candidate_planning_time_sec: 8.0
+    home_pose: [0.05614, 0.0, 0.21319, 0.0, 1.48353, 0.0]
+    pregrasp_pose: [0.281, 0.0, 0.49, 3.14159, 0.0, -1.5708]
+    grasp_pose: [0.281, 0.0, 0.445, 3.14159, 0.0, -1.5708]
+    lift_pose: [0.281, 0.0, 0.52, 3.14159, 0.0, -1.5708]
+    place_pose: [-0.02, 0.38, 0.70, 3.14159, 0.0, 1.5708]
+    home_joints: [0.0, 1.3, -1.8, 0.0, 0.6, 0.0]
+    pregrasp_joints: [0.0, 1.35, -1.9, 0.0, 0.7, 0.0]
+    grasp_joints: [0.0, 1.55, -2.2, 0.0, 1.0, 0.0]
+    lift_joints: [0.0, 1.3, -1.8, 0.0, 0.6, 0.0]
+    place_joints: [1.2, 1.2, -1.8, 0.0, 0.6, 0.0]
+    gripper_open_joint7: 0.028
+    gripper_close_joint7: 0.0015
+    autostart_task_type: 1

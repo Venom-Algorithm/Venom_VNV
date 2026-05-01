@@ -43,3 +43,7 @@
 [submodule "simulation/venom_nav_simulation"]
 	path = simulation/venom_nav_simulation
 	url = git@github.com:Venom-Algorithm/venom_nav_simulation.git
+[submodule "third_party/IFRA_LinkAttacher"]
+	path = third_party/IFRA_LinkAttacher
+	url = https://github.com/IFRA-Cranfield/IFRA_LinkAttacher.git
+	branch = humble

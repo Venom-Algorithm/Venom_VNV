@@ -1,0 +1,68 @@
+<?xml version="1.0" ?>
+<sdf version="1.7">
+  <model name="pick_place_stand">
+    <static>true</static>
+    <link name="table_link">
+      <collision name="tabletop_collision">
+        <geometry>
+          <box>
+            <size>0.22 0.18 0.02</size>
+          </box>
+        </geometry>
+        <pose>0 0 0.423 0 0 0</pose>
+      </collision>
+      <collision name="pedestal_collision">
+        <geometry>
+          <box>
+            <size>0.06 0.06 0.403</size>
+          </box>
+        </geometry>
+        <pose>0 0 0.2015 0 0 0</pose>
+      </collision>
+      <collision name="base_collision">
+        <geometry>
+          <box>
+            <size>0.12 0.12 0.02</size>
+          </box>
+        </geometry>
+        <pose>0 0 0.01 0 0 0</pose>
+      </collision>
+      <visual name="tabletop_visual">
+        <geometry>
+          <box>
+            <size>0.22 0.18 0.02</size>
+          </box>
+        </geometry>
+        <pose>0 0 0.423 0 0 0</pose>
+        <material>
+          <ambient>0.55 0.49 0.39 1.0</ambient>
+          <diffuse>0.67 0.58 0.45 1.0</diffuse>
+        </material>
+      </visual>
+      <visual name="pedestal_visual">
+        <geometry>
+          <box>
+            <size>0.06 0.06 0.403</size>
+          </box>
+        </geometry>
+        <pose>0 0 0.2015 0 0 0</pose>
+        <material>
+          <ambient>0.30 0.30 0.34 1.0</ambient>
+          <diffuse>0.40 0.40 0.46 1.0</diffuse>
+        </material>
+      </visual>
+      <visual name="base_visual">
+        <geometry>
+          <box>
+            <size>0.12 0.12 0.02</size>
+          </box>
+        </geometry>
+        <pose>0 0 0.01 0 0 0</pose>
+        <material>
+          <ambient>0.22 0.22 0.26 1.0</ambient>
+          <diffuse>0.30 0.30 0.36 1.0</diffuse>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>
