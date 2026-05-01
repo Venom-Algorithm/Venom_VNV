@@ -1,0 +1,7 @@
+# seq source_a source_b attr
+# Default example uses geodetic coordinates and is intended to be replaced
+# by the official competition file distributed before the race.
+0 116.33547 39.20677 1
+1 116.33552 39.20684 1
+2 116.33560 39.20692 2
+3 116.33568 39.20692 8

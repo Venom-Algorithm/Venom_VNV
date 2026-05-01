@@ -10,7 +10,8 @@ def collect_config_data_files():
     for root, _, _ in os.walk(config_root):
         yaml_files = glob(os.path.join(root, '*.yaml'))
         json_files = glob(os.path.join(root, '*.json'))
-        files = yaml_files + json_files
+        txt_files = glob(os.path.join(root, '*.txt'))
+        files = yaml_files + json_files + txt_files
         if not files:
             continue
         rel_root = os.path.relpath(root, config_root)
@@ -61,6 +62,8 @@ setup(
         'console_scripts': [
             'multi_waypoint_commander = '
             'venom_bringup.multi_waypoint_commander:main',
+            'craic_mission_main = '
+            'venom_bringup.craic_mission_main:main',
         ],
     },
 )
