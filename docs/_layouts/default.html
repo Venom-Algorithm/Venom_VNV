@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+{% assign is_en = false %}
+{% if page.url == '/en/' or page.url contains '/en/' %}
+  {% assign is_en = true %}
+{% endif %}
+{% assign lang_attr = 'zh-CN' %}
+{% assign search_placeholder = '搜索文档...  /' %}
+{% assign toc_title = '本页目录' %}
+{% assign lang_button_label = 'EN' %}
+{% assign lang_button_aria = '切换到英文' %}
+{% assign home_url = '/' %}
+{% assign copy_button_text = '复制' %}
+{% assign copy_button_success = '已复制' %}
+{% assign copy_button_failure = '复制失败' %}
+{% assign copy_button_aria = '复制代码' %}
+{% if is_en %}
+  {% assign lang_attr = 'en' %}
+  {% assign search_placeholder = 'Search docs...  /' %}
+  {% assign toc_title = 'On this page' %}
+  {% assign lang_button_label = '中文' %}
+  {% assign lang_button_aria = 'Switch to Chinese' %}
+  {% assign home_url = '/en/' %}
+  {% assign copy_button_text = 'Copy' %}
+  {% assign copy_button_success = 'Copied' %}
+  {% assign copy_button_failure = 'Copy failed' %}
+  {% assign copy_button_aria = 'Copy code' %}
+{% endif %}
+{% assign switch_url = '/en/' %}
+{% if is_en %}
+  {% if page.url == '/en/' %}
+    {% assign switch_url = '/' %}
+  {% else %}
+    {% assign switch_url = page.url | replace_first: '/en', '' %}
+  {% endif %}
+{% else %}
+  {% if page.url == '/' %}
+    {% assign switch_url = '/en/' %}
+  {% else %}
+    {% assign switch_url = '/en' | append: page.url %}
+  {% endif %}
+{% endif %}
+<html lang="{{ lang_attr }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
+  <link rel="stylesheet" href="{{ site.baseurl }}/style.css">
+  {% seo title=false %}
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div style="display:flex;align-items:center;gap:1rem">
+      <button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
+      <a href="{{ home_url | relative_url }}" class="site-title">
+        <span class="logo">◈</span> {{ site.title }}
+      </a>
+    </div>
+    <div class="header-right">
+      <input type="text" class="header-search" placeholder="{{ search_placeholder }}" id="searchInput">
+      <a href="{{ switch_url | relative_url }}" class="lang-switch" aria-label="{{ lang_button_aria }}">{{ lang_button_label }}</a>
+      <a href="https://github.com/Venom-Algorithm/Venom_VNV" target="_blank" class="header-link">GitHub ↗</a>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+      {% include sidebar.html %}
+    </nav>
+
+    <!-- Main + TOC -->
+    <div class="main-wrap">
+      <main class="main-content">
+        <!-- Page header -->
+        {% if page.breadcrumb or page.title %}
+        <div class="page-header">
+          {% if page.breadcrumb %}
+          <div class="page-breadcrumb">{{ page.breadcrumb | markdownify | remove: '<p>' | remove: '</p>' }}</div>
+          {% endif %}
+          {% if page.title %}
+          <h1 class="page-title">{{ page.title }}</h1>
+          {% endif %}
+          {% if page.desc %}
+          <p class="page-desc">{{ page.desc }}</p>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- Page content -->
+        {{ content }}
+
+        <!-- Footer -->
+        <footer class="site-footer">
+          <span>© 2026 Venom Algorithm</span>
+          <span><a href="https://github.com/Venom-Algorithm/Venom_VNV" target="_blank">GitHub</a></span>
+        </footer>
+      </main>
+
+      <!-- TOC -->
+      {% if page.toc != false %}
+      <aside class="toc" id="toc-sidebar">
+        <div class="toc-title">{{ toc_title }}</div>
+        <!-- JS 会自动生成 TOC -->
+      </aside>
+      {% endif %}
+    </div>
+  </div>
+
+  <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+  <script>
+    const codeCopyLabels = {
+      idle: {{ copy_button_text | jsonify }},
+      success: {{ copy_button_success | jsonify }},
+      failure: {{ copy_button_failure | jsonify }},
+      aria: {{ copy_button_aria | jsonify }}
+    };
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+    function normalizePath(path) {
+      if (!path) return '/';
+      let normalized = path;
+      try {
+        normalized = new URL(path, window.location.origin).pathname;
+      } catch (_) {}
+      normalized = normalized.replace(/\/index\.html$/, '/').replace(/\.html$/, '');
+      if (normalized.length > 1) {
+        normalized = normalized.replace(/\/+$/, '');
+      }
+      return normalized || '/';
+    }
+    function syncSidebarActiveState() {
+      const sidebar = document.getElementById('sidebar');
+      if (!sidebar) return;
+      const currentPath = normalizePath(window.location.pathname);
+      sidebar.querySelectorAll('.nav-item.active, .nav-item-child.active, .nav-category-link.active, .nav-category.active')
+        .forEach(el => el.classList.remove('active'));
+      sidebar.querySelectorAll('a[href]').forEach(link => {
+        if (normalizePath(link.getAttribute('href')) !== currentPath) return;
+        link.classList.add('active');
+        const navGroup = link.closest('.nav-group');
+        navGroup?.querySelector('.nav-category')?.classList.add('active');
+      });
+    }
+    function initCodeCopyButtons() {
+      const codeBlocks = document.querySelectorAll('.main-content pre');
+      codeBlocks.forEach(pre => {
+        let wrapper = pre.parentElement;
+        if (!wrapper || !wrapper.classList.contains('code-block-wrap')) {
+          wrapper = document.createElement('div');
+          wrapper.className = 'code-block-wrap';
+          pre.parentNode.insertBefore(wrapper, pre);
+          wrapper.appendChild(pre);
+        }
+        if (wrapper.querySelector('.code-copy-btn')) return;
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'code-copy-btn';
+        button.textContent = codeCopyLabels.idle;
+        button.setAttribute('aria-label', codeCopyLabels.aria);
+        button.addEventListener('click', async () => {
+          const code = pre.querySelector('code');
+          const text = code ? code.innerText : pre.innerText;
+          try {
+            await navigator.clipboard.writeText(text.replace(/\n$/, ''));
+            const originalText = button.textContent;
+            button.textContent = codeCopyLabels.success;
+            button.classList.add('copied');
+            window.setTimeout(() => {
+              button.textContent = originalText;
+              button.classList.remove('copied');
+            }, 1400);
+          } catch (_) {
+            button.textContent = codeCopyLabels.failure;
+            window.setTimeout(() => {
+              button.textContent = codeCopyLabels.idle;
+            }, 1400);
+          }
+        });
+        wrapper.appendChild(button);
+      });
+    }
+    document.querySelector('.main-wrap')?.addEventListener('click', () => { document.getElementById('sidebar').classList.remove('open'); });
+    window.addEventListener('scroll', () => { document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 400); });
+    document.addEventListener('keydown', e => { if (e.key === '/' && document.activeElement.tagName !== 'INPUT') { e.preventDefault(); document.getElementById('searchInput').focus(); } });
+    syncSidebarActiveState();
+    initCodeCopyButtons();
+    const navGroups = document.querySelectorAll('.nav-group');
+    const navStateKey = 'venom-docs-nav-groups';
+    let savedNavState = {};
+    try {
+      savedNavState = JSON.parse(localStorage.getItem(navStateKey) || '{}');
+    } catch (_) {
+      savedNavState = {};
+    }
+    navGroups.forEach(group => {
+      const groupName = group.dataset.group;
+      const active = group.querySelector('.nav-item.active, .nav-item-child.active, .nav-category-link.active');
+      if (groupName && Object.prototype.hasOwnProperty.call(savedNavState, groupName)) {
+        group.open = !!savedNavState[groupName];
+      } else if (active) {
+        group.open = true;
+      }
+      group.addEventListener('toggle', () => {
+        if (!groupName) return;
+        savedNavState[groupName] = group.open;
+        localStorage.setItem(navStateKey, JSON.stringify(savedNavState));
+      });
+    });
+
+    // Auto-generate TOC from headings
+    (function() {
+      const tocSidebar = document.getElementById('toc-sidebar');
+      if (!tocSidebar) return;
+      const headings = Array.from(document.querySelectorAll('.main-content h2, .main-content h3'))
+        .filter(h => !h.closest('[data-toc-exclude]'));
+      if (!headings.length) { tocSidebar.style.display = 'none'; return; }
+      headings.forEach(h => {
+        if (!h.id) {
+          h.id = h.textContent.trim().toLowerCase().replace(/[^\w\u4e00-\u9fff]+/g, '-').replace(/^-|-$/g, '');
+        }
+        const a = document.createElement('a');
+        a.href = '#' + h.id;
+        a.textContent = h.textContent;
+        if (h.tagName === 'H3') a.classList.add('toc-h4');
+        tocSidebar.appendChild(a);
+      });
+      // Active highlight
+      const tocLinks = tocSidebar.querySelectorAll('a');
+      const headingEls = [];
+      tocLinks.forEach(link => {
+        const id = link.getAttribute('href')?.slice(1);
+        const el = id && document.getElementById(id);
+        if (el) headingEls.push({ el, link });
+      });
+      if (headingEls.length) {
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              tocLinks.forEach(l => l.classList.remove('active'));
+              const match = headingEls.find(h => h.el === entry.target);
+              if (match) match.link.classList.add('active');
+            }
+          });
+        }, { rootMargin: '-80px 0px -70% 0px' });
+        headingEls.forEach(h => observer.observe(h.el));
+      }
+    })();
+  </script>
+</body>
+</html>

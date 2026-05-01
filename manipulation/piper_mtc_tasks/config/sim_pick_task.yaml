@@ -1,0 +1,63 @@
+pick_place_server:
+  ros__parameters:
+    use_sim_time: true
+    action_name: /manipulation/execute_task
+    planning_frame: base_link
+    arm_group_name: arm
+    gripper_group_name: gripper
+    hand_frame: gripper_grasp_center
+    arm_home_named_target: zero
+    gripper_open_named_target: open
+    gripper_close_named_target: close
+    pipeline_planner_id: ompl
+    max_solutions: 3
+    max_ik_solutions: 16
+    min_solution_distance: 1.0
+    connect_timeout_sec: 20.0
+    plan_timeout_sec: 30.0
+    approach_min_distance: 0.0
+    approach_max_distance: 0.0
+    lift_min_distance: 0.03
+    lift_max_distance: 0.06
+    retreat_min_distance: 0.0
+    retreat_max_distance: 0.0
+    cartesian_step_size: 0.005
+    cartesian_jump_threshold: 0.0
+    cartesian_velocity_scaling: 0.12
+    cartesian_acceleration_scaling: 0.08
+    grasp_angle_delta: 0.261799387799
+    execute_on_plan: true
+    diagnostic_ik_only: false
+    enable_gazebo_attachment: false
+    autostart_task_type: 0
+    tcp_offset_xyz: [0.0, 0.0, 0.0]
+    pregrasp_offset_xyz: [0.05, 0.0, 0.0]
+    approach_direction_xyz: [0.0, 0.0, 1.0]
+    lift_direction_xyz: [0.0, 0.0, 1.0]
+    retreat_direction_xyz: [-1.0, 0.0, 0.0]
+    grasp_orientation_rpy: [-3.14159265359, -1.57079632679, -3.14159265359]
+    pickup_stand:
+      id: pickup_stand_box
+      x: 0.281
+      y: 0.0
+      z: 0.423
+      size_x: 0.22
+      size_y: 0.18
+      size_z: 0.02
+    place_stand:
+      id: place_stand_box
+      x: -0.02
+      y: 0.38
+      z: 0.423
+      size_x: 0.22
+      size_y: 0.18
+      size_z: 0.02
+    pickup_block:
+      id: pick_target_block
+      x: 0.281
+      y: 0.0
+      z: 0.465
+      size_x: 0.045
+      size_y: 0.045
+      size_z: 0.06
+      touch_links: [link7, link8]

@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<sdf version="1.7">
+  <model name="pick_target_riser">
+    <static>true</static>
+    <link name="riser_link">
+      <pose>0 0 0.015 0 0 0</pose>
+      <collision name="riser_collision">
+        <geometry>
+          <box>
+            <size>0.03 0.03 0.03</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>5.0</mu>
+              <mu2>5.0</mu2>
+            </ode>
+          </friction>
+          <contact>
+            <ode>
+              <kp>1000000.0</kp>
+              <kd>50.0</kd>
+              <min_depth>0.001</min_depth>
+              <max_vel>0.0</max_vel>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+      <visual name="riser_visual">
+        <geometry>
+          <box>
+            <size>0.03 0.03 0.03</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.18 0.18 0.20 1.0</ambient>
+          <diffuse>0.26 0.26 0.30 1.0</diffuse>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>
