@@ -53,6 +53,9 @@ def generate_launch_description():
     default_point_lio_params_file = os.path.join(
         venom_bringup_dir, 'config', 'scout_mini', 'point_lio.yaml'
     )
+    default_semantic_obstacle_file = os.path.join(
+        venom_bringup_dir, 'config', 'scout_mini', 'semantic_obstacle.yaml'
+    )
     livox_config_path = os.path.join(
         venom_bringup_dir, 'config', 'scout_mini', 'MID360_config.json'
     )
@@ -70,6 +73,7 @@ def generate_launch_description():
         DeclareLaunchArgument('nav2_params_file', default_value=default_nav2_params_file),
         DeclareLaunchArgument('ekf_params_file', default_value=default_ekf_params_file),
         DeclareLaunchArgument('point_lio_params_file', default_value=default_point_lio_params_file),
+        DeclareLaunchArgument('semantic_obstacle_params_file', default_value=default_semantic_obstacle_file),
         DeclareLaunchArgument('enable_scout_base', default_value='true'),
         DeclareLaunchArgument('enable_livox', default_value='true'),
         DeclareLaunchArgument('enable_lio_to_scan', default_value='true'),
@@ -261,6 +265,7 @@ def generate_launch_description():
         name='craic_mission_main',
         output='screen',
         parameters=[
+            LaunchConfiguration('semantic_obstacle_params_file'),
             {
                 'use_sim_time': use_sim_time,
                 'waypoint_file': waypoint_file,
@@ -272,6 +277,7 @@ def generate_launch_description():
                 'map_origin_yaw_rad': map_origin_yaw_rad,
                 'pose_tracking_topic': '/odometry/global',
                 'cmd_vel_topic': '/cmd_vel',
+                'scan_topic': '/scan',
                 'waypoint_frame_id': 'map',
                 'use_first_waypoint_as_origin': True,
             }
