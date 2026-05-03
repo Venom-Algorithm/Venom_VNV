@@ -1,0 +1,20 @@
+/**:
+  ros__parameters:
+    enable_semantic_obstacle_logic: true
+    scan_topic: /scan
+    semantic_lane_half_width_m: 1.2
+    semantic_frontal_detection_distance_m: 12.0
+    semantic_left_clearance_window_m: 2.5
+    semantic_obstacle_timeout_sec: 0.8
+    semantic_slow_vehicle_speed_threshold_mps: 1.5
+    semantic_fast_vehicle_speed_threshold_mps: 3.5
+    semantic_overtake_trigger_distance_m: 8.0
+    semantic_follow_trigger_distance_m: 10.0
+    semantic_desired_follow_distance_m: 4.5
+    semantic_overtake_lateral_offset_m: 1.4
+    semantic_bypass_lateral_offset_m: 0.85
+    semantic_overtake_pass_margin_m: 2.0
+    semantic_return_to_lane_margin_m: 3.0
+    semantic_maneuver_cooldown_sec: 5.0
+    semantic_max_follow_speed_mps: 3.0
+    semantic_follow_behavior_timeout_sec: 8.0
