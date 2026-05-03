@@ -20,8 +20,8 @@ In the current repository, it mainly covers:
 
 - `driver/ros2_hik_camera`
 - `perception/rm_auto_aim`
-- `perception/yolo_detector`
-- `perception/zbar_ros`
+- `perception/yolo_detector`, including `yolo_interfaces`
+- `perception/zbar_ros`, including `zbar_interfaces`
 
 ## Current Modules
 

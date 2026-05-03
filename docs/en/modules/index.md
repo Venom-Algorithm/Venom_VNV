@@ -33,7 +33,7 @@ This page only exposes architecture-level entries. Concrete algorithms and subpa
 3. `localization/`: LIO, odometry, and relocalization
 4. `planning/`: navigation planners, controllers, and manipulation motion planning
 5. `mission/`: waypoint, behavior-tree, monitor, and mission-dispatch packages
-6. `system/`: bringup, robot description, and robot-level assembly
+6. `venom_bringup` / `venom_robot_description`: bringup, robot description, and robot-level assembly
 7. `simulation/`: standalone simulation workspaces and baselines
 
 ## Core Principle

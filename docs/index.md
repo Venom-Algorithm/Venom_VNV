@@ -102,9 +102,11 @@ Venom VNV 是一个基于 ROS 2 Humble 构建的综合通用平台。
     <tr><td>定位层</td><td><code>localization/relocalization/small_gicp_relocalization</code></td><td>基于点云配准的重定位模块</td></tr>
     <tr><td>规划层</td><td><code>planning/navigation/ego-planner-swarm</code></td><td>无人机局部规划与集群规划子模块，跟踪上游 <code>ros2_version</code> 分支</td></tr>
     <tr><td>规划层</td><td><code>planning/navigation/venom_teb_controller</code></td><td>Nav2 controller 插件形式的 TEB 局部规划器，包含 <code>teb_local_planner</code> 与 <code>teb_msgs</code></td></tr>
-    <tr><td>规划层</td><td><code>planning/manipulation</code></td><td>机械臂运动规划一类模块的统一入口，目前保留占位</td></tr>
-    <tr><td>任务层</td><td><code>mission/</code></td><td>waypoint、行为树、状态监听、任务下发与任务管理一类模块的统一入口，已创建 <code>navigation/</code> 与 <code>manipulation/</code> 占位目录</td></tr>
-    <tr><td>系统层</td><td><code>venom_bringup</code></td><td>系统启动入口，负责模式组织、整机装配与联调，不直接承载新任务包</td></tr>
+    <tr><td>规划层</td><td><code>planning/manipulation</code></td><td>机械臂运动规划模块的归属入口，当前目录用于承接后续 MoveIt / 抓取规划包</td></tr>
+    <tr><td>任务层</td><td><code>mission/</code></td><td>waypoint、行为树、状态监听、任务下发与任务管理一类模块的新包归属目录</td></tr>
+    <tr><td>任务层</td><td><code>venom_bringup/venom_bringup/mission_controller</code></td><td>当前已落地的通用任务控制框架，包含状态监听、任务管理与行为插件</td></tr>
+    <tr><td>任务层</td><td><code>venom_bringup/venom_bringup/multi_waypoint_commander.py</code></td><td>基于 Nav2 Simple Commander 的多航点任务入口</td></tr>
+    <tr><td>系统层</td><td><code>venom_bringup</code></td><td>系统启动入口，负责模式组织、整机装配、参数调度与当前过渡阶段的任务控制入口</td></tr>
     <tr><td>系统层</td><td><code>venom_robot_description</code></td><td>机器人模型、URDF、TF 发布与基础描述配置</td></tr>
     <tr><td>仿真层</td><td><code>simulation/venom_nav_simulation</code></td><td>独立导航仿真工作区，用于 MID360、LIO 与 Nav2 联调</td></tr>
   </tbody>
