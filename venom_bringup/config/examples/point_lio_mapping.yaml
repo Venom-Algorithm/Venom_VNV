@@ -1,5 +1,14 @@
 /**:
     ros__parameters:
+        lio:
+            operation_mode: "online_odom_async_map"
+            realtime:
+                max_lidar_queue: 8
+                max_imu_queue: 400
+            async_map:
+                queue_depth: 8
+                drop_policy: "drop_oldest"
+
         use_imu_as_input: False                             # False uses the default Point-LIO output-state pipeline; True switches to the IMU-input state pipeline.
         prop_at_freq_of_imu: True                           # True propagates the state at IMU timing; False propagates more coarsely at point/update timing.
         check_satu: True                                    # True ignores IMU residual dimensions that are close to accelerometer/gyroscope saturation.
