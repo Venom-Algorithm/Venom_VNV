@@ -4,7 +4,7 @@ import os
 from setuptools import find_packages, setup
 
 
-package_name = 'simple_commander_demo'
+package_name = 'venom_mission_commander'
 
 
 setup(
@@ -25,14 +25,14 @@ setup(
     zip_safe=True,
     maintainer='venom',
     maintainer_email='liyihan.xyz@gmail.com',
-    description='Mock-first waypoint task commander demo for Venom VNV.',
+    description='Mock-first waypoint task commander for Venom VNV.',
     license='TODO: License declaration',
     extras_require={
         'test': ['pytest'],
     },
     entry_points={
         'console_scripts': [
-            'simple_commander_demo = simple_commander_demo.simple_commander:main',
+            'mission_commander = venom_mission_commander.mission_commander:main',
         ],
     },
 )

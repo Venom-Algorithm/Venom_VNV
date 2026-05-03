@@ -1,7 +1,7 @@
 from time import time
 from typing import Any
 
-from simple_commander_demo.models import MissionConfig, MissionState
+from venom_mission_commander.models import MissionConfig, MissionState
 
 
 class MissionManager:

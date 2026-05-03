@@ -6,17 +6,17 @@ from ament_index_python.packages import PackageNotFoundError, get_package_share_
 from rcl_interfaces.msg import ParameterDescriptor
 from rclpy.node import Node
 
-from simple_commander_demo.mission_loader import MissionLoader
-from simple_commander_demo.mission_manager import MissionManager
-from simple_commander_demo.models import MissionState, TaskContext, WaypointSpec
-from simple_commander_demo.navigator import MockWaypointNavigator, Nav2WaypointNavigator
-from simple_commander_demo.task_plugins import TaskPluginRegistry
-from simple_commander_demo.task_runner import WaypointTaskRunner
+from venom_mission_commander.mission_loader import MissionLoader
+from venom_mission_commander.mission_manager import MissionManager
+from venom_mission_commander.models import MissionState, TaskContext, WaypointSpec
+from venom_mission_commander.navigator import MockWaypointNavigator, Nav2WaypointNavigator
+from venom_mission_commander.task_plugins import TaskPluginRegistry
+from venom_mission_commander.task_runner import WaypointTaskRunner
 
 
-class SimpleCommander(Node):
+class MissionCommander(Node):
     def __init__(self):
-        super().__init__('simple_commander_demo')
+        super().__init__('mission_commander')
 
         default_config = self._default_config_path()
         self._declare_parameter_if_needed(
@@ -81,7 +81,7 @@ class SimpleCommander(Node):
 
     def run(self) -> bool:
         if self.mission_config is None or self.navigator is None:
-            raise RuntimeError('SimpleCommander.configure() must be called before run().')
+            raise RuntimeError('MissionCommander.configure() must be called before run().')
 
         loop_count = 0
         self.mission_manager.transition_to(MissionState.RUNNING, 'mission started')
@@ -183,7 +183,7 @@ class SimpleCommander(Node):
 
     def _default_config_path(self) -> str:
         try:
-            package_share = Path(get_package_share_directory('simple_commander_demo'))
+            package_share = Path(get_package_share_directory('venom_mission_commander'))
             return str(package_share / 'config' / 'simple_mission.yaml')
         except PackageNotFoundError:
             package_root = Path(__file__).resolve().parents[1]
@@ -192,7 +192,7 @@ class SimpleCommander(Node):
 
 def main(args=None) -> None:
     rclpy.init(args=args)
-    commander = SimpleCommander()
+    commander = MissionCommander()
     exit_code = 1
 
     try:
@@ -201,7 +201,7 @@ def main(args=None) -> None:
     except KeyboardInterrupt:
         commander.get_logger().warn('Interrupted by user.')
     except Exception as exc:
-        commander.get_logger().error(f'Simple commander failed: {exc}')
+        commander.get_logger().error(f'Mission commander failed: {exc}')
     finally:
         commander.get_logger().info(f'Final mission summary: {commander.mission_manager.summarize()}')
         commander.shutdown()

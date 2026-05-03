@@ -1,6 +1,6 @@
-from simple_commander_demo.mission_manager import MissionManager
-from simple_commander_demo.models import TaskContext, TaskSpec
-from simple_commander_demo.task_plugins import TaskPluginRegistry
+from venom_mission_commander.mission_manager import MissionManager
+from venom_mission_commander.models import TaskContext, TaskSpec
+from venom_mission_commander.task_plugins import TaskPluginRegistry
 
 
 class WaypointTaskRunner:

@@ -1,6 +1,6 @@
 # Future Dynamic Mission Branch
 
-本文档描述 `simple_commander_demo` 的一个**远期发展分支**：当现有“固定 mission YAML + 顺序执行”的方案已经稳定落地，并完成多轮仿真/真机集成后，可以考虑引入一套更泛化的“动态 mission 生成”方案。
+本文档描述 `venom_mission_commander` 的一个**远期发展分支**：当现有“固定 mission YAML + 顺序执行”的方案已经稳定落地，并完成多轮仿真/真机集成后，可以考虑引入一套更泛化的“动态 mission 生成”方案。
 
 这不是当前主线的立即实现目标，而是给后续几代迭代预留的一条清晰演进路径。
 
@@ -11,7 +11,7 @@
 - 简单直接，容易联调。
 - 对 Nav2、Gazebo、真机 bringup 的耦合较低。
 - 对比赛任务来说，可控性强，行为容易复现。
-- 当前 `SimpleCommander` 主流程已经围绕“固定路点 + 固定任务列表”建立起来。
+- 当前 `MissionCommander` 主流程已经围绕“固定路点 + 固定任务列表”建立起来。
 
 但它也有明显局限：
 
@@ -36,7 +36,7 @@
 高层任务描述
 → 动态 mission 规划/编译
 → 生成标准 MissionConfig
-→ 交给现有 SimpleCommander 执行
+→ 交给现有 MissionCommander 执行
 ```
 
 也就是说：
@@ -47,7 +47,7 @@
 
 这样做的原因是：
 
-- 当前 `SimpleCommander` 主循环已经具备可复用价值。
+- 当前 `MissionCommander` 主循环已经具备可复用价值。
 - 真正变化大的，是“输入如何表达”，而不是“怎么顺序执行”。
 - 先稳定后端执行，再升级前端 mission 生成，比直接重写整个系统风险更低。
 
@@ -131,7 +131,7 @@ goals:
 建议在现有执行器前面增加一层规划/编译系统：
 
 ```text
-SimpleCommander
+MissionCommander
 ├── MissionPlanner
 │   ├── SemanticMapLoader
 │   ├── MissionGoalLoader
@@ -240,7 +240,7 @@ SimpleCommander
 推荐原则：
 
 - 输出结构尽量保持兼容当前 `MissionLoader`。
-- 不要一上来就改掉 `SimpleCommander.run()` 的整体执行方式。
+- 不要一上来就改掉 `MissionCommander.run()` 的整体执行方式。
 
 ## 5. 输入格式的建议演进
 
@@ -290,7 +290,7 @@ sites:
 goals:
   - id: pick_object_goal
     type: pick_object
-    object_class: demo_object
+    object_class: example_object
     from_site_kind: pickup_zone
 
   - id: report_meter_goal
@@ -376,7 +376,7 @@ waypoints:
 → 选择任务链
 → 检查依赖与可达性
 → 排序并生成 compiled mission
-→ 交给现有 SimpleCommander 执行
+→ 交给现有 MissionCommander 执行
 ```
 
 ### 6.2 运行中有限回退
@@ -440,7 +440,7 @@ waypoints:
 
 这条分支虽然值得保留，但不建议当前就转主线，原因很明确：
 
-- 当前主线刚从 demo 走向仿真/真机集成，优先级应是稳定执行链路。
+- 当前主线刚从原型走向仿真/真机集成，优先级应是稳定执行链路。
 - 当前插件体系仍以 mock-first 为主，真实接口和失败语义还在逐步补齐。
 - 当前 `MissionManager` 仍是内存态，尚未完全具备比赛级恢复能力。
 - 如果同时推进“真机联调”和“动态规划架构”，风险会叠加。
@@ -503,7 +503,7 @@ waypoints:
 - `docs/TASK_PLUGIN_INTEGRATION_GUIDE.md`
   - 说明当前主线下，任务插件如何接入。
 - `docs/INTEGRATION_ROADMAP.md`
-  - 说明当前主线如何从 demo 走向仿真、真机和正式集成。
+  - 说明当前主线如何从原型走向仿真、真机和正式集成。
 - `docs/FUTURE_DYNAMIC_MISSION_BRANCH.md`
   - 说明在主线成熟后，如何进一步演进到更泛化的动态 mission 生成方案。
 

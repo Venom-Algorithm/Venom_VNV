@@ -1,1 +1,0 @@
-"""Simple commander demo package."""

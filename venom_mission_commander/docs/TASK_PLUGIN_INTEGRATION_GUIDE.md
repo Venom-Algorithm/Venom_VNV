@@ -1,15 +1,15 @@
 # Task Plugin Integration Guide
 
-本文档说明后续视觉、机械臂、语音、火焰追踪等任务模块如何接入 `simple_commander_demo`。
+本文档说明后续视觉、机械臂、语音、火焰追踪等任务模块如何接入 `venom_mission_commander`。
 
-核心原则：`SimpleCommander` 只负责编排流程，不直接绑定具体业务模块。真实任务模块应通过任务插件接入，保持主流程稳定：
+核心原则：`MissionCommander` 只负责编排流程，不直接绑定具体业务模块。真实任务模块应通过任务插件接入，保持主流程稳定：
 
 ```text
 导航到路点
 → 根据 YAML 的 tasks 顺序执行任务插件
 → 插件内部调用真实 ROS service / action / topic
 → 插件返回 TaskExecutionResult
-→ SimpleCommander 决定继续、失败或结束
+→ MissionCommander 决定继续、失败或结束
 ```
 
 ## 接入层次
@@ -18,7 +18,7 @@
 
 1. **替换现有 mock 插件内部实现**：如果任务语义不变，例如 `detect_item` 仍然是识别物品，就直接把 `DetectItemTaskPlugin.execute()` 里的 mock 逻辑换成真实视觉接口。
 2. **新增任务插件类型**：如果任务语义变了，例如新增 `scan_qr_code`、`open_valve`、`dock_charger`，就新增一个 `BaseTaskPlugin` 子类。
-3. **不要改 `SimpleCommander.run()` 主流程**：除非任务编排模型本身变了，比如需要并行任务、条件分支、恢复点持久化。
+3. **不要改 `MissionCommander.run()` 主流程**：除非任务编排模型本身变了，比如需要并行任务、条件分支、恢复点持久化。
 
 ## 任务 YAML 格式
 
@@ -34,7 +34,7 @@ waypoints:
     tasks:
       - name: detect_item_at_point_1
         type: detect_item
-        target: demo_object
+        target: example_object
         timeout_sec: 5.0
         output_key: detected_item
 
@@ -60,7 +60,7 @@ type
 除此之外的所有字段都会成为插件参数，例如：
 
 ```yaml
-target: demo_object
+target: example_object
 timeout_sec: 5.0
 output_key: detected_item
 ```
@@ -69,7 +69,7 @@ output_key: detected_item
 
 ```python
 spec.params = {
-    'target': 'demo_object',
+    'target': 'example_object',
     'timeout_sec': 5.0,
     'output_key': 'detected_item',
 }
@@ -120,7 +120,7 @@ TaskSpec(
     name='detect_item_at_point_1',
     task_type='detect_item',
     params={
-        'target': 'demo_object',
+        'target': 'example_object',
         'timeout_sec': 5.0,
     },
 )
@@ -139,8 +139,8 @@ timeout_sec = float(spec.params.get('timeout_sec', 5.0))
 
 ```python
 TaskContext(
-    node=SimpleCommander,
-    mission_id='rmul_nav2_simple_commander_demo',
+    node=MissionCommander,
+    mission_id='rmul_nav2_mission_commander',
     waypoint=WaypointSpec(...),
     waypoint_index=1,
     task_index=0,
@@ -189,7 +189,7 @@ return TaskExecutionResult(False, 'missing grasp target: detected_item')
 
 ## 数据传递方式
 
-`simple_commander_demo` 内部有三种数据传递方式。
+`venom_mission_commander` 内部有三种数据传递方式。
 
 ### 1. YAML 参数传入插件
 
@@ -198,7 +198,7 @@ return TaskExecutionResult(False, 'missing grasp target: detected_item')
 ```yaml
 - name: detect_item_at_point_1
   type: detect_item
-  target: demo_object
+  target: example_object
   timeout_sec: 5.0
   output_key: detected_item
 ```
@@ -260,10 +260,10 @@ last_task_data
 
 ## ROS 消息怎么传
 
-`SimpleCommander` 本身不规定固定 ROS message 类型。它和任务模块之间的边界是插件接口：
+`MissionCommander` 本身不规定固定 ROS message 类型。它和任务模块之间的边界是插件接口：
 
 ```text
-SimpleCommander
+MissionCommander
 → TaskPlugin.execute(context, spec)
 → 插件内部调用真实 ROS service/action/topic
 → 插件把结果写入 blackboard + TaskExecutionResult
@@ -283,7 +283,7 @@ SimpleCommander
 | 火焰追踪 | Action | `bbox` 或 `target_pose`, `duration` | `success`, `status` |
 | 分类放置 | Action | `object`, `category`, `place_zone` | `success`, `placed_pose` |
 
-如果现有模块已经有自己的消息类型，不需要为了 `simple_commander_demo` 改消息。只需要在插件里做适配：
+如果现有模块已经有自己的消息类型，不需要为了 `venom_mission_commander` 改消息。只需要在插件里做适配：
 
 ```text
 YAML/spec.params + blackboard
@@ -299,8 +299,8 @@ YAML/spec.params + blackboard
 ```python
 import rclpy
 
-from simple_commander_demo.models import TaskContext, TaskExecutionResult, TaskSpec
-from simple_commander_demo.task_plugins import BaseTaskPlugin
+from venom_mission_commander.models import TaskContext, TaskExecutionResult, TaskSpec
+from venom_mission_commander.task_plugins import BaseTaskPlugin
 
 
 class RealDetectItemTaskPlugin(BaseTaskPlugin):
@@ -354,8 +354,8 @@ class RealDetectItemTaskPlugin(BaseTaskPlugin):
 import rclpy
 from rclpy.action import ActionClient
 
-from simple_commander_demo.models import TaskExecutionResult
-from simple_commander_demo.task_plugins import BaseTaskPlugin
+from venom_mission_commander.models import TaskExecutionResult
+from venom_mission_commander.task_plugins import BaseTaskPlugin
 
 
 class RealGraspItemTaskPlugin(BaseTaskPlugin):
@@ -472,7 +472,7 @@ MissionManager.mark_task_failed()
 后续真实模块接入时，尽量保持这些边界不变：
 
 ```text
-SimpleCommander
+MissionCommander
 → 不关心具体视觉/机械臂/语音消息
 
 TaskPlugin

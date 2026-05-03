@@ -1,11 +1,11 @@
 mission:
-  id: simple_circle_task_demo
+  id: mock_circle_mission
   loop: false
   stop_on_task_failure: true
 
 waypoints:
   - name: start_area
-    description: 起停区；demo 默认认为小车已经在这里，所以跳过第一次导航。
+    description: 起停区；mock 模式默认认为小车已经在这里，所以跳过第一次导航。
     frame_id: map
     x: 0.0
     y: 0.0
@@ -25,7 +25,7 @@ waypoints:
     tasks:
       - name: detect_item_at_point_1
         type: detect_item
-        target: demo_object
+        target: example_object
         mock_confidence: 0.92
         mock_delay_sec: 0.3
       - name: grasp_item_at_point_1
@@ -43,7 +43,7 @@ waypoints:
     tasks:
       - name: read_meter_at_point_2
         type: read_meter
-        meter_id: demo_meter
+        meter_id: example_meter
         mock_value: 220.0V
         mock_confidence: 0.9
         mock_delay_sec: 0.3
@@ -78,7 +78,7 @@ waypoints:
       - name: classify_and_place_object
         type: classify_place
         source: grasped_object
-        mock_category: demo_category_a
+        mock_category: example_category_a
         place_zone: bin_a
         mock_delay_sec: 0.4
 

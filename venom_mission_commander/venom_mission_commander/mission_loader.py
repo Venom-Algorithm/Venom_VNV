@@ -3,7 +3,7 @@ from typing import Any
 
 import yaml
 
-from simple_commander_demo.models import MissionConfig, TaskSpec, WaypointSpec
+from venom_mission_commander.models import MissionConfig, TaskSpec, WaypointSpec
 
 
 class MissionLoader:
@@ -16,7 +16,7 @@ class MissionLoader:
             raise ValueError(f'No waypoints found in mission config: {config_path}')
 
         return MissionConfig(
-            mission_id=str(mission_raw.get('id', 'simple_commander_demo')),
+            mission_id=str(mission_raw.get('id', 'venom_mission_commander')),
             loop=bool(mission_raw.get('loop', False)),
             stop_on_task_failure=bool(mission_raw.get('stop_on_task_failure', True)),
             waypoints=[self._parse_waypoint(item) for item in waypoint_raw_list],

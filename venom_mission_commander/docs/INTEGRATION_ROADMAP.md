@@ -1,8 +1,8 @@
-# Simple Commander Integration Roadmap
+# Venom Mission Commander Integration Roadmap
 
-本文档说明 `simple_commander_demo` 从 demo 到正式集成进 `venom_ws` 的推荐阶段、每个阶段该改什么、为什么这么改。
+本文档说明 `venom_mission_commander` 从原型到正式集成进 `venom_ws` 的推荐阶段、每个阶段该改什么、为什么这么改。
 
-核心原则：**先稳定任务编排能力，再接真实任务模块，再接真机系统，最后再改名/收编默认入口。** 不建议一开始就把它塞进 `venom_bringup` 或替换旧入口。
+核心原则：**先稳定任务编排能力，再接真实任务模块，再接真机系统，最后再收编默认入口。** 不建议一开始就把它塞进 `venom_bringup` 或替换旧入口。
 
 ## 总体目标
 
@@ -10,7 +10,7 @@
 
 ```text
 src/venom_vnv/
-├── venom_mission_commander/      # 任务编排核心，后续由 simple_commander_demo 演进而来
+├── venom_mission_commander/      # 任务编排核心
 ├── venom_bringup/                # 真机底盘、雷达、定位、Nav2、RViz、mission wrapper launch
 └── simulation/venom_nav_simulation/
     └── ...                       # Gazebo、仿真地图、仿真 Nav2/RViz、sim wrapper launch
@@ -35,13 +35,13 @@ simulation
 → 提供仿真地图、world、sim mission wrapper
 ```
 
-## 阶段 0：Demo 原型阶段
+## 阶段 0：原型验证阶段
 
 当前阶段基本处于这里。
 
 ### 应该做什么
 
-- 保持 `simple_commander_demo` 为独立 ROS2 Python 包。
+- 保持 `venom_mission_commander` 为独立 ROS2 Python 包。
 - 默认使用 mock navigation 和 mock task plugins。
 - 保留 `config/simple_mission.yaml` 作为无地图、无硬件的最小演示配置。
 - 保留 `docs/TASK_PLUGIN_INTEGRATION_GUIDE.md` 说明插件接入契约。
@@ -56,7 +56,7 @@ simulation
 ### 不建议做什么
 
 - 不要把代码移动到 `venom_bringup/venom_bringup/`。
-- 不要把任务插件直接写死在 `SimpleCommander.run()` 里。
+- 不要把任务插件直接写死在 `MissionCommander.run()` 里。
 - 不要过早替换现有 launch 默认入口。
 
 ## 阶段 1：Docker + Gazebo + Nav2 仿真验证阶段
@@ -65,7 +65,7 @@ simulation
 
 ### 应该做什么
 
-- 使用 `simple_commander_nav2_sim.launch.py` 启动 commander。
+- 使用 `mission_commander_nav2_sim.launch.py` 启动 commander。
 - 使用 `config/rmul_sim_mission.yaml` 验证 RMUL 仿真地图。
 - 保持任务插件先用 mock，只验证真实 Nav2 导航链路。
 - 在 RViz 里先用 `2D Goal Pose` 单点验证可达，再跑完整 mission。
@@ -79,13 +79,13 @@ simulation
 
 ### 主要改动位置
 
-- `launch/simple_commander_nav2_sim.launch.py`
+- `launch/mission_commander_nav2_sim.launch.py`
 - `config/rmul_sim_mission.yaml`
 - `README.md` 中 Docker/RViz/Nav2 运行说明
 
 ### 完成标准
 
-- Docker Humble 内能 build `simple_commander_demo`。
+- Docker Humble 内能 build `venom_mission_commander`。
 - Gazebo/RViz/Nav2 已启动后，commander 能依次发送路点。
 - 机器人能在仿真地图里到达每个目标点。
 - 到点后 mock 任务能按 YAML 顺序执行。
@@ -96,7 +96,7 @@ simulation
 
 ### 应该做什么
 
-- 继续保留 `SimpleCommander` 主流程不变。
+- 继续保留 `MissionCommander` 主流程不变。
 - 优先修改或新增 `task_plugins.py` 里的插件类。
 - 按 `docs/TASK_PLUGIN_INTEGRATION_GUIDE.md` 约定接入真实模块。
 - 先在 mock navigation 下测真实任务插件，再放到 Nav2/Gazebo 全链路里测。
@@ -110,7 +110,7 @@ simulation
 
 ### 主要改动位置
 
-- `simple_commander_demo/task_plugins.py`
+- `venom_mission_commander/task_plugins.py`
 - `config/*.yaml` 中对应 task 的参数
 - `package.xml` 中新增真实消息/service/action 包依赖
 - 必要时新增独立插件文件，例如 `real_task_plugins.py`
@@ -120,7 +120,7 @@ simulation
 - 每个真实插件都能返回 `TaskExecutionResult`。
 - 失败、超时、服务不可用都能返回明确错误。
 - `blackboard` key 约定稳定，例如 `detected_item`、`grasped_object`、`meter_reading`。
-- 不需要修改 `SimpleCommander.run()` 就能替换 mock/real 实现。
+- 不需要修改 `MissionCommander.run()` 就能替换 mock/real 实现。
 
 ## 阶段 3：真实机器人 bringup 联调阶段
 
@@ -128,7 +128,7 @@ simulation
 
 ### 应该做什么
 
-- 不使用 `simple_commander_nav2_sim.launch.py`，改用通用 launch：`simple_commander_demo.launch.py`。
+- 不使用 `mission_commander_nav2_sim.launch.py`，改用通用 launch：`mission_commander.launch.py`。
 - 真机运行时使用 `use_nav:=true`、`use_sim_time:=false`。
 - 从 `competition_mission_template.yaml` 复制真实 mission 配置，填真实 `map` frame 下的 `x/y/yaw`。
 - 在 `venom_bringup` 增加真机 wrapper launch，负责传入真实 mission YAML。
@@ -167,7 +167,7 @@ wrapper launch 只做参数包装，不写 mission 逻辑：
 → 设置 use_nav:=true
 → 设置 use_sim_time:=false
 → 设置 nav2_wait_mode
-→ 启动 simple_commander executable
+→ 启动 mission_commander executable
 ```
 
 ### 完成标准
@@ -177,39 +177,34 @@ wrapper launch 只做参数包装，不写 mission 逻辑：
 - `/cmd_vel` 由 Nav2 发出并能驱动真实底盘。
 - 真实任务插件能在对应路点执行。
 
-## 阶段 4：正式包收编阶段
+## 阶段 4：正式入口收编阶段
 
-这一阶段目标是把 demo 提升成正式 mission commander 包。
+这一阶段目标是把 mission commander 纳入正式启动入口和真机配置体系。
 
 ### 应该做什么
 
-- 将 `simple_commander_demo` 改名为正式包名，例如：
-  - `venom_mission_commander`
-  - `simple_commander`
-- 更新 `package.xml`、`setup.py`、Python import 路径、launch package 名。
+- 保持 `venom_mission_commander` 作为正式包名。
+- 更新真机 wrapper launch、README 和常用启动命令，优先推荐 `mission_commander` 入口。
 - 保留独立包结构，不移动进 `venom_bringup/venom_bringup/`。
-- 将 demo 配置和正式配置分层：模板留 commander 包，真机配置放 `venom_bringup`。
+- 将示例配置和正式配置分层：模板留 commander 包，真机配置放 `venom_bringup`。
 
 ### 为什么
 
-- `demo` 后缀适合原型，但不适合作为正式比赛/真机入口。
+- 正式入口应使用 `venom_mission_commander` 包名和 `mission_commander` 可执行命令。
 - 独立包边界清晰，方便仿真和真机共同复用。
 - 避免 `venom_bringup` 同时承担 bringup 和 mission engine 两种职责。
 
 ### 主要改动位置
 
-- 包目录名
-- `package.xml` 的 `<name>`
-- `setup.py` 的 `package_name` 和 console script
-- Python import：`simple_commander_demo.*`
-- launch 中 `package='simple_commander_demo'`
-- README/docs 中的包名
+- `venom_bringup` 中的 mission wrapper launch
+- 真机 mission YAML 所在目录
+- README/docs 中的推荐启动命令
 
 ### 完成标准
 
-- 新包名下 `colcon build --packages-select <new_pkg>` 通过。
-- 原有 launch、config、docs 都能通过新包名找到。
-- 旧 demo 包名不再出现在正式启动命令中。
+- `colcon build --packages-select venom_mission_commander` 通过。
+- 常用 launch、config、docs 都能通过正式包名找到。
+- 旧原型入口不再出现在正式启动命令中。
 
 ## 阶段 5：Docker / CI / 默认构建集成阶段
 
@@ -221,7 +216,7 @@ wrapper launch 只做参数包装，不写 mission 逻辑：
 - 更新 Docker README，不再要求手动：
 
   ```bash
-  ln -sfn /workspaces/venom_vnv/simple_commander_demo /opt/venom_nav_ws/src/simple_commander_demo
+  ln -sfn /workspaces/venom_vnv/venom_mission_commander /opt/venom_nav_ws/src/venom_mission_commander
   ```
 
 - 如果项目有 CI，把 commander 包加入 build/test 范围。
@@ -285,7 +280,7 @@ wrapper launch 只做参数包装，不写 mission 逻辑：
 ### 为什么
 
 - 比赛环境会有任务失败、定位丢失、硬件超时、急停等异常情况。
-- 当前 demo 的状态管理是内存态，适合开发验证，但不够比赛级鲁棒。
+- 当前状态管理是内存态，适合开发验证，但不够比赛级鲁棒。
 - 参数化 backend 能让同一套 mission 在仿真、mock、真机之间切换。
 
 ## 远期分支：动态 Mission 生成
@@ -298,7 +293,7 @@ wrapper launch 只做参数包装，不写 mission 逻辑：
 semantic_map + mission_goals + constraints
 → MissionPlanner / MissionCompiler
 → current MissionConfig
-→ SimpleCommander
+→ MissionCommander
 ```
 
 也就是说，先提升 mission 的生成方式，而不是先推翻现有执行器。
@@ -307,11 +302,11 @@ semantic_map + mission_goals + constraints
 
 | 阶段 | 主要目标 | 改 commander 包 | 改 venom_bringup | 改 simulation/Docker | 原因 |
 | --- | --- | --- | --- | --- | --- |
-| 0 Demo 原型 | 跑通主流程 | 是 | 否 | 否 | 避免影响现有功能 |
+| 0 原型验证 | 跑通主流程 | 是 | 否 | 否 | 避免影响现有功能 |
 | 1 仿真 Nav2 | 验证真实导航 action | 少量 | 否 | 是 | 先证明 Gazebo/Nav2 链路 |
 | 2 真实任务 | 接视觉/机械臂/语音 | 是 | 可能加依赖 | 否 | 插件隔离真实模块 |
 | 3 真机联调 | 接真实底盘/雷达/Nav2 | 少量参数 | 是 | 否 | 硬件链路属于 bringup |
-| 4 正式收编 | 去 demo 化 | 是 | 更新引用 | 更新引用 | 包名和职责正式化 |
+| 4 正式收编 | 推荐入口 | 是 | 更新引用 | 更新引用 | 包名和职责正式化 |
 | 5 Docker/CI | 默认构建 | 少量 | 否 | 是 | 去掉手动 symlink |
 | 6 替换旧入口 | 成为推荐入口 | 否 | 是 | 是 | 渐进替换降低风险 |
 | 7 比赛强化 | 提高可靠性 | 是 | 是 | 可能 | 面向异常恢复和稳定性 |
@@ -319,12 +314,12 @@ semantic_map + mission_goals + constraints
 ## 最推荐的执行顺序
 
 ```text
-1. 保持独立 demo 包，继续完善 mock + Nav2 仿真
-2. 接真实 task plugins，但不改 SimpleCommander 主流程
+1. 保持独立 commander 包，继续完善 mock + Nav2 仿真
+2. 接真实 task plugins，但不改 MissionCommander 主流程
 3. 在 venom_bringup 增加真机 mission wrapper launch
 4. 把真机 mission YAML 移到 venom_bringup/config/<robot>/missions
 5. Docker bootstrap 自动包含 commander 包
-6. 包名从 simple_commander_demo 升级为 venom_mission_commander
+6. 正式入口统一使用 `venom_mission_commander` + `mission_commander`
 7. 文档和默认入口逐步切到新 commander
 8. 补超时、取消、持久化、外部中断等比赛级能力
 ```
@@ -333,7 +328,7 @@ semantic_map + mission_goals + constraints
 
 进入下一阶段前，建议满足这些检查项：
 
-- Demo 阶段完成：mock mission 能稳定跑完。
+- 原型阶段完成：mock mission 能稳定跑完。
 - 仿真阶段完成：RViz 手动目标和 commander 自动目标都能在 Gazebo 里跑通。
 - 真实任务阶段完成：每个插件单独可测，失败时返回明确错误。
 - 真机阶段完成：真机 Nav2 本身已稳定，commander 只负责发目标。

@@ -1,7 +1,7 @@
 import time
 from typing import Any
 
-from simple_commander_demo.models import TaskContext, TaskExecutionResult, TaskSpec
+from venom_mission_commander.models import TaskContext, TaskExecutionResult, TaskSpec
 
 
 class BaseTaskPlugin:

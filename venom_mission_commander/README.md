@@ -1,10 +1,10 @@
-# simple_commander_demo
+# venom_mission_commander
 
-`simple_commander_demo` 是一个独立 ROS 2 Python demo 包，用来验证“按路点顺序导航，到点后执行任务，再去下一个点”的任务编排流程。
+`venom_mission_commander` 是一个独立 ROS 2 Python 任务编排包，用来验证“按路点顺序导航，到点后执行任务，再去下一个点”的任务编排流程。
 
 默认运行模式是 mock：不需要真实地图、Nav2 action server、视觉节点、语音节点或机械臂节点，只打印流程并在内存 `blackboard` 中传递模拟结果。
 
-## Demo 任务路线
+## 示例任务路线
 
 ```text
 起停区
@@ -17,19 +17,17 @@
 
 默认 mock 坐标写在 `config/simple_mission.yaml` 中。接真实仿真导航时优先使用 `config/rmul_sim_mission.yaml`；后续接比赛地图时复制 `config/competition_mission_template.yaml` 后替换 `x/y/yaw`。
 
-从 demo 演进到正式工程集成的阶段路线见 `docs/INTEGRATION_ROADMAP.md`。
+从原型演进到正式工程集成的阶段路线见 `docs/INTEGRATION_ROADMAP.md`。
 
 如果未来想把 mission 输入进一步泛化为“语义地图 + 任务目标 + 约束”，并动态生成 waypoint/task 绑定，可参考 `docs/FUTURE_DYNAMIC_MISSION_BRANCH.md`。
 
-面向 AI 协作和代码解释的回答偏好文档见 `docs/AI_USER_PREFERENCE_GUIDE.md`。
-
 ## 工作流程概览
 
-`simple_commander_demo` 的主流程可以理解成一条固定执行链：
+`venom_mission_commander` 的主流程可以理解成一条固定执行链：
 
 ```text
 launch / ros2 run
-→ 启动 SimpleCommander 这个 ROS 2 node
+→ 启动 MissionCommander 这个 ROS 2 node
 → 读取 mission YAML
 → 解析成 MissionConfig / WaypointSpec / TaskSpec
 → 初始化导航器和任务插件
@@ -42,11 +40,11 @@ launch / ros2 run
 → 所有 waypoint 完成后 mission 进入 COMPLETED / FAILED
 ```
 
-运行时只有 `SimpleCommander` 是真正的 ROS 2 node。`WaypointSpec`、`TaskSpec`、`MissionConfig` 都只是 Python 数据对象，用来承载 YAML 解析后的任务描述。任务插件默认也是普通 Python 对象，但它们可以通过 `TaskContext.node` 借用 `SimpleCommander` 去创建 ROS service/action/topic client。
+运行时只有 `MissionCommander` 是真正的 ROS 2 node。`WaypointSpec`、`TaskSpec`、`MissionConfig` 都只是 Python 数据对象，用来承载 YAML 解析后的任务描述。任务插件默认也是普通 Python 对象，但它们可以通过 `TaskContext.node` 借用 `MissionCommander` 去创建 ROS service/action/topic client。
 
 ## 模块职责
 
-- `SimpleCommander`：总控节点，负责读取参数、加载 mission、创建导航器、注册任务插件，并按路点驱动完整流程。
+- `MissionCommander`：总控节点，负责读取参数、加载 mission、创建导航器、注册任务插件，并按路点驱动完整流程。
 - `MissionLoader`：把 YAML 里的 `mission`、`waypoints`、`tasks` 解析成 Python 数据结构。
 - `WaypointNavigator`：导航适配层；mock 模式只打印并等待，Nav2 模式会把 `WaypointSpec` 转成 `PoseStamped` 后调用 `BasicNavigator.goToPose()`。
 - `WaypointTaskRunner`：任务调度器；到达路点后按顺序执行当前路点的 task 列表。
@@ -85,9 +83,9 @@ classify_place
 
 ## 主要接口
 
-- `SimpleCommander.configure()`：读取 YAML、注册任务插件、创建导航器、初始化任务状态。
-- `SimpleCommander.run()`：执行完整 mission，可根据 YAML 的 `loop` 决定是否循环。
-- `SimpleCommander.run_waypoint()`：处理单个路点，先导航，再执行该路点任务列表。
+- `MissionCommander.configure()`：读取 YAML、注册任务插件、创建导航器、初始化任务状态。
+- `MissionCommander.run()`：执行完整 mission，可根据 YAML 的 `loop` 决定是否循环。
+- `MissionCommander.run_waypoint()`：处理单个路点，先导航，再执行该路点任务列表。
 - `MissionLoader.load(config_path)`：把 YAML 转成 `MissionConfig` / `WaypointSpec` / `TaskSpec`。
 - `MissionManager.transition_to()`：记录任务状态切换。
 - `MissionManager.save_state()`：保存当前路点、当前任务、最近任务结果等运行状态。
@@ -113,23 +111,23 @@ classify_place
 ```bash
 cd /home/alex/venom_ws
 source /opt/ros/humble/setup.bash
-colcon build --symlink-install --packages-select simple_commander_demo
+colcon build --symlink-install --packages-select venom_mission_commander
 source install/setup.bash
-ros2 launch simple_commander_demo simple_commander_demo.launch.py use_nav:=false
+ros2 launch venom_mission_commander mission_commander.launch.py use_nav:=false
 ```
 
 也可以直接指定配置：
 
 ```bash
-ros2 run simple_commander_demo simple_commander_demo \
+ros2 run venom_mission_commander mission_commander \
   --ros-args \
-  -p mission_config:=/home/alex/venom_ws/src/venom_vnv/simple_commander_demo/config/simple_mission.yaml \
+  -p mission_config:=/home/alex/venom_ws/src/venom_vnv/venom_mission_commander/config/simple_mission.yaml \
   -p use_nav:=false
 ```
 
-## Docker 里运行 mock demo
+## Docker 里运行 mock 示例
 
-当前 Humble Docker 的仓库挂载点是 `/workspaces/venom_vnv`，仿真工作区是 `/opt/venom_nav_ws`。这个 demo 包没有修改 bootstrap 脚本，所以首次在容器内运行时手动把包 symlink 进仿真工作区即可。
+当前 Humble Docker 的仓库挂载点是 `/workspaces/venom_vnv`，仿真工作区是 `/opt/venom_nav_ws`。这个任务编排包没有修改 bootstrap 脚本，所以首次在容器内运行时手动把包 symlink 进仿真工作区即可。
 
 ```bash
 cd /workspaces/venom_vnv/simulation/venom_nav_simulation
@@ -141,16 +139,16 @@ cd /workspaces/venom_vnv/simulation/venom_nav_simulation
 ```bash
 source /opt/ros/humble/setup.bash
 mkdir -p /opt/venom_nav_ws/src
-ln -sfn /workspaces/venom_vnv/simple_commander_demo /opt/venom_nav_ws/src/simple_commander_demo
+ln -sfn /workspaces/venom_vnv/venom_mission_commander /opt/venom_nav_ws/src/venom_mission_commander
 cd /opt/venom_nav_ws
-colcon build --symlink-install --packages-select simple_commander_demo
+colcon build --symlink-install --packages-select venom_mission_commander
 source install/setup.bash
-ros2 launch simple_commander_demo simple_commander_demo.launch.py use_nav:=false
+ros2 launch venom_mission_commander mission_commander.launch.py use_nav:=false
 ```
 
 ## Docker 里接 Gazebo / Nav2 / RViz
 
-第一步先启动现有 Humble 仿真导航栈。这个 launch 负责 Gazebo、定位、Nav2 和 RViz；`simple_commander_demo` 只作为 Nav2 action client，不重复启动导航栈。
+第一步先启动现有 Humble 仿真导航栈。这个 launch 负责 Gazebo、定位、Nav2 和 RViz；`venom_mission_commander` 只作为 Nav2 action client，不重复启动导航栈。
 
 终端 1：进入容器并启动仿真导航。
 
@@ -174,27 +172,27 @@ ros2 launch rm_nav_bringup bringup_sim.launch.py \
 ```bash
 source /opt/ros/humble/setup.bash
 source /opt/venom_nav_ws/install/setup.bash
-ros2 launch simple_commander_demo simple_commander_nav2_sim.launch.py
+ros2 launch venom_mission_commander mission_commander_nav2_sim.launch.py
 ```
 
 等价的显式命令是：
 
 ```bash
-ros2 launch simple_commander_demo simple_commander_demo.launch.py \
+ros2 launch venom_mission_commander mission_commander.launch.py \
   use_nav:=true \
   use_sim_time:=true \
   nav2_wait_mode:=bt_navigator \
-  mission_config:=/opt/venom_nav_ws/src/simple_commander_demo/config/rmul_sim_mission.yaml
+  mission_config:=/opt/venom_nav_ws/src/venom_mission_commander/config/rmul_sim_mission.yaml
 ```
 
-`simple_commander_nav2_sim.launch.py` 默认使用 `config/rmul_sim_mission.yaml`、`use_nav:=true`、`use_sim_time:=true`，适合在 Gazebo/RViz/Nav2 已经启动后直接验证整条链路。
+`mission_commander_nav2_sim.launch.py` 默认使用 `config/rmul_sim_mission.yaml`、`use_nav:=true`、`use_sim_time:=true`，适合在 Gazebo/RViz/Nav2 已经启动后直接验证整条链路。
 
 ## 接真实 Nav2
 
 启动仿真导航栈后，把 `use_nav` 改成 `true`：
 
 ```bash
-ros2 launch simple_commander_demo simple_commander_demo.launch.py \
+ros2 launch venom_mission_commander mission_commander.launch.py \
   use_nav:=true \
   use_sim_time:=true \
   nav2_wait_mode:=bt_navigator
@@ -203,7 +201,7 @@ ros2 launch simple_commander_demo simple_commander_demo.launch.py \
 如果后续改成 AMCL 等完整 Nav2 lifecycle 流程，可以尝试：
 
 ```bash
-ros2 launch simple_commander_demo simple_commander_demo.launch.py use_nav:=true nav2_wait_mode:=full
+ros2 launch venom_mission_commander mission_commander.launch.py use_nav:=true nav2_wait_mode:=full
 ```
 
 ## 后续接比赛地图
@@ -213,8 +211,8 @@ ros2 launch simple_commander_demo simple_commander_demo.launch.py use_nav:=true 
 1. 复制模板：
 
    ```bash
-   cp /opt/venom_nav_ws/src/simple_commander_demo/config/competition_mission_template.yaml \
-      /opt/venom_nav_ws/src/simple_commander_demo/config/my_competition_mission.yaml
+   cp /opt/venom_nav_ws/src/venom_mission_commander/config/competition_mission_template.yaml \
+      /opt/venom_nav_ws/src/venom_mission_commander/config/my_competition_mission.yaml
    ```
 
 2. 启动目标地图对应的 Gazebo/Nav2/RViz。
@@ -223,11 +221,11 @@ ros2 launch simple_commander_demo simple_commander_demo.launch.py use_nav:=true 
 5. 用同一个 launch 跑新地图任务：
 
    ```bash
-   ros2 launch simple_commander_demo simple_commander_demo.launch.py \
+   ros2 launch venom_mission_commander mission_commander.launch.py \
      use_nav:=true \
      use_sim_time:=true \
      nav2_wait_mode:=bt_navigator \
-     mission_config:=/opt/venom_nav_ws/src/simple_commander_demo/config/my_competition_mission.yaml
+     mission_config:=/opt/venom_nav_ws/src/venom_mission_commander/config/my_competition_mission.yaml
    ```
 
 比赛地图接入时优先检查这些条件：
@@ -239,7 +237,7 @@ ros2 launch simple_commander_demo simple_commander_demo.launch.py use_nav:=true 
 
 ## 后续接真实任务
 
-真实视觉、语音和机械臂接口建议优先替换这些类的内部 mock 方法，而不是改 `SimpleCommander` 主流程：
+真实视觉、语音和机械臂接口建议优先替换这些类的内部 mock 方法，而不是改 `MissionCommander` 主流程：
 
 完整任务插件接入规范见 `docs/TASK_PLUGIN_INTEGRATION_GUIDE.md`，里面约定了 YAML task 格式、`BaseTaskPlugin` 接口、`TaskContext` / `TaskExecutionResult` 数据结构、`blackboard` key 和 ROS service/action 接入方式。
 

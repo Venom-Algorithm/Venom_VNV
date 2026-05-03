@@ -8,12 +8,14 @@ from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
     default_config = PathJoinSubstitution([
-        FindPackageShare('simple_commander_demo'),
+        FindPackageShare('venom_mission_commander'),
         'config',
-        'rmul_sim_mission.yaml',
+        'simple_mission.yaml',
     ])
 
     mission_config = LaunchConfiguration('mission_config')
+    use_nav = LaunchConfiguration('use_nav')
+    mock_nav_delay_sec = LaunchConfiguration('mock_nav_delay_sec')
     nav2_wait_mode = LaunchConfiguration('nav2_wait_mode')
     use_sim_time = LaunchConfiguration('use_sim_time')
 
@@ -21,7 +23,17 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'mission_config',
             default_value=default_config,
-            description='Mission YAML for the currently loaded simulation map.',
+            description='Absolute path to mission YAML.',
+        ),
+        DeclareLaunchArgument(
+            'use_nav',
+            default_value='false',
+            description='Set true to use Nav2; false runs mock navigation only.',
+        ),
+        DeclareLaunchArgument(
+            'mock_nav_delay_sec',
+            default_value='0.5',
+            description='Mock navigation delay per waypoint.',
         ),
         DeclareLaunchArgument(
             'nav2_wait_mode',
@@ -30,18 +42,18 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             'use_sim_time',
-            default_value='true',
-            description='Use Gazebo /clock for Nav2 simulation.',
+            default_value='false',
+            description='Use Gazebo /clock when running with simulation.',
         ),
         Node(
-            package='simple_commander_demo',
-            executable='simple_commander_demo',
-            name='simple_commander_demo',
+            package='venom_mission_commander',
+            executable='mission_commander',
+            name='mission_commander',
             output='screen',
             parameters=[{
                 'mission_config': mission_config,
-                'use_nav': True,
-                'mock_nav_delay_sec': 0.0,
+                'use_nav': ParameterValue(use_nav, value_type=bool),
+                'mock_nav_delay_sec': ParameterValue(mock_nav_delay_sec, value_type=float),
                 'nav2_wait_mode': nav2_wait_mode,
                 'use_sim_time': ParameterValue(use_sim_time, value_type=bool),
             }],

@@ -11,7 +11,7 @@ map:
     - Validate each waypoint manually in RViz before running the full mission.
 
 mission:
-  id: competition_simple_commander_demo
+  id: competition_mission_commander
   loop: false
   stop_on_task_failure: true
 

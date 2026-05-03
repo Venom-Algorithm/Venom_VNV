@@ -5,7 +5,7 @@ from typing import Any
 from geometry_msgs.msg import PoseStamped
 from rclpy.parameter import Parameter
 
-from simple_commander_demo.models import WaypointSpec
+from venom_mission_commander.models import WaypointSpec
 
 
 class MockWaypointNavigator:
@@ -40,7 +40,7 @@ class Nav2WaypointNavigator:
 
         self.node = node
         self.wait_mode = wait_mode
-        self.navigator = BasicNavigator(node_name='simple_commander_nav2')
+        self.navigator = BasicNavigator(node_name='mission_commander_nav2')
         self._configure_use_sim_time(use_sim_time)
 
     def wait_until_ready(self) -> None:
