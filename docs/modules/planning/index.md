@@ -38,11 +38,12 @@ planning/
 planning/
 ├── navigation/
 │   ├── ego-planner-swarm/
-│   ├── venom_teb_controller/
-│   └── venom_nav_controller_xxx/
+│   └── venom_teb_controller/
 └── manipulation/
-    └── venom_moveit_grasp/
+    └── .gitkeep
 ```
+
+`planning/manipulation/` 当前只是机械臂运动规划包的归属入口，还没有实际 MoveIt / 抓取规划包落地。
 
 ## 接口约束
 
@@ -64,8 +65,7 @@ planning/
 
 - `ego-planner-swarm`
 - `venom_teb_controller`
-- `venom_nav_controller_xxx`
-- `venom_moveit_grasp`
+- `planning/manipulation/`
 
 ## 相关页面
 

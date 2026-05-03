@@ -44,7 +44,7 @@ description: 系统模块的总体框架、分类约束与子文档入口。
 3. `localization/`：LIO、里程计、重定位
 4. `planning/`：导航规划、controller、机械臂运动规划
 5. `mission/`：行为树、waypoint、监听器与任务调度
-6. `system/`：系统启动、机器人描述与整机装配
+6. `venom_bringup` / `venom_robot_description`：系统启动、机器人描述与整机装配
 7. `simulation/`：独立仿真工作区和仿真基线
 
 ## 进一步阅读

@@ -37,11 +37,18 @@ The main workspace now contains a committed `planning/` directory. `planning/nav
 planning/
 ├── navigation/
 │   ├── ego-planner-swarm/
-│   ├── venom_teb_controller/
-│   └── venom_nav_controller_xxx/
+│   └── venom_teb_controller/
 └── manipulation/
-    └── venom_moveit_grasp/
+    └── .gitkeep
 ```
+
+`planning/manipulation/` is currently the target location for future arm-side MoveIt / grasp-planning packages. No concrete package has landed there yet.
+
+## Current Modules And Reserved Entrypoints
+
+- `ego-planner-swarm`
+- `venom_teb_controller`
+- `planning/manipulation/`
 
 ## Boundary With The Mission Layer
 

@@ -18,6 +18,7 @@ The repository aims to keep the following stable across LIO implementations:
 - a consistent odometry topic
 - stable TF responsibility around `odom -> base_link`
 - consistent naming for registered clouds and path output
+- a `lio` parameter group for runtime mode, realtime queue, async-map, and offline mapping controls
 
 ## Related Pages
 

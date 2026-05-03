@@ -47,8 +47,8 @@ mission/
 
 - `ego-planner-swarm`、`venom_teb_controller` 应进入 `planning/navigation/`
 - `venom_waypoint`、`venom_nav_bt`、`venom_global_monitor` 应进入 `mission/navigation/`
-- `venom_moveit_grasp` 应进入 `planning/manipulation/`
-- `venom_grasp_mission` 应进入 `mission/manipulation/`
+- 机械臂运动规划包应进入 `planning/manipulation/`
+- 机械臂抓取任务流程包应进入 `mission/manipulation/`
 
 ## 推荐包命名
 
@@ -56,13 +56,43 @@ mission/
 - 导航行为树：`venom_nav_bt`
 - 全局状态监听：`venom_global_monitor`
 - 任务调度与管理：`venom_mission_manager`
-- 抓取任务流程：`venom_grasp_mission`
+- 抓取任务流程：后续可按具体任务命名，例如 `venom_grasp_mission`
 
 ## 当前状态
 
-当前主工作区已经创建 `mission/` 目录，并落地了 `navigation/` 与 `manipulation/` 两个占位子目录。
+当前主工作区已经创建 `mission/` 目录，并落地了 `navigation/` 与 `manipulation/` 两个预留子目录。
 
-后续新增的行为树、waypoint、任务监听、任务发布一类包，统一归到这里，而不是继续塞进 `venom_bringup`。
+这两个目录当前只用于承接后续独立任务包，仓库里已经可运行的任务控制实现还在 `venom_bringup` 内：
+
+| 当前实现 | 路径 | 作用 |
+| --- | --- | --- |
+| 多航点导航入口 | `venom_bringup/venom_bringup/multi_waypoint_commander.py` | 读取 `waypoints.yaml`，调用 Nav2 Simple Commander 的 `followWaypoints()` |
+| 健康状态感知入口 | `venom_bringup/venom_bringup/health_aware_commander.py` | 在多航点任务基础上接入状态监听、返航与恢复逻辑 |
+| 任务控制核心 | `venom_bringup/venom_bringup/mission_controller/` | 提供状态监控、任务状态管理和行为插件抽象 |
+| 任务插件 | `venom_bringup/venom_bringup/plugins/` | 当前包含健康状态插件与导航任务插件 |
+| 参数文件 | `venom_bringup/config/scout_mini/mission_config.yaml`、`venom_bringup/config/scout_mini/waypoints.yaml` | 当前 Scout Mini 任务控制示例配置 |
+
+因此当前判断规则是：
+
+1. 使用已有任务控制功能时，从 `venom_bringup` 的 launch 或 `multi_waypoint_commander` 进入
+2. 新增独立任务包时，放进 `mission/navigation/` 或 `mission/manipulation/`
+3. 如果未来把已有任务控制代码迁出 `venom_bringup`，必须同步迁移 launch、参数路径和文档链接
+
+## 当前可用入口
+
+```bash
+cd ~/venom_ws
+source install/setup.bash
+ros2 launch venom_bringup health_aware_navigation.launch.py
+```
+
+或者直接运行 console script：
+
+```bash
+cd ~/venom_ws
+source install/setup.bash
+ros2 run venom_bringup multi_waypoint_commander
+```
 
 ## 相关页面
 

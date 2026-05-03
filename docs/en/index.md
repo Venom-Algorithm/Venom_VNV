@@ -103,9 +103,11 @@ The repository includes both built-in packages and external submodules. For a qu
     <tr><td>Localization</td><td><code>localization/relocalization/small_gicp_relocalization</code></td><td>Point-cloud relocalization based on small_gicp</td></tr>
     <tr><td>Planning</td><td><code>planning/navigation/ego-planner-swarm</code></td><td>UAV local planning and swarm-planning submodule tracking the upstream <code>ros2_version</code> branch</td></tr>
     <tr><td>Planning</td><td><code>planning/navigation/venom_teb_controller</code></td><td>TEB local planner integrated as a Nav2 controller plugin, including <code>teb_local_planner</code> and <code>teb_msgs</code></td></tr>
-    <tr><td>Planning</td><td><code>planning/manipulation</code></td><td>Entry point for manipulation-side motion planning modules, currently kept as a placeholder</td></tr>
-    <tr><td>Mission</td><td><code>mission/</code></td><td>Entry point for waypoint, behavior-tree, monitor, and mission-management packages, with placeholder <code>navigation/</code> and <code>manipulation/</code> subfolders already created</td></tr>
-    <tr><td>System</td><td><code>venom_bringup</code></td><td>Main system entry for mode composition, robot assembly, and full-stack bringup</td></tr>
+    <tr><td>Planning</td><td><code>planning/manipulation</code></td><td>Entry point for future MoveIt / grasp-planning packages on the manipulation side</td></tr>
+    <tr><td>Mission</td><td><code>mission/</code></td><td>Target home for waypoint, behavior-tree, monitor, task-dispatch, and mission-management packages</td></tr>
+    <tr><td>Mission</td><td><code>venom_bringup/venom_bringup/mission_controller</code></td><td>Current generic mission-control framework with state monitoring, mission management, and behavior plugins</td></tr>
+    <tr><td>Mission</td><td><code>venom_bringup/venom_bringup/multi_waypoint_commander.py</code></td><td>Nav2 Simple Commander based multi-waypoint task entry</td></tr>
+    <tr><td>System</td><td><code>venom_bringup</code></td><td>Main system entry for mode composition, robot assembly, configuration dispatch, and the current transitional mission-control entry</td></tr>
     <tr><td>System</td><td><code>venom_robot_description</code></td><td>Robot model, URDF, and TF description package</td></tr>
     <tr><td>Simulation</td><td><code>simulation/venom_nav_simulation</code></td><td>Standalone navigation simulation workspace for MID360, LIO, and Nav2 validation</td></tr>
   </tbody>

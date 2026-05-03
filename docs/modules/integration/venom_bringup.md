@@ -10,7 +10,7 @@ description: venom_bringup — 系统启动配置与任务控制框架。
 - 组织多模块联合启动
 - 管理不同运行模式的 launch 组合
 - 将导航、自瞄、定位、驱动等模块拼装成完整系统
-- 作为当前历史阶段下的任务层逻辑挂载点
+- 承载当前历史阶段下已经落地的任务控制逻辑
 
 如果说单个 pkg 解决的是“一个模块怎么跑”，那么 `venom_bringup` 解决的是“整套系统怎么协同跑”。
 
@@ -18,20 +18,29 @@ description: venom_bringup — 系统启动配置与任务控制框架。
 
 ## 主要启动入口
 
-| 启动文件 | 功能 |
-| --- | --- |
-| `camera.launch.py` | 单独验证相机链路 |
-| `mid360_rviz.launch.py` | Mid360 驱动与 RViz 可视化验证 |
-| `mid360_point_lio.launch.py` | Mid360 + Point-LIO 联调 |
-| `d435i_test.launch.py` | RealSense D435i 验证 |
-| `infantry_auto_aim.launch.py` | 步兵自瞄链路（相机 + 自瞄 + 串口） |
-| `scout_mini_mapping.launch.py` | Scout Mini 建图与导航链路联调 |
-| `sentry_mapping.launch.py` | 哨兵建图与导航链路联调 |
-| `relocalization_bringup.launch.py` | 重定位模式 |
-| `health_aware_navigation.launch.py` | 带任务层状态感知的导航模式 |
-| `px4_agent_probe.launch.py` | PX4 DDS Agent 探测 |
-| `px4_vps_bridge.launch.py` | PX4 外部位姿 / VPS 里程计桥接 |
-| `robot_bringup.launch.py` | 顶层整机入口 |
+| 启动文件 | 实际路径 | 功能 |
+| --- | --- | --- |
+| `camera.launch.py` | `launch/camera.launch.py` | 单独验证相机链路 |
+| `mid360_rviz.launch.py` | `launch/examples/mid360_rviz.launch.py` | Mid360 驱动与 RViz 可视化验证 |
+| `mid360_point_lio.launch.py` | `launch/examples/mid360_point_lio.launch.py` | Mid360 + Point-LIO 联调 |
+| `mid360_point_lio_odom.launch.py` | `launch/examples/mid360_point_lio_odom.launch.py` | Mid360 + Point-LIO 纯里程计模式 |
+| `mid360_point_lio_async_map.launch.py` | `launch/examples/mid360_point_lio_async_map.launch.py` | Mid360 + Point-LIO 显式异步地图模式 |
+| `mid360_point_lio_offline_map.launch.py` | `launch/examples/mid360_point_lio_offline_map.launch.py` | Point-LIO 离线导图 |
+| `mid360_record_raw.launch.py` | `launch/examples/mid360_record_raw.launch.py` | Mid360 原始数据录包 |
+| `d435i_test.launch.py` | `launch/examples/d435i_test.launch.py` | RealSense D435i 验证 |
+| `px4_agent_probe.launch.py` | `launch/examples/px4_agent_probe.launch.py` | PX4 DDS Agent 探测 |
+| `px4_vps_bridge.launch.py` | `launch/examples/px4_vps_bridge.launch.py` | PX4 外部位姿 / VPS 里程计桥接 |
+| `infantry_auto_aim.launch.py` | `launch/infantry/infantry_auto_aim.launch.py` | 步兵自瞄链路（相机 + 自瞄 + 串口） |
+| `sentry_mapping.launch.py` | `launch/sentry/sentry_mapping.launch.py` | 哨兵建图与导航链路联调 |
+| `sentry_navigation.launch.py` | `launch/sentry/sentry_navigation.launch.py` | 哨兵导航联调 |
+| `scout_mini_mapping.launch.py` | `launch/scout_mini/scout_mini_mapping.launch.py` | Scout Mini 建图与导航链路联调 |
+| `relocalization_bringup.launch.py` | `launch/relocalization_bringup.launch.py` | 重定位模式 |
+| `health_aware_navigation.launch.py` | `launch/health_aware_navigation.launch.py` | 带任务层状态感知的导航模式 |
+| `robot_bringup.launch.py` | `launch/robot_bringup.launch.py` | 顶层机器人类型选择器，目前不作为首选日常入口 |
+
+`ros2 launch` 命令中直接写 launch 文件名即可，例如 `ros2 launch venom_bringup mid360_rviz.launch.py`，不要把源码目录里的 `examples/`、`sentry/`、`scout_mini/` 写进命令。
+
+`robot_bringup.launch.py` 已经保留了 `robot_type` 选择逻辑，但当前源码中 `scout_mini/robot_bringup.launch.py`、`sentry/robot_bringup.launch.py`、`hunter_se/robot_bringup.launch.py`、`infantry/robot_bringup.launch.py` 这些被包含的整机模板还没有全部落地。日常联调请优先使用上表中的具体 launch 文件。
 
 ## 参数与配置入口
 
@@ -41,7 +50,7 @@ description: venom_bringup — 系统启动配置与任务控制框架。
 - 相机参数：`config/*/camera_params.yaml`
 - 自瞄参数：`config/*/node_params.yaml`
 - 串口参数：`config/*/serial_params.yaml`
-- LIO 参数透传：`config/*/point_lio_mapping.yaml`
+- LIO 参数透传：`config/*/point_lio_mapping.yaml`、`config/examples/point_lio_online_odom.yaml`、`config/examples/point_lio_online_async_map.yaml`、`config/examples/point_lio_offline_map.yaml`
 - 导航参数：`config/*/nav2_params.yaml`
 - 任务控制参数：`mission_config.yaml`、`waypoints.yaml`
 
@@ -71,6 +80,8 @@ description: venom_bringup — 系统启动配置与任务控制框架。
 
 - [`health_aware_commander.py`](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/venom_bringup/venom_bringup/health_aware_commander.py)
 - [`multi_waypoint_commander.py`](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/venom_bringup/venom_bringup/multi_waypoint_commander.py)
+- [`mission_controller/`](https://github.com/Venom-Algorithm/Venom_VNV/tree/master/venom_bringup/venom_bringup/mission_controller)
+- [`plugins/`](https://github.com/Venom-Algorithm/Venom_VNV/tree/master/venom_bringup/venom_bringup/plugins)
 
 其中最关键的两个外部参数是：
 
@@ -91,19 +102,19 @@ ros2 launch venom_bringup mid360_point_lio.launch.py
 ros2 launch venom_bringup infantry_auto_aim.launch.py
 ```
 
-如果是整机入口，更建议使用：
+如果要验证当前任务控制框架：
 
 ```bash
-ros2 launch venom_bringup robot_bringup.launch.py
+ros2 launch venom_bringup health_aware_navigation.launch.py
 ```
 
-它会根据 `robot_type` 选择不同平台的 bringup 组合。
+顶层 `robot_bringup.launch.py` 当前更像整机入口模板。等各机器人子目录内的 `robot_bringup.launch.py` 补齐后，再把它作为稳定整机入口。
 
 ## 调试重点
 
 - 单模块能跑但整机起不来时，优先检查 bringup 里传入的参数文件路径
 - 出现 TF、话题重名或重复启动，优先检查 launch 组合关系
-- 不同机器人切换时，首先确认 `robot_type` 和对应配置目录是否一致
+- 不同机器人切换时，首先确认具体 launch 文件和对应配置目录是否一致；`robot_type` 顶层选择器当前仍是模板入口
 
 ## 相关页面
 
