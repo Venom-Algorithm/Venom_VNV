@@ -30,7 +30,7 @@ This page only exposes architecture-level entries. Concrete algorithms and subpa
 
 1. `driver/`: hardware-facing integration and bridges
 2. `perception/`: detection, recognition, and tracking
-3. `localization/`: LIO, odometry, and relocalization
+3. `localization/`: LIO, odometry, and global-localization interfaces
 4. `planning/`: navigation planners, controllers, and manipulation motion planning
 5. `mission/`: waypoint, behavior-tree, monitor, and mission-dispatch packages
 6. `venom_bringup` / `venom_robot_description`: bringup, robot description, and robot-level assembly

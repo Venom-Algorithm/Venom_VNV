@@ -31,8 +31,8 @@ description: 不同 bringup 模式的适用场景与输入输出关系。
 ## 重定位模式
 
 - 入口：`relocalization_bringup.launch.py`
-- 目标：在已有地图上恢复全局位姿
-- 依赖：Point-LIO + `small_gicp_relocalization`
+- 状态：GICP 重定位当前因稳定性问题暂时下线
+- 说明：入口文件保留作为后续恢复集成的历史入口，但新工作区默认不会拉取 `small_gicp_relocalization`
 
 ## 自瞄测试模式
 

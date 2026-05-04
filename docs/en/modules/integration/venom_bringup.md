@@ -34,7 +34,7 @@ Architecturally, new waypoint, behavior-tree, monitor, and task-dispatch package
 | `sentry_mapping.launch.py` | `launch/sentry/sentry_mapping.launch.py` | sentry mapping integration |
 | `sentry_navigation.launch.py` | `launch/sentry/sentry_navigation.launch.py` | sentry navigation integration |
 | `scout_mini_mapping.launch.py` | `launch/scout_mini/scout_mini_mapping.launch.py` | Scout Mini mapping and navigation integration |
-| `relocalization_bringup.launch.py` | `launch/relocalization_bringup.launch.py` | relocalization mode |
+| `relocalization_bringup.launch.py` | `launch/relocalization_bringup.launch.py` | historical GICP relocalization entry, currently disabled |
 | `health_aware_navigation.launch.py` | `launch/health_aware_navigation.launch.py` | health-aware mission-control mode |
 | `robot_bringup.launch.py` | `launch/robot_bringup.launch.py` | robot-type selector template, not the preferred daily entry yet |
 

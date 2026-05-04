@@ -39,7 +39,7 @@ The goal is to standardize the engineering pieces that keep repeating across pro
 
 - hardware and sensor integration
 - detection, tracking, auto-aim, and task perception
-- LIO, odometry, and relocalization
+- LIO, odometry, and global-localization interfaces
 - path planners, controllers, and manipulation motion planning
 - waypoint, behavior-tree, monitor, and mission-management logic
 - system bringup and interface conventions
@@ -59,7 +59,7 @@ The goal is to standardize the engineering pieces that keep repeating across pro
 | --- | --- | --- |
 | Driver | `driver/` | Livox, Hikrobot camera, chassis, arm, serial, and PX4 bridge integrations |
 | Perception | `perception/` | auto aim, YOLO detection, QR / barcode recognition, tracking, and solving pipelines |
-| Localization | `localization/` | Point-LIO, Fast-LIO, rf2o, and small_gicp relocalization |
+| Localization | `localization/` | Point-LIO, Fast-LIO, rf2o, and future global-localization interfaces |
 | Planning | `planning/` | navigation planners, controllers, and MoveIt-side motion planning |
 | Mission | `mission/` | waypoint, BT, monitor, and mission-management packages; the current mission-controller implementation still lives under `venom_bringup` |
 | System | `venom_bringup`, `venom_robot_description` | bringup, mode composition, TF description, and robot assembly |
@@ -74,7 +74,6 @@ The goal is to standardize the engineering pieces that keep repeating across pro
 | Flight bridge | `driver/venom_px4_bridge` | PX4, DDS Agent, and ROS 2 bridge path |
 | Perception | `perception/rm_auto_aim`, `perception/yolo_detector`, `perception/zbar_ros` | auto aim, general YOLO detection, QR / barcode recognition, and interface definitions |
 | Localization | `Point-LIO`, `Fast-LIO`, `rf2o_laser_odometry` | unified 3D / 2D odometry outputs |
-| Relocalization | `small_gicp_relocalization` | recover `map -> odom` from point-cloud registration |
 | Planning | `planning/navigation/ego-planner-swarm`, `planning/navigation/venom_teb_controller`, `planning/manipulation` | UAV local planning, Nav2 TEB controller integration, and the manipulation-motion-planning entry |
 | Mission | `mission/`, `venom_bringup/venom_bringup/mission_controller` | `mission/` is the target home for new mission packages; the current waypoint commander and mission-controller framework are still hosted by `venom_bringup` |
 | System integration | `venom_bringup` | top-level bringup, robot assembly, and the current transitional mission-control entry |
@@ -103,8 +102,7 @@ venom_vnv/
 │   │   ├── Point-LIO/
 │   │   ├── Fast-LIO/
 │   │   └── rf2o_laser_odometry/
-│   └── relocalization/
-│       └── small_gicp_relocalization/
+│   └── relocalization/             # reserved for global localization / relocalization modules
 ├── planning/                        # planning layer
 │   ├── navigation/                  # navigation planners and controllers
 │   │   ├── ego-planner-swarm/

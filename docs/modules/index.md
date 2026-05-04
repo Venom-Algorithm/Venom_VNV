@@ -41,7 +41,7 @@ description: 系统模块的总体框架、分类约束与子文档入口。
 
 1. `driver/`：硬件接入与桥接
 2. `perception/`：检测、识别、跟踪等感知算法
-3. `localization/`：LIO、里程计、重定位
+3. `localization/`：LIO、里程计与全局定位接口
 4. `planning/`：导航规划、controller、机械臂运动规划
 5. `mission/`：行为树、waypoint、监听器与任务调度
 6. `venom_bringup` / `venom_robot_description`：系统启动、机器人描述与整机装配

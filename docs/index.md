@@ -22,7 +22,7 @@ Venom VNV 是一个基于 ROS 2 Humble 构建的综合通用平台。
 
 - 激光雷达、相机、串口、底盘、机械臂等硬件接入
 - 自瞄检测、通用目标检测、跟踪、解算等感知链路
-- LIO、里程计、重定位等定位与地图能力
+- LIO、里程计与后续全局定位接口
 - Ego Planner、TEB controller、轨迹规划与机械臂运动规划
 - 行为树、waypoint、任务监听与任务管理
 - 多车型、多任务形态下的统一启动与接口规范
@@ -99,7 +99,6 @@ Venom VNV 是一个基于 ROS 2 Humble 构建的综合通用平台。
     <tr><td>定位层</td><td><code>localization/lio/Point-LIO</code></td><td>高带宽激光惯性里程计，适合 Mid360 等高频点云输入</td></tr>
     <tr><td>定位层</td><td><code>localization/lio/Fast-LIO</code></td><td>FAST-LIO 的 ROS 2 版本实现</td></tr>
     <tr><td>定位层</td><td><code>localization/lio/rf2o_laser_odometry</code></td><td>面向 2D 激光雷达的里程计模块</td></tr>
-    <tr><td>定位层</td><td><code>localization/relocalization/small_gicp_relocalization</code></td><td>基于点云配准的重定位模块</td></tr>
     <tr><td>规划层</td><td><code>planning/navigation/ego-planner-swarm</code></td><td>无人机局部规划与集群规划子模块，跟踪上游 <code>ros2_version</code> 分支</td></tr>
     <tr><td>规划层</td><td><code>planning/navigation/venom_teb_controller</code></td><td>Nav2 controller 插件形式的 TEB 局部规划器，包含 <code>teb_local_planner</code> 与 <code>teb_msgs</code></td></tr>
     <tr><td>规划层</td><td><code>planning/manipulation</code></td><td>机械臂运动规划模块的归属入口，当前目录用于承接后续 MoveIt / 抓取规划包</td></tr>

@@ -24,7 +24,7 @@ The repository is not used in just one runtime shape. Depending on hardware avai
 | Point-LIO offline mapping | Read rosbag2 offline and export a PCD map |
 | Auto aim test | Focus on camera, detector, tracker, and solver |
 | Mapping | Validate localization and mapping outputs |
-| Relocalization | Validate global localization against an existing map |
+| Relocalization | Temporarily disabled while the GICP relocalization stack is stabilized |
 | PX4 external-pose bridge | Convert upstream `nav_msgs/Odometry` into PX4 `VehicleOdometry` |
 | Mission control | Run health-aware multi-waypoint navigation |
 | Full robot bringup | Start the integrated stack through `venom_bringup` |
@@ -44,7 +44,7 @@ The repository is not used in just one runtime shape. Depending on hardware avai
 | Health-aware mission control | `health_aware_navigation.launch.py` |
 | Scout Mini mapping | `scout_mini_mapping.launch.py` |
 | Sentry mapping | `sentry_mapping.launch.py` |
-| Relocalization | `relocalization_bringup.launch.py` |
+| Relocalization (disabled) | `relocalization_bringup.launch.py` retained as a historical integration point |
 | Top-level robot selector | `robot_bringup.launch.py`, currently a template entry rather than the preferred daily launch |
 
 ## Recommendation

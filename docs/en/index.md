@@ -100,7 +100,6 @@ The repository includes both built-in packages and external submodules. For a qu
     <tr><td>Localization</td><td><code>localization/lio/Point-LIO</code></td><td>High-bandwidth LiDAR-inertial odometry, tuned for MID360 workflows</td></tr>
     <tr><td>Localization</td><td><code>localization/lio/Fast-LIO</code></td><td>ROS 2 version of FAST-LIO</td></tr>
     <tr><td>Localization</td><td><code>localization/lio/rf2o_laser_odometry</code></td><td>2D laser odometry based on range flow</td></tr>
-    <tr><td>Localization</td><td><code>localization/relocalization/small_gicp_relocalization</code></td><td>Point-cloud relocalization based on small_gicp</td></tr>
     <tr><td>Planning</td><td><code>planning/navigation/ego-planner-swarm</code></td><td>UAV local planning and swarm-planning submodule tracking the upstream <code>ros2_version</code> branch</td></tr>
     <tr><td>Planning</td><td><code>planning/navigation/venom_teb_controller</code></td><td>TEB local planner integrated as a Nav2 controller plugin, including <code>teb_local_planner</code> and <code>teb_msgs</code></td></tr>
     <tr><td>Planning</td><td><code>planning/manipulation</code></td><td>Entry point for future MoveIt / grasp-planning packages on the manipulation side</td></tr>

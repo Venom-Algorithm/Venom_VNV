@@ -34,7 +34,7 @@ description: venom_bringup — 系统启动配置与任务控制框架。
 | `sentry_mapping.launch.py` | `launch/sentry/sentry_mapping.launch.py` | 哨兵建图与导航链路联调 |
 | `sentry_navigation.launch.py` | `launch/sentry/sentry_navigation.launch.py` | 哨兵导航联调 |
 | `scout_mini_mapping.launch.py` | `launch/scout_mini/scout_mini_mapping.launch.py` | Scout Mini 建图与导航链路联调 |
-| `relocalization_bringup.launch.py` | `launch/relocalization_bringup.launch.py` | 重定位模式 |
+| `relocalization_bringup.launch.py` | `launch/relocalization_bringup.launch.py` | GICP 重定位历史入口，当前暂停使用 |
 | `health_aware_navigation.launch.py` | `launch/health_aware_navigation.launch.py` | 带任务层状态感知的导航模式 |
 | `robot_bringup.launch.py` | `launch/robot_bringup.launch.py` | 顶层机器人类型选择器，目前不作为首选日常入口 |
 
