@@ -20,6 +20,8 @@ The repository aims to keep the following stable across LIO implementations:
 - consistent naming for registered clouds and path output
 - a `lio` parameter group for runtime mode, realtime queue, async-map, and offline mapping controls
 
+New LIO integrations may keep their internal algorithm-specific parameters, but VNV-facing bringup configs must expose topic, frame, publish, odometry, mapping, and PCD-save options through the same grouped structure used by Point-LIO and Fast-LIO.
+
 ## Related Pages
 
 - [Localization](../localization/index.md)

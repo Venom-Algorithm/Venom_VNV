@@ -78,6 +78,42 @@ ros2 launch venom_bringup mid360_point_lio.launch.py \
   point_lio_cfg:=/absolute/path/to/point_lio_online_async_map.yaml
 ```
 
+## 运行提示与告警
+
+最近的 Point-LIO 子模块已经加入运行时提示和告警，这些信息不是普通日志噪声，而是现场调参和排障时要优先看的状态信号。
+
+### 初始化阶段提示
+
+启动后如果看到下面两类提示，应让雷达和 IMU 保持静止：
+
+- `Point-LIO IMU initialization started. Keep the LiDAR-IMU device stationary...`
+- `Building Point-LIO initial local map. Keep the LiDAR-IMU device stationary...`
+
+看到 `Point-LIO initial local map is ready. Odometry tracking has started...` 之后，才表示初始局部地图已经建立，正常移动才是安全的。
+
+如果初始化阶段移动设备，最常见的后果是重力方向、IMU bias 或初始局部地图不稳，后续会表现为 odom 漂移、姿态跳变或局部地图扭曲。
+
+### 实时队列告警
+
+| 日志关键字 | 含义 | 处理方向 |
+| --- | --- | --- |
+| `Point-LIO realtime warning: dropped old LiDAR frame(s)` | 在线模式下 LiDAR 队列超过 `lio.realtime.max_lidar_queue`，旧帧被丢弃以避免延迟无限积压。 | 降低点云负载、确认 CPU 负载、适当增大队列，或改用更轻的 `online_odom` 配置。 |
+| `Point-LIO realtime warning: dropped old IMU sample(s)` | IMU 队列超过 `lio.realtime.max_imu_queue`，旧 IMU 数据被丢弃。 | 检查 IMU 发布频率是否异常、系统是否卡顿、DDS/进程是否抢占严重。 |
+| `Point-LIO async map warning: dropped old map job(s)` | 异步地图线程处理不过来，旧地图发布 / 保存任务被丢弃。 | 增大 `lio.async_map.queue_depth`、增大 `publish.map_publish_interval`、调大 `filter_size_map_publish`，或关闭高负载可视化。 |
+| `Point-LIO realtime warning: odometry loop overrun` | 单次里程计循环耗时超过 LiDAR 帧间隔，实时性已经不足。 | 优先减小当前帧点数、增大 `filter_size_surf`、关闭不必要发布，必要时只跑 `online_odom`。 |
+
+这些队列告警的设计目标是保护实时 odom：当机器性能不足时，系统宁可丢弃旧数据，也不要让 odom 延迟越堆越大。
+
+### 同步异常告警
+
+| 日志关键字 | 含义 | 常见原因 |
+| --- | --- | --- |
+| `Point-LIO sync warning: abnormal LiDAR frame duration` | 当前 LiDAR 帧时间跨度偏离 `mapping.lidar_time_inte` 太多。 | 雷达时间戳异常、录包播放速率异常、驱动配置或时间单位不匹配。 |
+| `Point-LIO sync warning: waiting for IMU to cover LiDAR frame end` | LiDAR 当前帧结束时间已经到了，但 IMU 数据还没覆盖到该时间。 | IMU 延迟、DDS 堵塞、驱动未同步、录包中 IMU 少帧。 |
+| `Point-LIO sync warning: IMU queue starts after LiDAR frame begin` | IMU 队列最早时间晚于 LiDAR 帧起点，前半帧缺少 IMU 覆盖。 | 启动顺序不稳、录包截断、IMU 数据丢失或时间戳不连续。 |
+
+同步告警频繁出现时，不应先改匹配参数。正确顺序是先检查 `/livox/lidar`、`/livox/imu` 的时间戳、发布频率和录包完整性，再考虑调整 `common.time_diff_lidar_to_imu`、`mapping.lidar_time_inte` 或 `mapping.imu_time_inte`。
+
 ## 参数说明
 
 | 参数名 | 作用 | 默认值 |

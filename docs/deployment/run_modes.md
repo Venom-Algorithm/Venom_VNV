@@ -28,7 +28,7 @@ description: 不同 bringup 模式的适用场景与输入输出关系。
 - 必填参数：`bag_path:=/absolute/path/to/rosbag2_dir`
 - 输出参数：`output_pcd_path:=/absolute/path/to/offline_map.pcd`
 
-## 重定位模式
+## 重定位历史入口（暂停）
 
 - 入口：`relocalization_bringup.launch.py`
 - 状态：GICP 重定位当前因稳定性问题暂时下线

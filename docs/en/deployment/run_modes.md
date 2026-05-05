@@ -10,7 +10,7 @@ The repository is not used in just one runtime shape. Depending on hardware avai
 - A single driver validation flow
 - A localization-only flow
 - An auto aim test flow
-- A mapping or relocalization flow
+- A mapping flow, plus a reserved relocalization interface for future recovery
 - A full system bringup
 
 ## Common Patterns

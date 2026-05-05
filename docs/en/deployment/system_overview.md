@@ -10,7 +10,7 @@ When multiple packages are brought together, the first thing that needs to stay 
 - Which topics are expected
 - Which frames are fixed
 - Which modules publish `odom`
-- Which module is responsible for `map -> odom`
+- Which future module is allowed to own `map -> odom`
 
 ## Core System Layers
 
@@ -18,8 +18,10 @@ When multiple packages are brought together, the first thing that needs to stay 
 | --- | --- |
 | Driver layer | LiDAR, IMU, image, serial, chassis state |
 | Localization layer | `/odom`, registered clouds, path, TF |
-| Relocalization layer | `map -> odom` |
+| Global-localization interface | reserved `map -> odom` contract |
 | Task / integration layer | High-level robot behavior and launch orchestration |
+
+The default workspace no longer initializes `small_gicp_relocalization`. Therefore, `map -> odom` is a reserved interface contract, not an active default relocalization node.
 
 ## Typical Data Flow
 

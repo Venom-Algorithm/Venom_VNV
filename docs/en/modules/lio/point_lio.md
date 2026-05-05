@@ -88,6 +88,27 @@ ros2 launch venom_bringup mid360_point_lio.launch.py \
   point_lio_cfg:=/absolute/path/to/point_lio_online_async_map.yaml
 ```
 
+## Runtime Prompts and Warnings
+
+Recent Point-LIO updates added operator-facing prompts and warning logs. Treat these as active runtime signals, not as harmless noise.
+
+During startup, keep the LiDAR-IMU device stationary while these prompts are printed:
+
+- `Point-LIO IMU initialization started. Keep the LiDAR-IMU device stationary...`
+- `Building Point-LIO initial local map. Keep the LiDAR-IMU device stationary...`
+
+Normal motion should only start after `Point-LIO initial local map is ready. Odometry tracking has started...` appears.
+
+| Log keyword | Meaning | Typical action |
+| --- | --- | --- |
+| `dropped old LiDAR frame(s)` | realtime LiDAR queue exceeded `lio.realtime.max_lidar_queue` | reduce point-cloud load, check CPU load, tune queue depth, or use `online_odom` |
+| `dropped old IMU sample(s)` | realtime IMU queue exceeded `lio.realtime.max_imu_queue` | check IMU rate, timestamps, DDS stalls, and process load |
+| `dropped old map job(s)` | async map worker cannot keep up with map publication / saving jobs | increase `lio.async_map.queue_depth`, lower map publish rate, or make published maps sparser |
+| `odometry loop overrun` | one odometry loop took longer than the LiDAR frame interval | reduce current-frame density, raise `filter_size_surf`, disable heavy outputs, or use `online_odom` |
+| `abnormal LiDAR frame duration` | LiDAR frame duration differs significantly from `mapping.lidar_time_inte` | check timestamps, bag replay, driver config, and timestamp units |
+| `waiting for IMU to cover LiDAR frame end` | IMU data has not reached the end time of the current LiDAR frame | check IMU latency, DDS stalls, and bag completeness |
+| `IMU queue starts after LiDAR frame begin` | the early part of a LiDAR frame lacks IMU coverage | check startup order, truncated bags, dropped IMU data, and timestamp continuity |
+
 ## Important Parameters
 
 | Parameter | Role | Current VNV default |

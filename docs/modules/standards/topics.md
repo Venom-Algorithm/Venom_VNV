@@ -71,7 +71,7 @@ flowchart LR
 - `/perception/barcodes.header.frame_id` 必须保持与源图像一致，不能被 detector 重写
 - 这个模块的输出是图像平面识别结果，不能仅凭它直接推断 3D 位姿
 
-### 定位链路（`lio` / `relocalization`）
+### 定位链路与全局定位接口
 
 | 方向 | 话题 | 消息类型 | 发布 / 订阅方 | 说明 |
 |---|---|---|---|---|
@@ -82,6 +82,8 @@ flowchart LR
 | 发布 | `/path` | `nav_msgs/Path` | Point-LIO / Fast-LIO | 局部积分路径，`frame_id = odom`。 |
 | 订阅 | `/livox/lidar` | `livox_ros_driver2/CustomMsg` | Point-LIO / Fast-LIO | Livox 雷达点云输入。 |
 | 订阅 | `/livox/imu` | `sensor_msgs/Imu` | Point-LIO / Fast-LIO | LIO 估计器使用的 IMU 输入。 |
+
+全局定位 / 重定位模块的接口当前只保留 `map -> odom` 责任边界，还没有默认启用的话题约定。`small_gicp_relocalization` 已从默认 submodule 中移除，后续如果重新接入，应先在本页补齐输入地图、当前点云、初始位姿和输出诊断话题。
 
 ---
 

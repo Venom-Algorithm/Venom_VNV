@@ -23,7 +23,7 @@ The repository focuses on reusable engineering capabilities such as:
 
 - Sensors, serial links, chassis platforms, and robot arm integration
 - Detection, tracking, targeting, and general object-detection pipelines
-- LIO, odometry, and relocalization
+- LIO, odometry, and future global-localization interfaces
 - planning-oriented modules for Ego Planner, TEB controllers, trajectory planning, and manipulation motion generation
 - mission-oriented modules for waypoint, BT, monitor, and task progression
 - Shared startup conventions across multiple robot types

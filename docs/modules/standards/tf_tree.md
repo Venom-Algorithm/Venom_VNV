@@ -9,9 +9,11 @@ System-level coordinate frame hierarchy used across the robot stack.
 
 ## Frame Hierarchy
 
+`map -> odom` 是全局定位 / 重定位模块的预留接口；当前默认工作区没有默认节点发布它。只运行 Mid360 + LIO 时，系统的核心动态 TF 是 `odom -> base_link`。
+
 ```mermaid
 flowchart TD
-    map --> odom
+    map -. "reserved: global localization" .-> odom
     odom --> base_link
     base_link --> laser_link
     base_link -->|static| base_footprint["base_footprint车外框线"]
@@ -25,9 +27,9 @@ flowchart TD
 
 | Frame | 父 Frame | 变换类型 | 发布者 | 说明 |
 |---|---|---|---|---|
-| `map` | — | — | 定位模块 | 全局地图坐标系 |
-| `odom` | `map` | dynamic | 里程计 | 里程计坐标系 |
-| `base_link` | `odom` | dynamic | 底盘 | 机器人本体中心 |
+| `map` | — | — | 全局地图 / 全局定位模块 | 全局地图坐标系；当前默认链路不强制存在 |
+| `odom` | `map` | dynamic | 全局定位 / 重定位模块，当前预留 | 局部里程计坐标系；只跑 LIO 时可作为 TF 树根 |
+| `base_link` | `odom` | dynamic | LIO / 里程计模块 | 机器人本体中心 |
 | `laser_link` | `base_link` | static | URDF / static broadcaster | 激光雷达安装位置 |
 | `base_footprint` | `base_link` | static | URDF / static broadcaster | 机器人在地面的投影框线 |
 | `gimbal_link` | `base_link` | static | URDF / static broadcaster | 云台基座坐标系 |
@@ -38,6 +40,7 @@ flowchart TD
 ## 关键说明
 
 - LIO 模块统一负责发布 `odom -> base_link`，当前接入的 Point-LIO / Fast-LIO 都必须遵守这一点。
+- `map -> odom` 只能由后续全局定位 / 重定位模块发布；当前默认工作区不再拉取 `small_gicp_relocalization`，因此不要在部署文档或 launch 中假定它已经存在。
 - `base_link → laser_link` / `base_footprint` / `gimbal_link` / `barrel_link` 均为 **static transform**，由 URDF 或 static_transform_publisher 发布，不随运行时状态改变。
 - `gimbal_link → target_armor` 由 **rm_auto_aim** 节点在检测到目标时动态发布；未检测到目标时该变换不存在。
 - `target_armor → target_chassis` 表示从装甲板反推目标车体中心的变换，同样由 rm_auto_aim 发布。

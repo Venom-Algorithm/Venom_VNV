@@ -49,7 +49,7 @@ The goal is to standardize the engineering pieces that keep repeating across pro
 
 - Documentation: [venom-algorithm.github.io/Venom_VNV](https://venom-algorithm.github.io/Venom_VNV/)
 - Quick Start: [Quick Start](https://venom-algorithm.github.io/Venom_VNV/en/quick_start)
-- Modules & Interfaces: [Modules & Interfaces](https://venom-algorithm.github.io/Venom_VNV/en/interface_reference)
+- Modules & Interfaces: [Modules & Interfaces](https://venom-algorithm.github.io/Venom_VNV/en/modules/)
 - Development Notes: [Development Notes](https://venom-algorithm.github.io/Venom_VNV/en/development)
 - Chinese docs: [中文文档](https://venom-algorithm.github.io/Venom_VNV/)
 
@@ -203,7 +203,7 @@ More commands:
 | [Environment Setup](https://venom-algorithm.github.io/Venom_VNV/en/environment) | Ubuntu, ROS, rosdep, VS Code, and development-machine basics |
 | [LiDAR Setup](https://venom-algorithm.github.io/Venom_VNV/en/lidar_setup) | MID360 networking, config files, and Livox-SDK2 |
 | [Launch & Use](https://venom-algorithm.github.io/Venom_VNV/en/launch_usage) | common build, rebuild, and launch commands |
-| [Modules & Interfaces](https://venom-algorithm.github.io/Venom_VNV/en/interface_reference) | entry point for drivers, perception, localization, planning, mission, system, and simulation |
+| [Modules & Interfaces](https://venom-algorithm.github.io/Venom_VNV/en/modules/) | entry point for drivers, perception, localization, planning, mission, system, and simulation |
 | [Topic Reference](https://venom-algorithm.github.io/Venom_VNV/en/topics) | unified ROS 2 topic and message conventions |
 | [TF Tree](https://venom-algorithm.github.io/Venom_VNV/en/tf_tree) | core frame and TF relationships |
 | [Development Notes](https://venom-algorithm.github.io/Venom_VNV/en/development) | development environment, Git, fork / PR workflow, and submodule rules |
