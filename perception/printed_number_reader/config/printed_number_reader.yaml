@@ -1,0 +1,13 @@
+printed_number_reader:
+  ros__parameters:
+    service_name: /perception/read_printed_number
+    detections_topic: /perception/digit_detections
+    reader_mode: mock
+    mock_value: "1234"
+    mock_confidence: 1.0
+    default_timeout_sec: 3.0
+    min_confidence: 0.7
+    expected_digits: 4
+    stable_frames: 1
+    max_detection_age_sec: 1.0
+    poll_interval_sec: 0.05

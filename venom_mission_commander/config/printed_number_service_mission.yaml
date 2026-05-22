@@ -1,0 +1,29 @@
+mission:
+  id: printed_number_service_mission
+  loop: false
+  stop_on_task_failure: true
+
+waypoints:
+  - name: printed_number_station
+    description: 跳过导航，调用 printed number service 读取纸上纯数字并播报。
+    frame_id: map
+    x: 0.0
+    y: 0.0
+    yaw: 0.0
+    skip_navigation: true
+    tasks:
+      - name: wait_before_read
+        type: wait
+        seconds: 0.2
+      - name: read_printed_number
+        type: read_meter
+        backend: service
+        service_name: /perception/read_printed_number
+        meter_id: meter_1
+        expected_digits: 4
+        timeout_sec: 5.0
+        min_confidence: 0.7
+        output_key: meter_reading
+      - name: voice_report_printed_number
+        type: voice_report
+        mock_delay_sec: 0.2

@@ -18,6 +18,10 @@ _site/
 site/
 .venv-docs/
 
+# Local model weights
+models/
+*.pt
+
 # Editor and IDE
 .vscode/
 .idea/

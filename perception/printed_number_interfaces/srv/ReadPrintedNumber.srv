@@ -1,0 +1,9 @@
+string target_id
+float32 timeout_sec
+uint32 expected_digits
+float32 min_confidence
+---
+bool success
+string value
+float32 confidence
+string message
