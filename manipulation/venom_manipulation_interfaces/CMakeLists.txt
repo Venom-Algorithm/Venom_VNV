@@ -6,10 +6,18 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 find_package(ament_cmake REQUIRED)
+find_package(geometry_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
+find_package(std_msgs REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "action/ExecuteTask.action"
+  "msg/Detection2D.msg"
+  "msg/Detection2DArray.msg"
+  "msg/GraspTarget.msg"
+  DEPENDENCIES
+    geometry_msgs
+    std_msgs
 )
 
 ament_package()

@@ -30,6 +30,97 @@ struct SceneBox
   XYZ size;
 };
 
+struct SceneCylinder
+{
+  std::string id;
+  std::string frame_id;
+  XYZ center;
+  double radius{0.0};
+  double height{0.0};
+};
+
+struct SceneOpenTopBin
+{
+  std::string id;
+  std::string frame_id;
+  XYZ center;
+  XYZ size;
+  double wall_thickness{0.01};
+};
+
+struct VisionTargetConfig
+{
+  bool enabled{false};
+  bool require_single_target{true};
+  bool require_valid_signal{true};
+  bool compute_grasp_offsets{true};
+  bool lock_lateral_offsets_to_zero{false};
+  double target_timeout_sec{0.5};
+  double wait_after_home_timeout_sec{2.0};
+  double min_target_confidence{0.7};
+  double pregrasp_distance{0.07};
+  double grasp_clearance{0.01};
+  double grasp_z_offset{0.0};
+  double collision_scale_xy{0.85};
+  double collision_scale_z{0.90};
+  std::string grasp_strategy{"radial_side"};
+  std::string object_shape{"cylinder"};
+  XYZ target_position_bias{0.0, 0.0, 0.0};
+  XYZ default_target_size{0.045, 0.045, 0.06};
+  std::vector<double> yaw_candidate_offsets{0.0};
+  std::vector<std::string> allowed_target_classes{"block", "cube"};
+};
+
+struct ObservePose
+{
+  bool enabled{false};
+  XYZ position;
+  RPY orientation;
+};
+
+struct PlaceTargetConfig
+{
+  XYZ offset;
+  double release_height{0.03};
+  RPY orientation;
+  bool release_after_pre_place{false};
+  bool allow_direct_release_fallback{false};
+  double direct_release_retreat_z{0.06};
+};
+
+struct PrePlaceConfig
+{
+  bool enabled{false};
+  double heading_offset{0.0};
+  std::string base_joint_name{"joint1"};
+  double min_delta{0.02};
+  bool coarse_base_first{true};
+  std::string retract_joint3_name{"joint3"};
+  std::string retract_joint4_name{"joint4"};
+  double retract_joint3_delta{0.0};
+  double retract_joint4_delta{0.0};
+  bool hover_after_base{false};
+  double hover_margin_xy{0.04};
+  double hover_margin_z{0.03};
+};
+
+struct ClassificationPlaceConfig
+{
+  bool enabled{false};
+  std::vector<XYZ> platform_slots;
+  std::vector<std::string> platform_slot_classes;
+  std::vector<std::string> box_classes;
+  XYZ pregrasp_offset{0.0, 0.0, 0.07};
+  XYZ lift_offset{0.0, 0.0, 0.07};
+  XYZ release_offset{0.0, 0.0, 0.10};
+  RPY grasp_orientation{0.0, 1.57079632679, 1.57079632679};
+  double box_target_timeout_sec{3.0};
+  double min_box_confidence{0.5};
+  std::string target_fusion_node_name{"/grasp_target_fusion"};
+  bool set_fusion_target_class{true};
+  double target_switch_settle_sec{0.20};
+};
+
 struct TaskParameters
 {
   std::string action_name{"/manipulation/execute_task"};
@@ -40,6 +131,7 @@ struct TaskParameters
   std::string arm_home_named_target{"zero"};
   std::string gripper_open_named_target{"open"};
   std::string gripper_close_named_target{"close"};
+  bool move_home_open_gripper{true};
   std::string approach_direction_frame;
   std::string lift_direction_frame;
   std::string retreat_direction_frame;
@@ -64,7 +156,15 @@ struct TaskParameters
   double grasp_angle_delta{0.261799387799};
   bool execute_on_plan{true};
   bool diagnostic_ik_only{false};
+  bool pick_only{false};
+  bool use_direct_visual_pick_fallback{false};
   bool top_down_strategy_enabled{false};
+  bool disable_scene_objects{false};
+  bool arm_only_reach_test{false};
+  bool skip_connect_stage{false};
+  bool skip_open_gripper_stage{false};
+  bool move_home_before_pick{false};
+  bool use_contact_aware_gripper_close{true};
   bool enable_gazebo_attachment{false};
   bool gazebo_attach_require_gripper_closed{true};
   int64_t autostart_task_type{0};
@@ -95,9 +195,14 @@ struct TaskParameters
   std::vector<double> top_down_roll_candidates;
   std::vector<double> top_down_pitch_candidates;
   std::vector<double> top_down_yaw_candidates;
-  SceneBox pickup_stand;
-  SceneBox place_stand;
-  SceneBox pickup_block;
+  VisionTargetConfig vision_target;
+  ObservePose observe_pose;
+  PrePlaceConfig pre_place;
+  ClassificationPlaceConfig classification_place;
+  PlaceTargetConfig place_target;
+  SceneBox pickup_table;
+  SceneOpenTopBin place_bin;
+  SceneCylinder pickup_object;
   std::vector<std::string> touch_links;
 };
 

@@ -24,8 +24,13 @@ namespace mtc = moveit::task_constructor;
 namespace stages = moveit::task_constructor::stages;
 
 moveit_msgs::msg::CollisionObject make_collision_box(const SceneBox & box);
+moveit_msgs::msg::CollisionObject make_collision_cylinder(const SceneCylinder & cylinder);
+std::vector<moveit_msgs::msg::CollisionObject> make_open_top_bin_collision_boxes(
+  const SceneOpenTopBin & bin);
 
 std::unique_ptr<stages::ModifyPlanningScene> make_add_scene_stage(
+  const TaskParameters & parameters);
+std::unique_ptr<stages::ModifyPlanningScene> make_add_pick_object_stage(
   const TaskParameters & parameters);
 
 std::unique_ptr<stages::MoveTo> make_named_gripper_stage(

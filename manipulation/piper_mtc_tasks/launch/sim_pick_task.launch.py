@@ -20,9 +20,9 @@ def generate_launch_description():
     ).to_moveit_configs()
 
     default_params = os.path.join(mtc_share, "config", "sim_pick_task.yaml")
-    stand_model = os.path.join(manipulation_share, "models", "pick_place_stand.sdf")
-    block_model = os.path.join(manipulation_share, "models", "pick_target_block.sdf")
-    riser_model = os.path.join(manipulation_share, "models", "pick_target_riser.sdf")
+    table_model = os.path.join(manipulation_share, "models", "mobile_pick_table.sdf")
+    can_model = os.path.join(manipulation_share, "models", "redbull_can.sdf")
+    bin_model = os.path.join(manipulation_share, "models", "rear_drop_bin.sdf")
     gazebo_launch = os.path.join(
         piper_gazebo_share, "launch", "piper_with_gripper", "piper_gazebo.launch.py"
     )
@@ -48,25 +48,25 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration("launch_gazebo")),
     )
 
-    spawn_tables = TimerAction(
+    spawn_scene = TimerAction(
         period=LaunchConfiguration("scene_delay_sec"),
         actions=[
             Node(
                 package="gazebo_ros",
                 executable="spawn_entity.py",
-                name="spawn_pickup_stand",
+                name="spawn_pickup_table",
                 output="screen",
                 arguments=[
                     "-entity",
-                    "pickup_stand",
+                    "pickup_table",
                     "-file",
-                    stand_model,
+                    table_model,
                     "-timeout",
                     "600.0",
                     "-x",
-                    "0.281",
+                    "0.30",
                     "-y",
-                    "0.0",
+                    "-0.14",
                     "-z",
                     "0.0",
                 ],
@@ -75,19 +75,19 @@ def generate_launch_description():
             Node(
                 package="gazebo_ros",
                 executable="spawn_entity.py",
-                name="spawn_place_stand",
+                name="spawn_rear_drop_bin",
                 output="screen",
                 arguments=[
                     "-entity",
-                    "place_stand",
+                    "rear_drop_bin",
                     "-file",
-                    stand_model,
+                    bin_model,
                     "-timeout",
                     "600.0",
                     "-x",
-                    "-0.02",
+                    "-0.16",
                     "-y",
-                    "0.38",
+                    "-0.12",
                     "-z",
                     "0.0",
                 ],
@@ -96,48 +96,27 @@ def generate_launch_description():
         ],
     )
 
-    spawn_block = TimerAction(
+    spawn_can = TimerAction(
         period=LaunchConfiguration("block_delay_sec"),
         actions=[
             Node(
                 package="gazebo_ros",
                 executable="spawn_entity.py",
-                name="spawn_pick_target_riser",
+                name="spawn_redbull_can",
                 output="screen",
                 arguments=[
                     "-entity",
-                    "pick_target_riser",
+                    "redbull_can",
                     "-file",
-                    riser_model,
+                    can_model,
                     "-timeout",
                     "600.0",
                     "-x",
-                    "0.281",
+                    "0.28",
                     "-y",
-                    "0.0",
+                    "-0.07",
                     "-z",
-                    "0.433",
-                ],
-                condition=IfCondition(LaunchConfiguration("spawn_test_scene")),
-            ),
-            Node(
-                package="gazebo_ros",
-                executable="spawn_entity.py",
-                name="spawn_pick_target_block",
-                output="screen",
-                arguments=[
-                    "-entity",
-                    "pick_target_block",
-                    "-file",
-                    block_model,
-                    "-timeout",
-                    "600.0",
-                    "-x",
-                    "0.281",
-                    "-y",
-                    "0.0",
-                    "-z",
-                    "0.463",
+                    "0.12",
                 ],
                 condition=IfCondition(LaunchConfiguration("spawn_test_scene")),
             ),
@@ -186,8 +165,8 @@ def generate_launch_description():
             declare_server_delay,
             declare_spawn_test_scene,
             gazebo_include,
-            spawn_tables,
-            spawn_block,
+            spawn_scene,
+            spawn_can,
             moveit_include,
             server_node,
         ]

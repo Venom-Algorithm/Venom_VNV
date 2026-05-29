@@ -9,6 +9,8 @@
 #include <moveit/task_constructor/stages/current_state.h>
 #include <moveit/task_constructor/stages/generate_place_pose.h>
 #include <moveit/task_constructor/stages/modify_planning_scene.h>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 #include "piper_mtc_tasks/gripper_stage_builder.hpp"
 #include "piper_mtc_tasks/stage_builders.hpp"
@@ -21,29 +23,35 @@ namespace
 
 geometry_msgs::msg::PoseStamped make_place_pose(const TaskParameters & parameters)
 {
-  const double place_surface_z =
-    parameters.place_stand.center.z +
-    0.5 * parameters.place_stand.size.z +
-    0.5 * parameters.pickup_block.size.z;
-  const double pre_place_height = std::max(
-    0.14,
-    std::max(parameters.lift_min_distance, parameters.lift_max_distance) + 0.08);
+  const double bin_top_z =
+    parameters.place_bin.center.z + 0.5 * parameters.place_bin.size.z;
 
   geometry_msgs::msg::PoseStamped pose;
   pose.header.frame_id = parameters.planning_frame;
-  pose.pose.orientation.w = 1.0;
-  pose.pose.position.x = parameters.place_stand.center.x;
-  pose.pose.position.y = parameters.place_stand.center.y;
-  pose.pose.position.z = place_surface_z + pre_place_height;
+  pose.pose.position.x =
+    parameters.place_bin.center.x + parameters.place_target.offset.x;
+  pose.pose.position.y =
+    parameters.place_bin.center.y + parameters.place_target.offset.y;
+  pose.pose.position.z =
+    bin_top_z + parameters.place_target.offset.z + parameters.place_target.release_height;
+
+  tf2::Quaternion quaternion;
+  quaternion.setRPY(
+    parameters.place_target.orientation.roll,
+    parameters.place_target.orientation.pitch,
+    parameters.place_target.orientation.yaw);
+  pose.pose.orientation = tf2::toMsg(quaternion.normalized());
   return pose;
 }
 
-std::vector<std::string> place_stand_collision_ids(const TaskParameters & parameters)
+std::vector<std::string> place_bin_collision_ids(const TaskParameters & parameters)
 {
   return {
-    parameters.place_stand.id + "_tabletop",
-    parameters.place_stand.id + "_pedestal",
-    parameters.place_stand.id + "_base"};
+    parameters.place_bin.id + "_bottom",
+    parameters.place_bin.id + "_left_wall",
+    parameters.place_bin.id + "_right_wall",
+    parameters.place_bin.id + "_front_wall",
+    parameters.place_bin.id + "_rear_wall"};
 }
 
 }  // namespace
@@ -74,7 +82,7 @@ void build_place_task(
   auto generate_place_pose =
     std::make_unique<stages::GeneratePlacePose>("generate place pose");
   generate_place_pose->properties().configureInitFrom(mtc::Stage::PARENT);
-  generate_place_pose->setObject(parameters.pickup_block.id);
+  generate_place_pose->setObject(parameters.pickup_object.id);
   generate_place_pose->setPose(make_place_pose(parameters));
   generate_place_pose->setMonitoredStage(current_state_ptr);
 
@@ -93,10 +101,10 @@ void build_place_task(
   place->insert(std::move(compute_place_ik));
 
   auto allow_place_contact =
-    std::make_unique<stages::ModifyPlanningScene>("allow place surface contact");
+    std::make_unique<stages::ModifyPlanningScene>("allow place bin contact");
   allow_place_contact->allowCollisions(
-    parameters.pickup_block.id,
-    place_stand_collision_ids(parameters),
+    parameters.pickup_object.id,
+    place_bin_collision_ids(parameters),
     true);
   place->insert(std::move(allow_place_contact));
 
@@ -105,8 +113,8 @@ void build_place_task(
 
   auto detach_object =
     std::make_unique<stages::ModifyPlanningScene>("detach object");
-  detach_object->allowCollisions(parameters.pickup_block.id, parameters.touch_links, true);
-  detach_object->detachObject(parameters.pickup_block.id, parameters.hand_frame);
+  detach_object->allowCollisions(parameters.pickup_object.id, parameters.touch_links, true);
+  detach_object->detachObject(parameters.pickup_object.id, parameters.hand_frame);
   place->insert(std::move(detach_object));
 
   task.add(std::move(place));
@@ -124,7 +132,7 @@ void build_place_task(
   auto forbid_hand_object_contact =
     std::make_unique<stages::ModifyPlanningScene>("forbid hand-object contact");
   forbid_hand_object_contact->allowCollisions(
-    parameters.pickup_block.id,
+    parameters.pickup_object.id,
     parameters.touch_links,
     false);
   task.add(std::move(forbid_hand_object_contact));

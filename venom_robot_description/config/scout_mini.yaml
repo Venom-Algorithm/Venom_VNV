@@ -1,5 +1,14 @@
 # Static TF configuration for Scout Mini robot
 transforms:
+  # Scout Mini manipulator mount reference.
+  # Measured relative to the chassis base frame using ROS axes:
+  # x forward, y left, z up.
+  # The arm base center is approximately 10 cm in front of the chassis center,
+  # level with the chassis mounting plane, and aligned with the vehicle heading.
+  - parent_frame: base_link
+    child_frame: scoutmini_piper_mount_link
+    translation: [0.10, 0.0, 0.0]
+    rotation: [0.0, 0.0, 0.0]
   # - parent_frame: base_link
   #   child_frame: laser_link
   #   translation: [0.0, 0.0, 0.36]

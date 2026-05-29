@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="/home/chfyx/venom_ws"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+ROOT_DIR="${VENOM_WS:-$(cd "$REPO_DIR/../.." && pwd)}"
 SETUP_SCRIPT="$ROOT_DIR/install/setup.bash"
 LOG_DIR="/tmp/piper_mtc_acceptance"
 RUNS="${1:-5}"

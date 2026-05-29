@@ -38,6 +38,25 @@ RPY read_rpy_parameter(rclcpp::Node & node, const std::string & name)
   return RPY{values[0], values[1], values[2]};
 }
 
+std::vector<XYZ> read_xyz_triples_parameter(rclcpp::Node & node, const std::string & name)
+{
+  const auto values = node.get_parameter(name).as_double_array();
+  if (values.empty()) {
+    return {};
+  }
+  if (values.size() % 3 != 0) {
+    throw std::runtime_error(
+            "Parameter '" + name + "' must contain xyz triples.");
+  }
+
+  std::vector<XYZ> triples;
+  triples.reserve(values.size() / 3);
+  for (std::size_t index = 0; index < values.size(); index += 3) {
+    triples.push_back(XYZ{values[index], values[index + 1], values[index + 2]});
+  }
+  return triples;
+}
+
 SceneBox read_scene_box(
   rclcpp::Node & node,
   const std::string & prefix,
@@ -59,6 +78,48 @@ SceneBox read_scene_box(
   return box;
 }
 
+SceneCylinder read_scene_cylinder(
+  rclcpp::Node & node,
+  const std::string & prefix,
+  const std::string & default_id,
+  const std::string & frame_id)
+{
+  SceneCylinder cylinder;
+  cylinder.id = node.get_parameter(prefix + ".id").as_string();
+  if (cylinder.id.empty()) {
+    cylinder.id = default_id;
+  }
+  cylinder.frame_id = frame_id;
+  cylinder.center.x = node.get_parameter(prefix + ".x").as_double();
+  cylinder.center.y = node.get_parameter(prefix + ".y").as_double();
+  cylinder.center.z = node.get_parameter(prefix + ".z").as_double();
+  cylinder.radius = node.get_parameter(prefix + ".radius").as_double();
+  cylinder.height = node.get_parameter(prefix + ".height").as_double();
+  return cylinder;
+}
+
+SceneOpenTopBin read_scene_open_top_bin(
+  rclcpp::Node & node,
+  const std::string & prefix,
+  const std::string & default_id,
+  const std::string & frame_id)
+{
+  SceneOpenTopBin bin;
+  bin.id = node.get_parameter(prefix + ".id").as_string();
+  if (bin.id.empty()) {
+    bin.id = default_id;
+  }
+  bin.frame_id = frame_id;
+  bin.center.x = node.get_parameter(prefix + ".x").as_double();
+  bin.center.y = node.get_parameter(prefix + ".y").as_double();
+  bin.center.z = node.get_parameter(prefix + ".z").as_double();
+  bin.size.x = node.get_parameter(prefix + ".size_x").as_double();
+  bin.size.y = node.get_parameter(prefix + ".size_y").as_double();
+  bin.size.z = node.get_parameter(prefix + ".size_z").as_double();
+  bin.wall_thickness = node.get_parameter(prefix + ".wall_thickness").as_double();
+  return bin;
+}
+
 }  // namespace
 
 void declare_task_parameters(rclcpp::Node & node)
@@ -71,6 +132,7 @@ void declare_task_parameters(rclcpp::Node & node)
   node.declare_parameter<std::string>("arm_home_named_target", "zero");
   node.declare_parameter<std::string>("gripper_open_named_target", "open");
   node.declare_parameter<std::string>("gripper_close_named_target", "close");
+  node.declare_parameter<bool>("move_home_open_gripper", true);
   node.declare_parameter<std::string>("approach_direction_frame", "");
   node.declare_parameter<std::string>("lift_direction_frame", "");
   node.declare_parameter<std::string>("retreat_direction_frame", "");
@@ -95,7 +157,15 @@ void declare_task_parameters(rclcpp::Node & node)
   node.declare_parameter<double>("grasp_angle_delta", 0.261799387799);
   node.declare_parameter<bool>("execute_on_plan", true);
   node.declare_parameter<bool>("diagnostic_ik_only", false);
+  node.declare_parameter<bool>("pick_only", false);
+  node.declare_parameter<bool>("use_direct_visual_pick_fallback", false);
   node.declare_parameter<bool>("top_down_strategy_enabled", false);
+  node.declare_parameter<bool>("disable_scene_objects", false);
+  node.declare_parameter<bool>("arm_only_reach_test", false);
+  node.declare_parameter<bool>("skip_connect_stage", false);
+  node.declare_parameter<bool>("skip_open_gripper_stage", false);
+  node.declare_parameter<bool>("move_home_before_pick", false);
+  node.declare_parameter<bool>("use_contact_aware_gripper_close", true);
   node.declare_parameter<bool>("enable_gazebo_attachment", false);
   node.declare_parameter<bool>("gazebo_attach_require_gripper_closed", true);
   node.declare_parameter<int64_t>("autostart_task_type", 0);
@@ -136,32 +206,110 @@ void declare_task_parameters(rclcpp::Node & node)
   node.declare_parameter<std::vector<double>>(
     "top_down_yaw_candidates", {-1.57079632679, 0.0, 1.57079632679, 3.14159265359});
   node.declare_parameter<std::vector<std::string>>(
-    "pickup_block.touch_links",
+    "pickup_object.touch_links",
     std::vector<std::string>{"link7", "link8"});
+  node.declare_parameter<bool>("vision_target.enabled", false);
+  node.declare_parameter<bool>("vision_target.require_single_target", true);
+  node.declare_parameter<bool>("vision_target.require_valid_signal", true);
+  node.declare_parameter<bool>("vision_target.compute_grasp_offsets", true);
+  node.declare_parameter<bool>("vision_target.lock_lateral_offsets_to_zero", false);
+  node.declare_parameter<double>("vision_target.target_timeout_sec", 0.5);
+  node.declare_parameter<double>("vision_target.wait_after_home_timeout_sec", 2.0);
+  node.declare_parameter<double>("vision_target.min_target_confidence", 0.7);
+  node.declare_parameter<double>("vision_target.pregrasp_distance", 0.07);
+  node.declare_parameter<double>("vision_target.grasp_clearance", 0.01);
+  node.declare_parameter<double>("vision_target.grasp_z_offset", 0.0);
+  node.declare_parameter<double>("vision_target.collision_scale_xy", 0.85);
+  node.declare_parameter<double>("vision_target.collision_scale_z", 0.90);
+  node.declare_parameter<std::string>("vision_target.grasp_strategy", "radial_side");
+  node.declare_parameter<std::string>("vision_target.object_shape", "cylinder");
+  node.declare_parameter<std::vector<double>>(
+    "vision_target.target_position_bias_xyz", {0.0, 0.0, 0.0});
+  node.declare_parameter<std::vector<double>>(
+    "vision_target.default_target_size_xyz", {0.053, 0.053, 0.134});
+  node.declare_parameter<std::vector<double>>(
+    "vision_target.yaw_candidate_offsets",
+    std::vector<double>{-0.2617993878, -0.0872664626, 0.0, 0.0872664626, 0.2617993878});
+  node.declare_parameter<std::vector<std::string>>(
+    "vision_target.allowed_target_classes",
+    std::vector<std::string>{"block", "cube"});
+  node.declare_parameter<bool>("observe_pose.enabled", false);
+  node.declare_parameter<std::vector<double>>(
+    "observe_pose.xyz", {0.25, 0.0, 0.35});
+  node.declare_parameter<std::vector<double>>(
+    "observe_pose.rpy", {3.14159, 0.0, -1.5708});
+  node.declare_parameter<bool>("pre_place.enabled", false);
+  node.declare_parameter<double>("pre_place.heading_offset", 0.0);
+  node.declare_parameter<std::string>("pre_place.base_joint_name", "joint1");
+  node.declare_parameter<double>("pre_place.min_delta", 0.02);
+  node.declare_parameter<bool>("pre_place.coarse_base_first", true);
+  node.declare_parameter<std::string>("pre_place.retract_joint3_name", "joint3");
+  node.declare_parameter<std::string>("pre_place.retract_joint4_name", "joint4");
+  node.declare_parameter<double>("pre_place.retract_joint3_delta", 0.0);
+  node.declare_parameter<double>("pre_place.retract_joint4_delta", 0.0);
+  node.declare_parameter<bool>("pre_place.hover_after_base", false);
+  node.declare_parameter<double>("pre_place.hover_margin_xy", 0.04);
+  node.declare_parameter<double>("pre_place.hover_margin_z", 0.03);
+  node.declare_parameter<bool>("classification_place.enabled", false);
+  node.declare_parameter<std::vector<double>>(
+    "classification_place.platform_slots_xyz",
+    std::vector<double>{0.0, 0.20, 0.30, 0.0, 0.28, 0.30});
+  node.declare_parameter<std::vector<std::string>>(
+    "classification_place.platform_slot_classes",
+    std::vector<std::string>{"white_block", "black_block"});
+  node.declare_parameter<std::vector<std::string>>(
+    "classification_place.box_classes",
+    std::vector<std::string>{"white_box", "black_box"});
+  node.declare_parameter<std::vector<double>>(
+    "classification_place.pregrasp_offset_xyz", {0.0, 0.0, 0.07});
+  node.declare_parameter<std::vector<double>>(
+    "classification_place.lift_offset_xyz", {0.0, 0.0, 0.07});
+  node.declare_parameter<std::vector<double>>(
+    "classification_place.release_offset_xyz", {0.0, 0.0, 0.10});
+  node.declare_parameter<std::vector<double>>(
+    "classification_place.grasp_orientation_rpy", {0.0, 1.57079632679, 1.57079632679});
+  node.declare_parameter<double>("classification_place.box_target_timeout_sec", 3.0);
+  node.declare_parameter<double>("classification_place.min_box_confidence", 0.5);
+  node.declare_parameter<std::string>(
+    "classification_place.target_fusion_node_name", "/grasp_target_fusion");
+  node.declare_parameter<bool>("classification_place.set_fusion_target_class", true);
+  node.declare_parameter<double>("classification_place.target_switch_settle_sec", 0.20);
+  node.declare_parameter<std::vector<double>>(
+    "place_target.offset_xyz", {0.0, 0.0, 0.0});
+  node.declare_parameter<double>("place_target.release_height", 0.03);
+  node.declare_parameter<std::vector<double>>(
+    "place_target.orientation_rpy", {0.0, 0.0, 0.0});
+  node.declare_parameter<bool>("place_target.release_after_pre_place", false);
+  node.declare_parameter<bool>("place_target.allow_direct_release_fallback", false);
+  node.declare_parameter<double>("place_target.direct_release_retreat_z", 0.06);
+  node.declare_parameter<int64_t>("place_target.fixed_pose_index", 0);
+  node.declare_parameter<std::vector<double>>(
+    "place_target.fixed_pose_candidates_xyz",
+    std::vector<double>{0.0, 0.20, 0.30, 0.0, 0.28, 0.30});
 
-  node.declare_parameter<std::string>("pickup_stand.id", "pickup_stand_box");
-  node.declare_parameter<double>("pickup_stand.x", 0.281);
-  node.declare_parameter<double>("pickup_stand.y", 0.0);
-  node.declare_parameter<double>("pickup_stand.z", 0.423);
-  node.declare_parameter<double>("pickup_stand.size_x", 0.22);
-  node.declare_parameter<double>("pickup_stand.size_y", 0.18);
-  node.declare_parameter<double>("pickup_stand.size_z", 0.02);
+  node.declare_parameter<std::string>("pickup_table.id", "pickup_table");
+  node.declare_parameter<double>("pickup_table.x", 0.35);
+  node.declare_parameter<double>("pickup_table.y", 0.0);
+  node.declare_parameter<double>("pickup_table.z", 0.39);
+  node.declare_parameter<double>("pickup_table.size_x", 0.60);
+  node.declare_parameter<double>("pickup_table.size_y", 0.40);
+  node.declare_parameter<double>("pickup_table.size_z", 0.02);
 
-  node.declare_parameter<std::string>("place_stand.id", "place_stand_box");
-  node.declare_parameter<double>("place_stand.x", -0.02);
-  node.declare_parameter<double>("place_stand.y", 0.38);
-  node.declare_parameter<double>("place_stand.z", 0.423);
-  node.declare_parameter<double>("place_stand.size_x", 0.22);
-  node.declare_parameter<double>("place_stand.size_y", 0.18);
-  node.declare_parameter<double>("place_stand.size_z", 0.02);
+  node.declare_parameter<std::string>("place_bin.id", "rear_drop_bin");
+  node.declare_parameter<double>("place_bin.x", -0.08);
+  node.declare_parameter<double>("place_bin.y", 0.10);
+  node.declare_parameter<double>("place_bin.z", 0.04);
+  node.declare_parameter<double>("place_bin.size_x", 0.15);
+  node.declare_parameter<double>("place_bin.size_y", 0.10);
+  node.declare_parameter<double>("place_bin.size_z", 0.08);
+  node.declare_parameter<double>("place_bin.wall_thickness", 0.01);
 
-  node.declare_parameter<std::string>("pickup_block.id", "pick_target_block");
-  node.declare_parameter<double>("pickup_block.x", 0.281);
-  node.declare_parameter<double>("pickup_block.y", 0.0);
-  node.declare_parameter<double>("pickup_block.z", 0.4505);
-  node.declare_parameter<double>("pickup_block.size_x", 0.018);
-  node.declare_parameter<double>("pickup_block.size_y", 0.018);
-  node.declare_parameter<double>("pickup_block.size_z", 0.035);
+  node.declare_parameter<std::string>("pickup_object.id", "redbull_can");
+  node.declare_parameter<double>("pickup_object.x", 0.25);
+  node.declare_parameter<double>("pickup_object.y", 0.0);
+  node.declare_parameter<double>("pickup_object.z", 0.467);
+  node.declare_parameter<double>("pickup_object.radius", 0.0265);
+  node.declare_parameter<double>("pickup_object.height", 0.134);
 }
 
 TaskParameters load_task_parameters(rclcpp::Node & node)
@@ -177,6 +325,7 @@ TaskParameters load_task_parameters(rclcpp::Node & node)
     node.get_parameter("gripper_open_named_target").as_string();
   parameters.gripper_close_named_target =
     node.get_parameter("gripper_close_named_target").as_string();
+  parameters.move_home_open_gripper = node.get_parameter("move_home_open_gripper").as_bool();
   parameters.approach_direction_frame =
     node.get_parameter("approach_direction_frame").as_string();
   parameters.lift_direction_frame =
@@ -220,8 +369,20 @@ TaskParameters load_task_parameters(rclcpp::Node & node)
   parameters.grasp_angle_delta = node.get_parameter("grasp_angle_delta").as_double();
   parameters.execute_on_plan = node.get_parameter("execute_on_plan").as_bool();
   parameters.diagnostic_ik_only = node.get_parameter("diagnostic_ik_only").as_bool();
+  parameters.pick_only = node.get_parameter("pick_only").as_bool();
+  parameters.use_direct_visual_pick_fallback =
+    node.get_parameter("use_direct_visual_pick_fallback").as_bool();
   parameters.top_down_strategy_enabled =
     node.get_parameter("top_down_strategy_enabled").as_bool();
+  parameters.disable_scene_objects = node.get_parameter("disable_scene_objects").as_bool();
+  parameters.arm_only_reach_test = node.get_parameter("arm_only_reach_test").as_bool();
+  parameters.skip_connect_stage = node.get_parameter("skip_connect_stage").as_bool();
+  parameters.skip_open_gripper_stage =
+    node.get_parameter("skip_open_gripper_stage").as_bool();
+  parameters.move_home_before_pick =
+    node.get_parameter("move_home_before_pick").as_bool();
+  parameters.use_contact_aware_gripper_close =
+    node.get_parameter("use_contact_aware_gripper_close").as_bool();
   parameters.enable_gazebo_attachment =
     node.get_parameter("enable_gazebo_attachment").as_bool();
   parameters.gazebo_attach_require_gripper_closed =
@@ -255,7 +416,7 @@ TaskParameters load_task_parameters(rclcpp::Node & node)
   parameters.gazebo_attach_object_model =
     node.get_parameter("gazebo_attach_object_model").as_string();
   if (parameters.gazebo_attach_object_model.empty()) {
-    parameters.gazebo_attach_object_model = parameters.pickup_block.id;
+    parameters.gazebo_attach_object_model = parameters.pickup_object.id;
   }
   parameters.gazebo_attach_object_link =
     node.get_parameter("gazebo_attach_object_link").as_string();
@@ -289,14 +450,132 @@ TaskParameters load_task_parameters(rclcpp::Node & node)
     node.get_parameter("top_down_pitch_candidates").as_double_array();
   parameters.top_down_yaw_candidates =
     node.get_parameter("top_down_yaw_candidates").as_double_array();
-  parameters.pickup_stand = read_scene_box(
-    node, "pickup_stand", "pickup_stand_box", parameters.planning_frame);
-  parameters.place_stand = read_scene_box(
-    node, "place_stand", "place_stand_box", parameters.planning_frame);
-  parameters.pickup_block = read_scene_box(
-    node, "pickup_block", "pick_target_block", parameters.planning_frame);
+  parameters.vision_target.enabled =
+    node.get_parameter("vision_target.enabled").as_bool();
+  parameters.vision_target.require_single_target =
+    node.get_parameter("vision_target.require_single_target").as_bool();
+  parameters.vision_target.require_valid_signal =
+    node.get_parameter("vision_target.require_valid_signal").as_bool();
+  parameters.vision_target.compute_grasp_offsets =
+    node.get_parameter("vision_target.compute_grasp_offsets").as_bool();
+  parameters.vision_target.lock_lateral_offsets_to_zero =
+    node.get_parameter("vision_target.lock_lateral_offsets_to_zero").as_bool();
+  parameters.vision_target.target_timeout_sec =
+    node.get_parameter("vision_target.target_timeout_sec").as_double();
+  parameters.vision_target.wait_after_home_timeout_sec =
+    node.get_parameter("vision_target.wait_after_home_timeout_sec").as_double();
+  parameters.vision_target.min_target_confidence =
+    node.get_parameter("vision_target.min_target_confidence").as_double();
+  parameters.vision_target.pregrasp_distance =
+    node.get_parameter("vision_target.pregrasp_distance").as_double();
+  parameters.vision_target.grasp_clearance =
+    node.get_parameter("vision_target.grasp_clearance").as_double();
+  parameters.vision_target.grasp_z_offset =
+    node.get_parameter("vision_target.grasp_z_offset").as_double();
+  parameters.vision_target.collision_scale_xy =
+    node.get_parameter("vision_target.collision_scale_xy").as_double();
+  parameters.vision_target.collision_scale_z =
+    node.get_parameter("vision_target.collision_scale_z").as_double();
+  parameters.vision_target.grasp_strategy =
+    node.get_parameter("vision_target.grasp_strategy").as_string();
+  parameters.vision_target.object_shape =
+    node.get_parameter("vision_target.object_shape").as_string();
+  parameters.vision_target.target_position_bias =
+    read_xyz_parameter(node, "vision_target.target_position_bias_xyz");
+  parameters.vision_target.default_target_size =
+    read_xyz_parameter(node, "vision_target.default_target_size_xyz");
+  parameters.vision_target.yaw_candidate_offsets =
+    node.get_parameter("vision_target.yaw_candidate_offsets").as_double_array();
+  parameters.vision_target.allowed_target_classes =
+    node.get_parameter("vision_target.allowed_target_classes").as_string_array();
+  parameters.observe_pose.enabled =
+    node.get_parameter("observe_pose.enabled").as_bool();
+  parameters.observe_pose.position =
+    read_xyz_parameter(node, "observe_pose.xyz");
+  parameters.observe_pose.orientation =
+    read_rpy_parameter(node, "observe_pose.rpy");
+  parameters.pre_place.enabled =
+    node.get_parameter("pre_place.enabled").as_bool();
+  parameters.pre_place.heading_offset =
+    node.get_parameter("pre_place.heading_offset").as_double();
+  parameters.pre_place.base_joint_name =
+    node.get_parameter("pre_place.base_joint_name").as_string();
+  if (parameters.pre_place.base_joint_name.empty()) {
+    parameters.pre_place.base_joint_name = "joint1";
+  }
+  parameters.pre_place.min_delta =
+    node.get_parameter("pre_place.min_delta").as_double();
+  parameters.pre_place.coarse_base_first =
+    node.get_parameter("pre_place.coarse_base_first").as_bool();
+  parameters.pre_place.retract_joint3_name =
+    node.get_parameter("pre_place.retract_joint3_name").as_string();
+  if (parameters.pre_place.retract_joint3_name.empty()) {
+    parameters.pre_place.retract_joint3_name = "joint3";
+  }
+  parameters.pre_place.retract_joint4_name =
+    node.get_parameter("pre_place.retract_joint4_name").as_string();
+  if (parameters.pre_place.retract_joint4_name.empty()) {
+    parameters.pre_place.retract_joint4_name = "joint4";
+  }
+  parameters.pre_place.retract_joint3_delta =
+    node.get_parameter("pre_place.retract_joint3_delta").as_double();
+  parameters.pre_place.retract_joint4_delta =
+    node.get_parameter("pre_place.retract_joint4_delta").as_double();
+  parameters.pre_place.hover_after_base =
+    node.get_parameter("pre_place.hover_after_base").as_bool();
+  parameters.pre_place.hover_margin_xy =
+    node.get_parameter("pre_place.hover_margin_xy").as_double();
+  parameters.pre_place.hover_margin_z =
+    node.get_parameter("pre_place.hover_margin_z").as_double();
+  parameters.classification_place.enabled =
+    node.get_parameter("classification_place.enabled").as_bool();
+  parameters.classification_place.platform_slots =
+    read_xyz_triples_parameter(node, "classification_place.platform_slots_xyz");
+  parameters.classification_place.platform_slot_classes =
+    node.get_parameter("classification_place.platform_slot_classes").as_string_array();
+  parameters.classification_place.box_classes =
+    node.get_parameter("classification_place.box_classes").as_string_array();
+  parameters.classification_place.pregrasp_offset =
+    read_xyz_parameter(node, "classification_place.pregrasp_offset_xyz");
+  parameters.classification_place.lift_offset =
+    read_xyz_parameter(node, "classification_place.lift_offset_xyz");
+  parameters.classification_place.release_offset =
+    read_xyz_parameter(node, "classification_place.release_offset_xyz");
+  parameters.classification_place.grasp_orientation =
+    read_rpy_parameter(node, "classification_place.grasp_orientation_rpy");
+  parameters.classification_place.box_target_timeout_sec =
+    node.get_parameter("classification_place.box_target_timeout_sec").as_double();
+  parameters.classification_place.min_box_confidence =
+    node.get_parameter("classification_place.min_box_confidence").as_double();
+  parameters.classification_place.target_fusion_node_name =
+    node.get_parameter("classification_place.target_fusion_node_name").as_string();
+  if (parameters.classification_place.target_fusion_node_name.empty()) {
+    parameters.classification_place.target_fusion_node_name = "/grasp_target_fusion";
+  }
+  parameters.classification_place.set_fusion_target_class =
+    node.get_parameter("classification_place.set_fusion_target_class").as_bool();
+  parameters.classification_place.target_switch_settle_sec =
+    node.get_parameter("classification_place.target_switch_settle_sec").as_double();
+  parameters.place_target.offset =
+    read_xyz_parameter(node, "place_target.offset_xyz");
+  parameters.place_target.release_height =
+    node.get_parameter("place_target.release_height").as_double();
+  parameters.place_target.orientation =
+    read_rpy_parameter(node, "place_target.orientation_rpy");
+  parameters.place_target.release_after_pre_place =
+    node.get_parameter("place_target.release_after_pre_place").as_bool();
+  parameters.place_target.allow_direct_release_fallback =
+    node.get_parameter("place_target.allow_direct_release_fallback").as_bool();
+  parameters.place_target.direct_release_retreat_z =
+    node.get_parameter("place_target.direct_release_retreat_z").as_double();
+  parameters.pickup_table = read_scene_box(
+    node, "pickup_table", "pickup_table", parameters.planning_frame);
+  parameters.place_bin = read_scene_open_top_bin(
+    node, "place_bin", "rear_drop_bin", parameters.planning_frame);
+  parameters.pickup_object = read_scene_cylinder(
+    node, "pickup_object", "redbull_can", parameters.planning_frame);
   parameters.touch_links =
-    node.get_parameter("pickup_block.touch_links").as_string_array();
+    node.get_parameter("pickup_object.touch_links").as_string_array();
   return parameters;
 }
 
@@ -379,7 +658,9 @@ mtc::Task TaskFactory::create_move_home_task() const
     "current state");
   task.add(std::move(current_state));
 
-  task.add(gripper_stages.open("open gripper"));
+  if (parameters_.move_home_open_gripper) {
+    task.add(gripper_stages.open("open gripper"));
+  }
 
   auto move_home = std::make_unique<moveit::task_constructor::stages::MoveTo>(
     "move arm home", planners.pipeline);

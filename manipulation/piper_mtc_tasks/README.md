@@ -1,10 +1,10 @@
 # piper_mtc_tasks
 
-基于 MoveIt Task Constructor 的 Piper 抓取与放置任务包，用于在仿真中复现当前这套 `pick -> place` 流程。
+基于 MoveIt Task Constructor 的 Piper 抓取与放置任务包，用于在仿真中复现当前这套抓取与放置流程。
 
 ## 当前能力
 
-- 固定场景下的抓取与放置动作链路
+- 固定场景下的桌面顶部抓取与后方投放动作链路
 - 基于 MTC 的抓取位姿求解与执行
 - Gazebo + MoveIt + Piper 联动仿真
 - 配套的验收脚本与 IK 探测工具
@@ -22,12 +22,12 @@
 
 ## 代码位置
 
-- 任务服务端：[src/pick_place_server.cpp](/home/chfyx/venom_ws/src/venom_vnv/manipulation/piper_mtc_tasks/src/pick_place_server.cpp)
-- 抓取任务构建：[src/pick_task.cpp](/home/chfyx/venom_ws/src/venom_vnv/manipulation/piper_mtc_tasks/src/pick_task.cpp)
-- 放置任务构建：[src/place_task.cpp](/home/chfyx/venom_ws/src/venom_vnv/manipulation/piper_mtc_tasks/src/place_task.cpp)
-- 仿真参数：[config/sim_pick_task.yaml](/home/chfyx/venom_ws/src/venom_vnv/manipulation/piper_mtc_tasks/config/sim_pick_task.yaml)
-- 启动文件：[launch/sim_pick_task.launch.py](/home/chfyx/venom_ws/src/venom_vnv/manipulation/piper_mtc_tasks/launch/sim_pick_task.launch.py)
-- 验收脚本：[scripts/acceptance_pick_place.sh](/home/chfyx/venom_ws/src/venom_vnv/manipulation/piper_mtc_tasks/scripts/acceptance_pick_place.sh)
+- 任务服务端：[src/pick_place_server.cpp](src/pick_place_server.cpp)
+- 抓取任务构建：[src/pick_task.cpp](src/pick_task.cpp)
+- 放置任务构建：[src/place_task.cpp](src/place_task.cpp)
+- 仿真参数：[config/sim_pick_task.yaml](config/sim_pick_task.yaml)
+- 启动文件：[launch/sim_pick_task.launch.py](launch/sim_pick_task.launch.py)
+- 验收脚本：[scripts/acceptance_pick_place.sh](scripts/acceptance_pick_place.sh)
 
 ## 依赖说明
 
@@ -133,8 +133,9 @@ bash manipulation/piper_mtc_tasks/scripts/acceptance_pick_place.sh
 
 ## 当前实现特点
 
-- 当前抓取目标来自固定场景参数，不是视觉输入
+- 当前抓取目标默认来自固定场景参数，不是视觉输入
 - MTC 会根据目标位姿自动解抓取 IK
+- 当前默认场景是桌面抓取并放置到后方容器
 - 当前成功抓取主要依赖 Gazebo 接触/摩擦，不是强制附着
 - `sim_pick_task.yaml` 中当前默认：
 

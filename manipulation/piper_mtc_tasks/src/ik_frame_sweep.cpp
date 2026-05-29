@@ -35,6 +35,14 @@ struct Box
   Eigen::Vector3d size;
 };
 
+struct Cylinder
+{
+  std::string id;
+  Eigen::Vector3d center;
+  double radius;
+  double height;
+};
+
 void add_box_to_scene(planning_scene::PlanningScene & scene, const Box & box)
 {
   moveit_msgs::msg::CollisionObject object;
@@ -57,30 +65,36 @@ void add_box_to_scene(planning_scene::PlanningScene & scene, const Box & box)
   scene.processCollisionObjectMsg(object);
 }
 
-void add_pick_place_stand(
-  planning_scene::PlanningScene & scene,
-  const std::string & prefix,
-  double x,
-  double y)
+void add_cylinder_to_scene(planning_scene::PlanningScene & scene, const Cylinder & cylinder)
+{
+  moveit_msgs::msg::CollisionObject object;
+  object.header.frame_id = "base_link";
+  object.id = cylinder.id;
+  object.operation = moveit_msgs::msg::CollisionObject::ADD;
+
+  shape_msgs::msg::SolidPrimitive primitive;
+  primitive.type = shape_msgs::msg::SolidPrimitive::CYLINDER;
+  primitive.dimensions = {cylinder.height, cylinder.radius};
+  object.primitives.push_back(primitive);
+
+  geometry_msgs::msg::Pose pose;
+  pose.position.x = cylinder.center.x();
+  pose.position.y = cylinder.center.y();
+  pose.position.z = cylinder.center.z();
+  pose.orientation.w = 1.0;
+  object.primitive_poses.push_back(pose);
+
+  scene.processCollisionObjectMsg(object);
+}
+
+void add_mobile_pick_table(planning_scene::PlanningScene & scene)
 {
   add_box_to_scene(
     scene,
     Box{
-      prefix + "_tabletop",
-      Eigen::Vector3d(x, y, 0.423),
-      Eigen::Vector3d(0.22, 0.18, 0.02)});
-  add_box_to_scene(
-    scene,
-    Box{
-      prefix + "_pedestal",
-      Eigen::Vector3d(x, y, 0.2015),
-      Eigen::Vector3d(0.06, 0.06, 0.403)});
-  add_box_to_scene(
-    scene,
-    Box{
-      prefix + "_base",
-      Eigen::Vector3d(x, y, 0.01),
-      Eigen::Vector3d(0.12, 0.12, 0.02)});
+      "pickup_table",
+      Eigen::Vector3d(0.35, 0.0, 0.39),
+      Eigen::Vector3d(0.60, 0.40, 0.02)});
 }
 
 Eigen::Matrix3d rpy_to_rotation(double roll, double pitch, double yaw)
@@ -137,23 +151,22 @@ int main(int argc, char ** argv)
   node->declare_parameter<bool>("check_table_collision", true);
   node->declare_parameter<double>("ik_timeout_sec", 0.05);
   node->declare_parameter<int>("max_results", 20);
-  node->declare_parameter<std::vector<double>>("object_xyz", {0.281, 0.0, 0.4505});
-  node->declare_parameter<double>("object_size_x", 0.045);
-  node->declare_parameter<double>("object_size_y", 0.045);
-  node->declare_parameter<double>("object_size_z", 0.035);
-  node->declare_parameter<std::vector<double>>("tcp_z_range", {-0.04, 0.08, 0.005});
+  node->declare_parameter<std::vector<double>>("object_xyz", {0.25, 0.0, 0.467});
+  node->declare_parameter<double>("object_radius", 0.0265);
+  node->declare_parameter<double>("object_height", 0.134);
+  node->declare_parameter<std::vector<double>>("tcp_z_range", {-0.02, 0.02, 0.005});
   node->declare_parameter<std::vector<double>>("tcp_xy", {0.0, 0.0});
-  node->declare_parameter<std::vector<double>>("pregrasp_xyz", {0.0, 0.0, 0.0});
+  node->declare_parameter<std::vector<double>>("pregrasp_xyz", {0.07, 0.0, 0.0});
   node->declare_parameter<std::vector<double>>("target_x_range", std::vector<double>{});
   node->declare_parameter<std::vector<double>>("target_y_range", std::vector<double>{});
   node->declare_parameter<std::vector<double>>("target_z_range", std::vector<double>{});
   node->declare_parameter<std::vector<std::string>>("allowed_touch_links", std::vector<std::string>{});
   node->declare_parameter<std::vector<double>>(
-    "roll_candidates", {-M_PI, -M_PI_2, 0.0, M_PI_2, M_PI});
+    "roll_candidates", {M_PI});
   node->declare_parameter<std::vector<double>>(
-    "pitch_candidates", {-M_PI_2, -M_PI / 4.0, 0.0, M_PI / 4.0, M_PI_2});
+    "pitch_candidates", {0.0});
   node->declare_parameter<std::vector<double>>(
-    "yaw_candidates", {-M_PI, -M_PI_2, 0.0, M_PI_2, M_PI});
+    "yaw_candidates", {-0.785398163397, 0.0, 0.785398163397});
   node->declare_parameter<std::vector<double>>("grasp_angles", {
     0.0, 0.261799387799, 0.523598775598, 0.785398163397,
     1.047197551197, 1.308996938996, 1.570796326795, 1.832595714594,
@@ -168,9 +181,8 @@ int main(int argc, char ** argv)
   const auto ik_timeout_sec = node->get_parameter("ik_timeout_sec").as_double();
   const auto max_results = node->get_parameter("max_results").as_int();
   const auto object_xyz_values = node->get_parameter("object_xyz").as_double_array();
-  const auto object_size_x = node->get_parameter("object_size_x").as_double();
-  const auto object_size_y = node->get_parameter("object_size_y").as_double();
-  const auto object_size_z = node->get_parameter("object_size_z").as_double();
+  const auto object_radius = node->get_parameter("object_radius").as_double();
+  const auto object_height = node->get_parameter("object_height").as_double();
   const auto tcp_z_range_values = node->get_parameter("tcp_z_range").as_double_array();
   const auto tcp_xy_values = node->get_parameter("tcp_xy").as_double_array();
   const auto pregrasp_xyz_values = node->get_parameter("pregrasp_xyz").as_double_array();
@@ -223,18 +235,18 @@ int main(int argc, char ** argv)
 
   planning_scene::PlanningScene scene(robot_model);
   if (check_table_collision) {
-    add_pick_place_stand(scene, "pickup_stand_box", 0.281, 0.0);
-    add_pick_place_stand(scene, "place_stand_box", -0.02, 0.38);
+    add_mobile_pick_table(scene);
   }
-  add_box_to_scene(
+  add_cylinder_to_scene(
     scene,
-    Box{
-      "pick_target_block",
+    Cylinder{
+      "redbull_can",
       Eigen::Vector3d(object_xyz_values[0], object_xyz_values[1], object_xyz_values[2]),
-      Eigen::Vector3d(object_size_x, object_size_y, object_size_z)});
+      object_radius,
+      object_height});
   auto & acm = scene.getAllowedCollisionMatrixNonConst();
   for (const auto & link_name : allowed_touch_links) {
-    acm.setEntry("pick_target_block", link_name, true);
+    acm.setEntry("redbull_can", link_name, true);
   }
 
   moveit::core::RobotState seed_state(robot_model);
@@ -252,11 +264,11 @@ int main(int argc, char ** argv)
           for (const double target_y : target_y_values) {
             for (const double target_z : target_z_values) {
               for (const double tcp_z : tcp_z_values) {
-                Eigen::Isometry3d ik_frame = make_transform(
+                  Eigen::Isometry3d ik_frame = make_transform(
                   Eigen::Vector3d(
                     target_x - tcp_xy_values[0],
                     target_y - tcp_xy_values[1],
-                    object_size_z * 0.5 + target_z - tcp_z),
+                    object_height * 0.5 + target_z - tcp_z),
                   roll,
                   pitch,
                   yaw);

@@ -14,6 +14,7 @@ def generate_launch_description():
     camera_name = LaunchConfiguration("camera_name")
     device_type = LaunchConfiguration("device_type")
     depth_profile = LaunchConfiguration("depth_profile")
+    color_profile = LaunchConfiguration("color_profile")
     enable_color = LaunchConfiguration("enable_color")
     enable_depth = LaunchConfiguration("enable_depth")
     enable_gyro = LaunchConfiguration("enable_gyro")
@@ -43,6 +44,11 @@ def generate_launch_description():
             "depth_profile",
             default_value="640x480x30",
             description="Depth profile in <width>x<height>x<fps> format.",
+        ),
+        DeclareLaunchArgument(
+            "color_profile",
+            default_value="640x480x30",
+            description="Color profile in <width>x<height>x<fps> format.",
         ),
         DeclareLaunchArgument(
             "enable_color", default_value="true", description="Enable color stream."
@@ -89,6 +95,7 @@ def generate_launch_description():
             "camera_name": camera_name,
             "device_type": device_type,
             "depth_module.depth_profile": depth_profile,
+            "rgb_camera.color_profile": color_profile,
             "enable_color": enable_color,
             "enable_depth": enable_depth,
             "enable_gyro": enable_gyro,

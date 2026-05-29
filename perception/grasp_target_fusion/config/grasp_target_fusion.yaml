@@ -1,0 +1,18 @@
+grasp_target_fusion:
+  ros__parameters:
+    planning_frame: piper_base_link
+    camera_frame: handeye_d435i_color_optical_frame
+    camera_info_topic: /camera/d435i/color/camera_info
+    aligned_depth_topic: /camera/d435i/aligned_depth_to_color/image_raw
+    detection_topic: /perception/detections_2d
+    detection_array_topic: /perception/detections_2d_array
+    grasp_target_topic: /perception/grasp_target
+    target_valid_topic: /perception/target_valid
+    min_confidence: 0.7
+    target_class: black_block
+    use_detection_header_stamp: false
+    require_single_target: true
+    default_target_size_xyz: [0.045, 0.045, 0.06]
+    depth_roi_half_width_px: 8
+    max_detection_age_sec: 8.0
+    depth_scale: 0.001

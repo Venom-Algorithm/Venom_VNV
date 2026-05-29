@@ -32,13 +32,94 @@ moveit_msgs::msg::CollisionObject make_collision_box(const SceneBox & box)
   return collision;
 }
 
+moveit_msgs::msg::CollisionObject make_collision_cylinder(const SceneCylinder & cylinder)
+{
+  moveit_msgs::msg::CollisionObject collision;
+  collision.id = cylinder.id;
+  collision.header.frame_id = cylinder.frame_id;
+  collision.operation = moveit_msgs::msg::CollisionObject::ADD;
+
+  shape_msgs::msg::SolidPrimitive primitive;
+  primitive.type = shape_msgs::msg::SolidPrimitive::CYLINDER;
+  primitive.dimensions = {cylinder.height, cylinder.radius};
+  collision.primitives.push_back(primitive);
+
+  geometry_msgs::msg::Pose pose;
+  pose.position.x = cylinder.center.x;
+  pose.position.y = cylinder.center.y;
+  pose.position.z = cylinder.center.z;
+  pose.orientation.w = 1.0;
+  collision.primitive_poses.push_back(pose);
+
+  return collision;
+}
+
+std::vector<moveit_msgs::msg::CollisionObject> make_open_top_bin_collision_boxes(
+  const SceneOpenTopBin & bin)
+{
+  std::vector<moveit_msgs::msg::CollisionObject> collisions;
+  collisions.reserve(5);
+
+  const double half_x = 0.5 * bin.size.x;
+  const double half_y = 0.5 * bin.size.y;
+  const double half_z = 0.5 * bin.size.z;
+  const double wall = bin.wall_thickness;
+
+  SceneBox bottom;
+  bottom.id = bin.id + "_bottom";
+  bottom.frame_id = bin.frame_id;
+  bottom.center = {bin.center.x, bin.center.y, bin.center.z - half_z + 0.5 * wall};
+  bottom.size = {bin.size.x, bin.size.y, wall};
+  collisions.push_back(make_collision_box(bottom));
+
+  SceneBox left_wall;
+  left_wall.id = bin.id + "_left_wall";
+  left_wall.frame_id = bin.frame_id;
+  left_wall.center = {bin.center.x, bin.center.y + half_y - 0.5 * wall, bin.center.z};
+  left_wall.size = {bin.size.x, wall, bin.size.z};
+  collisions.push_back(make_collision_box(left_wall));
+
+  SceneBox right_wall;
+  right_wall.id = bin.id + "_right_wall";
+  right_wall.frame_id = bin.frame_id;
+  right_wall.center = {bin.center.x, bin.center.y - half_y + 0.5 * wall, bin.center.z};
+  right_wall.size = {bin.size.x, wall, bin.size.z};
+  collisions.push_back(make_collision_box(right_wall));
+
+  SceneBox front_wall;
+  front_wall.id = bin.id + "_front_wall";
+  front_wall.frame_id = bin.frame_id;
+  front_wall.center = {bin.center.x + half_x - 0.5 * wall, bin.center.y, bin.center.z};
+  front_wall.size = {wall, std::max(0.0, bin.size.y - 2.0 * wall), bin.size.z};
+  collisions.push_back(make_collision_box(front_wall));
+
+  SceneBox rear_wall;
+  rear_wall.id = bin.id + "_rear_wall";
+  rear_wall.frame_id = bin.frame_id;
+  rear_wall.center = {bin.center.x - half_x + 0.5 * wall, bin.center.y, bin.center.z};
+  rear_wall.size = {wall, std::max(0.0, bin.size.y - 2.0 * wall), bin.size.z};
+  collisions.push_back(make_collision_box(rear_wall));
+
+  return collisions;
+}
+
 std::unique_ptr<stages::ModifyPlanningScene> make_add_scene_stage(
   const TaskParameters & parameters)
 {
   auto stage = std::make_unique<stages::ModifyPlanningScene>("add scene objects");
-  stage->addObject(make_collision_box(parameters.pickup_stand));
-  stage->addObject(make_collision_box(parameters.place_stand));
-  stage->addObject(make_collision_box(parameters.pickup_block));
+  stage->addObject(make_collision_box(parameters.pickup_table));
+  for (const auto & collision : make_open_top_bin_collision_boxes(parameters.place_bin)) {
+    stage->addObject(collision);
+  }
+  stage->addObject(make_collision_cylinder(parameters.pickup_object));
+  return stage;
+}
+
+std::unique_ptr<stages::ModifyPlanningScene> make_add_pick_object_stage(
+  const TaskParameters & parameters)
+{
+  auto stage = std::make_unique<stages::ModifyPlanningScene>("add pick object");
+  stage->addObject(make_collision_cylinder(parameters.pickup_object));
   return stage;
 }
 
@@ -103,12 +184,8 @@ Eigen::Isometry3d make_grasp_frame_transform(const TaskParameters & parameters)
     parameters.grasp_target_offset.x - parameters.tcp_offset.x;
   transform.translation().y() =
     parameters.grasp_target_offset.y - parameters.tcp_offset.y;
-  const double top_down_height_bias =
-    parameters.top_down_strategy_enabled ? (parameters.pickup_block.size.z * 0.5) : 0.0;
   transform.translation().z() =
-    top_down_height_bias +
-    parameters.grasp_target_offset.z -
-    parameters.tcp_offset.z;
+    parameters.grasp_target_offset.z - parameters.tcp_offset.z;
   return transform;
 }
 

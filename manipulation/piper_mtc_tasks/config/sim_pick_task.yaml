@@ -9,55 +9,122 @@ pick_place_server:
     arm_home_named_target: zero
     gripper_open_named_target: open
     gripper_close_named_target: close
+    gripper_open_joint7: 0.030
+    gripper_close_joint7: 0.003
     pipeline_planner_id: ompl
-    max_solutions: 3
-    max_ik_solutions: 16
-    min_solution_distance: 1.0
+    max_solutions: 1
+    max_ik_solutions: 24
+    min_solution_distance: 0.2
     connect_timeout_sec: 20.0
     plan_timeout_sec: 30.0
-    approach_min_distance: 0.0
-    approach_max_distance: 0.0
-    lift_min_distance: 0.03
-    lift_max_distance: 0.06
-    retreat_min_distance: 0.0
-    retreat_max_distance: 0.0
+    approach_min_distance: 0.03
+    approach_max_distance: 0.05
+    lift_min_distance: 0.06
+    lift_max_distance: 0.08
+    retreat_min_distance: 0.03
+    retreat_max_distance: 0.05
     cartesian_step_size: 0.005
     cartesian_jump_threshold: 0.0
-    cartesian_velocity_scaling: 0.12
+    cartesian_velocity_scaling: 0.10
     cartesian_acceleration_scaling: 0.08
-    grasp_angle_delta: 0.261799387799
+    grasp_angle_delta: 0.174532925199
     execute_on_plan: true
     diagnostic_ik_only: false
-    enable_gazebo_attachment: false
+    top_down_strategy_enabled: true
+    enable_gazebo_attachment: true
+    gazebo_attach_object_model: redbull_can
+    gazebo_attach_robot_link: link7
+    gazebo_attach_object_link: can_link
     autostart_task_type: 0
     tcp_offset_xyz: [0.0, 0.0, 0.0]
-    pregrasp_offset_xyz: [0.05, 0.0, 0.0]
+    grasp_target_offset_xyz: [0.0, 0.0, -0.020]
+    pregrasp_offset_xyz: [0.0, 0.0, 0.030]
     approach_direction_xyz: [0.0, 0.0, 1.0]
     lift_direction_xyz: [0.0, 0.0, 1.0]
-    retreat_direction_xyz: [-1.0, 0.0, 0.0]
-    grasp_orientation_rpy: [-3.14159265359, -1.57079632679, -3.14159265359]
-    pickup_stand:
-      id: pickup_stand_box
-      x: 0.281
-      y: 0.0
-      z: 0.423
-      size_x: 0.22
-      size_y: 0.18
-      size_z: 0.02
-    place_stand:
-      id: place_stand_box
-      x: -0.02
-      y: 0.38
-      z: 0.423
-      size_x: 0.22
-      size_y: 0.18
-      size_z: 0.02
-    pickup_block:
-      id: pick_target_block
-      x: 0.281
-      y: 0.0
-      z: 0.465
-      size_x: 0.045
-      size_y: 0.045
-      size_z: 0.06
-      touch_links: [link7, link8]
+    retreat_direction_xyz: [0.0, 0.0, 1.0]
+    grasp_orientation_rpy: [3.14159265359, -1.22173047640, 0.0]
+    top_down_grasp_target_x_candidates: [0.0]
+    top_down_grasp_target_y_candidates: [0.0]
+    top_down_grasp_target_z_candidates:
+      - -0.040
+      - -0.030
+      - -0.020
+      - -0.010
+      - 0.000
+      - 0.010
+      - 0.020
+      - 0.030
+      - 0.040
+      - 0.050
+      - 0.060
+    top_down_pregrasp_x_candidates: [0.0]
+    top_down_pregrasp_y_candidates: [0.0]
+    top_down_pregrasp_z_candidates: [0.030]
+    top_down_approach_direction_candidates:
+      - 0.0
+      - 0.0
+      - 1.0
+    top_down_roll_candidates: [3.14159265359]
+    top_down_pitch_candidates: [-1.22173047640]
+    top_down_yaw_candidates:
+      - -1.57079632679
+      - -0.78539816339
+      - 0.0
+      - 0.78539816339
+      - 1.57079632679
+    place_target:
+      offset_xyz: [0.05, 0.0, 0.0]
+      release_height: 0.10
+      orientation_rpy: [3.14159265359, 1.3962634016, -2.39617317732]
+      release_after_pre_place: true
+      allow_direct_release_fallback: true
+      direct_release_retreat_z: 0.08
+    vision_target:
+      enabled: true
+      require_single_target: true
+      target_timeout_sec: 0.5
+      min_target_confidence: 0.7
+      default_target_size_xyz: [0.044, 0.044, 0.10]
+      allowed_target_classes: [can, redbull, block, cylinder]
+    observe_pose:
+      enabled: true
+      xyz: [0.18, 0.0, 0.42]
+      rpy: [3.14159, 0.0, 0.0]
+    pre_place:
+      enabled: true
+      heading_offset: 0.80
+      base_joint_name: joint1
+      min_delta: 0.02
+      coarse_base_first: true
+      retract_joint3_name: joint3
+      retract_joint4_name: joint4
+      retract_joint3_delta: -0.30
+      retract_joint4_delta: 0.35
+      hover_after_base: true
+      hover_margin_xy: 0.01
+      hover_margin_z: 0.03
+    pickup_table:
+      id: pickup_table
+      x: 0.30
+      y: -0.14
+      z: 0.06
+      size_x: 0.34
+      size_y: 0.26
+      size_z: 0.12
+    place_bin:
+      id: rear_drop_bin
+      x: -0.16
+      y: -0.12
+      z: 0.04
+      size_x: 0.15
+      size_y: 0.10
+      size_z: 0.08
+      wall_thickness: 0.01
+    pickup_object:
+      id: redbull_can
+      x: 0.28
+      y: -0.07
+      z: 0.172
+      radius: 0.022
+      height: 0.10
+      touch_links: [gripper_base, link7, link8]
