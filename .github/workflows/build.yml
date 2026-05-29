@@ -47,14 +47,27 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       # 层 1：sim 镜像（系统依赖 + Nav2 + Gazebo）
-      # 镜像只含系统依赖，不含源码，变化频率低，registry cache 命中率高
-      - name: Build and push sim image
+      # 镜像只含系统依赖，不含源码，变化频率低，registry cache 命中率高。
+      # fork PR 没有组织 GHCR package 写权限，因此 PR 只构建并 load 到本机 Docker。
+      - name: Build sim image for PR
+        if: github.event_name == 'pull_request'
         uses: docker/build-push-action@v5
         with:
           context: .
           file: docker/Dockerfile.sim
-          # PR：只构建不推送；master push：构建并推送
-          push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+          push: false
+          load: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NS }}/sim:latest
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NS }}/sim:buildcache
+
+      - name: Build and push sim image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/Dockerfile.sim
+          push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NS }}/sim:latest
             ${{ env.REGISTRY }}/${{ env.IMAGE_NS }}/sim:${{ github.sha }}
