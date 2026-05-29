@@ -15,13 +15,13 @@ description: 面向第一次使用者的最短上手路径。
 
 如果你的 Ubuntu、ROS 2 Humble、`rosdep`、VS Code 等基础环境还没有准备好，请先参考 [环境准备](../deployment/environment.md)。
 
-可以先用下面的方式确认 Livox-SDK2 已安装：
+可以先用下面的方式确认 Livox-SDK2 关键库已安装：
 
 ```bash
-ldconfig -p | grep LivoxSdkCore
+ls /usr/local/lib/liblivox_lidar_sdk_shared.so
 ```
 
-如果还没有安装，请先参考 [雷达配置](../deployment/lidar_setup.md) 完成 Livox-SDK2 安装。
+如果找不到这个文件，请先参考 [雷达配置](../deployment/lidar_setup.md) 完成 Livox-SDK2 安装和更完整的检查。
 
 如果 `rosdep install` 过程中报错，建议先尝试：
 

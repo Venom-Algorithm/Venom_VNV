@@ -18,6 +18,7 @@ When something does not work, debug from bottom to top:
 - Chassis CAN issues: start from [Chassis CAN Setup](../deployment/chassis_can_setup.md)
 - Arm CAN issues: start from [Arm CAN Setup](../deployment/piper_can_setup.md)
 - Bringup issues: start from [System Bringup](../modules/integration/venom_bringup.md)
+- Point-LIO warnings: keep the device stationary during initialization prompts, treat queue-drop warnings as realtime overload signals, and inspect LiDAR / IMU timestamps before tuning matching parameters when sync warnings appear.
 
 ## Principle
 

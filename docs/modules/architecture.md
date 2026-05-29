@@ -7,7 +7,7 @@ description: 从系统层面理解驱动、感知、定位、规划、任务、�
 
 1. 驱动层：各类硬件驱动、底层 SDK 与桥接接口
 2. 感知层：检测、识别、跟踪、自瞄与通用视觉模块
-3. 定位层：LIO、里程计、重定位与地图对齐
+3. 定位层：LIO、里程计与全局定位接口
 4. 规划层：路径规划、轨迹生成、局部控制与机械臂运动规划
 5. 任务层：waypoint、行为树、状态监听、任务下发与任务管理
 6. 系统层：系统启动、机器人描述、模式编排与整机装配
@@ -19,21 +19,31 @@ description: 从系统层面理解驱动、感知、定位、规划、任务、�
 | --- | --- | --- |
 | 驱动层 | `driver/` | 传感器、底盘、机械臂、串口、PX4 接入 |
 | 感知层 | `perception/` | 自瞄、YOLO 目标检测、二维码 / 条码识别等感知算法 |
-| 定位层 | `localization/` | LIO、2D 里程计、重定位 |
+| 定位层 | `localization/` | LIO、2D 里程计与后续全局定位接口 |
 | 规划层 | `planning/` | Ego Planner、TEB controller、Nav2 controller、MoveIt 抓取规划等算法入口 |
-| 任务层 | `mission/` | waypoint、行为树、状态监听与任务管理 |
-| 系统层 | `venom_bringup`、`venom_robot_description` | 系统启动、描述与整机装配，不直接承载任务包 |
+| 任务层 | `mission/`、当前暂存在 `venom_bringup/venom_bringup/mission_controller` 的任务控制框架 | waypoint、行为树、状态监听与任务管理 |
+| 系统层 | `venom_bringup`、`venom_robot_description` | 系统启动、描述与整机装配；`venom_bringup` 当前还承载部分历史任务控制代码 |
 | 仿真层 | `simulation/venom_nav_simulation` | 独立仿真工作区和导航联调环境 |
 
 ## 设计原则
 
 - 驱动层只负责把硬件能力接进 ROS 2 图谱
 - 感知层只负责从传感器数据中提取结构化目标信息
-- 定位层只负责姿态、里程计和全局对齐
+- 定位层只负责姿态、里程计和后续全局定位接口约定
 - 规划层只负责路径、轨迹和控制，不直接承载任务状态机
 - 任务层只负责行为树、waypoint、监听与调度，不直接承担底层规划算法
-- 系统层只负责把这些模块启动起来并装配成整机模式
+- 系统层只负责把这些模块启动起来并装配成整机模式；当前已经在 `venom_bringup` 中落地的任务控制代码按过渡状态维护
 - 仿真层与主工作区解耦，避免仿真资产污染真实部署链路
+
+## 当前过渡状态
+
+架构上，新的 waypoint、行为树、监听器和任务管理包归入 `mission/`。但当前仓库里已经可运行的 `multi_waypoint_commander`、`mission_controller/`、`plugins/` 仍在 `venom_bringup` 内维护。
+
+这意味着：
+
+1. 日常使用时，仍从 `venom_bringup` 的 launch 和 console script 进入这些任务功能
+2. 后续新增独立任务包时，应优先放入 `mission/`，不要继续把新包堆进 `venom_bringup`
+3. 如果未来迁移已有任务控制代码，应同步更新 launch、参数路径和本页说明
 
 ## 建议阅读顺序
 

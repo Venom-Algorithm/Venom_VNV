@@ -13,6 +13,7 @@ description: 启动编排、机器人描述与整机模式入口总览。
 - `venom_bringup` 负责启动组合、场景模式与整机装配入口
 - `venom_robot_description` 负责静态/动态 TF 发布
 - 系统层负责把驱动、感知、定位、规划、任务等模块组织成完整运行模式
+- 当前已经落地的 `multi_waypoint_commander` 和 `mission_controller/` 仍在 `venom_bringup` 内维护，属于过渡状态
 
 ## 为什么不叫“规划层”
 
@@ -29,6 +30,8 @@ description: 启动编排、机器人描述与整机模式入口总览。
 - `mission/` 负责任务流程和状态推进
 - `system/` 负责把这些任务层与算法层装配成整机模式
 - 后续不要继续把新任务包默认堆进 `venom_bringup`
+
+当前已有任务控制代码没有立刻迁出，是为了不破坏现有 launch、参数和验证路径。新增任务包仍按 `mission/` 归属处理。
 
 ## 与其他模块的关系
 

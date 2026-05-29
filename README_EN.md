@@ -39,7 +39,7 @@ The goal is to standardize the engineering pieces that keep repeating across pro
 
 - hardware and sensor integration
 - detection, tracking, auto-aim, and task perception
-- LIO, odometry, and relocalization
+- LIO, odometry, and global-localization interfaces
 - path planners, controllers, and manipulation motion planning
 - waypoint, behavior-tree, monitor, and mission-management logic
 - system bringup and interface conventions
@@ -49,7 +49,7 @@ The goal is to standardize the engineering pieces that keep repeating across pro
 
 - Documentation: [venom-algorithm.github.io/Venom_VNV](https://venom-algorithm.github.io/Venom_VNV/)
 - Quick Start: [Quick Start](https://venom-algorithm.github.io/Venom_VNV/en/quick_start)
-- Modules & Interfaces: [Modules & Interfaces](https://venom-algorithm.github.io/Venom_VNV/en/interface_reference)
+- Modules & Interfaces: [Modules & Interfaces](https://venom-algorithm.github.io/Venom_VNV/en/modules/)
 - Development Notes: [Development Notes](https://venom-algorithm.github.io/Venom_VNV/en/development)
 - Chinese docs: [中文文档](https://venom-algorithm.github.io/Venom_VNV/)
 
@@ -58,10 +58,10 @@ The goal is to standardize the engineering pieces that keep repeating across pro
 | Layer | Main directories | Purpose |
 | --- | --- | --- |
 | Driver | `driver/` | Livox, Hikrobot camera, chassis, arm, serial, and PX4 bridge integrations |
-| Perception | `perception/` | auto-aim detection, tracking, and solving pipelines |
-| Localization | `localization/` | Point-LIO, Fast-LIO, rf2o, and small_gicp relocalization |
+| Perception | `perception/` | auto aim, YOLO detection, QR / barcode recognition, tracking, and solving pipelines |
+| Localization | `localization/` | Point-LIO, Fast-LIO, rf2o, and future global-localization interfaces |
 | Planning | `planning/` | navigation planners, controllers, and MoveIt-side motion planning |
-| Mission | `mission/` | `venom_waypoint`, BT, monitor, and mission-management packages |
+| Mission | `mission/` | waypoint, BT, monitor, and mission-management packages; the current mission-controller implementation still lives under `venom_bringup` |
 | System | `venom_bringup`, `venom_robot_description` | bringup, mode composition, TF description, and robot assembly |
 | Simulation | `simulation/venom_nav_simulation` | standalone simulation workspace for navigation and localization |
 
@@ -72,12 +72,11 @@ The goal is to standardize the engineering pieces that keep repeating across pro
 | Sensors and drivers | `livox_ros_driver2`, `ros2_hik_camera`, `venom_serial_driver` | LiDAR, industrial camera, and serial communication |
 | Vehicle and arm drivers | `scout_ros2`, `hunter_ros2`, `ugv_sdk`, `piper_ros` | chassis, low-level SDK, and arm-side integration |
 | Flight bridge | `driver/venom_px4_bridge` | PX4, DDS Agent, and ROS 2 bridge path |
-| Perception | `perception/rm_auto_aim` | detection, tracking, solving, and interface definitions |
+| Perception | `perception/rm_auto_aim`, `perception/yolo_detector`, `perception/zbar_ros` | auto aim, general YOLO detection, QR / barcode recognition, and interface definitions |
 | Localization | `Point-LIO`, `Fast-LIO`, `rf2o_laser_odometry` | unified 3D / 2D odometry outputs |
-| Relocalization | `small_gicp_relocalization` | recover `map -> odom` from point-cloud registration |
-| Planning | `planning/` | entry point for `venom_eagle_planner`, `venom_teb_controller`, and `venom_moveit_grasp`-style packages |
-| Mission | `mission/` | entry point for `venom_waypoint`, `venom_nav_bt`, `venom_global_monitor`, and `venom_mission_manager` |
-| System integration | `venom_bringup` | top-level bringup and robot assembly |
+| Planning | `planning/navigation/ego-planner-swarm`, `planning/navigation/venom_teb_controller`, `planning/manipulation` | UAV local planning, Nav2 TEB controller integration, and the manipulation-motion-planning entry |
+| Mission | `mission/`, `venom_bringup/venom_bringup/mission_controller` | `mission/` is the target home for new mission packages; the current waypoint commander and mission-controller framework are still hosted by `venom_bringup` |
+| System integration | `venom_bringup` | top-level bringup, robot assembly, and the current transitional mission-control entry |
 | Robot description | `venom_robot_description` | URDF, robot model, and TF publishing |
 | Simulation | `venom_nav_simulation` | `MID360 + Gazebo + LIO + Nav2` validation workspace |
 
@@ -95,21 +94,24 @@ venom_vnv/
 │   ├── venom_px4_bridge/
 │   └── venom_serial_driver/
 ├── perception/                      # perception layer
-│   └── rm_auto_aim/
+│   ├── rm_auto_aim/
+│   ├── yolo_detector/
+│   └── zbar_ros/
 ├── localization/                    # localization layer
 │   ├── lio/
 │   │   ├── Point-LIO/
 │   │   ├── Fast-LIO/
 │   │   └── rf2o_laser_odometry/
-│   └── relocalization/
-│       └── small_gicp_relocalization/
+│   └── relocalization/             # reserved for global localization / relocalization modules
 ├── planning/                        # planning layer
 │   ├── navigation/                  # navigation planners and controllers
+│   │   ├── ego-planner-swarm/
+│   │   └── venom_teb_controller/
 │   └── manipulation/                # manipulation motion planning
 ├── mission/                         # mission layer
-│   ├── navigation/                  # waypoint, BT, and monitoring
-│   └── manipulation/                # manipulation-task flow
-├── venom_bringup/                   # system layer: bringup and robot assembly
+│   ├── navigation/                  # target home for waypoint, BT, and monitoring packages
+│   └── manipulation/                # target home for manipulation-task flow packages
+├── venom_bringup/                   # system layer: bringup, robot assembly, and current mission control
 ├── venom_robot_description/         # system layer: robot description and TF
 ├── simulation/
 │   └── venom_nav_simulation/        # simulation layer
@@ -169,6 +171,12 @@ ros2 launch venom_bringup mid360_rviz.launch.py
 # Mid360 + Point-LIO
 ros2 launch venom_bringup mid360_point_lio.launch.py
 
+# Mid360 + Point-LIO odom-only mode
+ros2 launch venom_bringup mid360_point_lio_odom.launch.py
+
+# Mid360 + Point-LIO async-map mode
+ros2 launch venom_bringup mid360_point_lio_async_map.launch.py
+
 # Infantry auto-aim pipeline
 ros2 launch venom_bringup infantry_auto_aim.launch.py
 
@@ -177,6 +185,9 @@ ros2 launch venom_bringup scout_mini_mapping.launch.py
 
 # PX4 DDS probe
 ros2 launch venom_bringup px4_agent_probe.launch.py
+
+# Health-aware multi-waypoint navigation
+ros2 launch venom_bringup health_aware_navigation.launch.py
 ```
 
 More commands:
@@ -192,7 +203,7 @@ More commands:
 | [Environment Setup](https://venom-algorithm.github.io/Venom_VNV/en/environment) | Ubuntu, ROS, rosdep, VS Code, and development-machine basics |
 | [LiDAR Setup](https://venom-algorithm.github.io/Venom_VNV/en/lidar_setup) | MID360 networking, config files, and Livox-SDK2 |
 | [Launch & Use](https://venom-algorithm.github.io/Venom_VNV/en/launch_usage) | common build, rebuild, and launch commands |
-| [Modules & Interfaces](https://venom-algorithm.github.io/Venom_VNV/en/interface_reference) | entry point for drivers, perception, localization, planning, mission, system, and simulation |
+| [Modules & Interfaces](https://venom-algorithm.github.io/Venom_VNV/en/modules/) | entry point for drivers, perception, localization, planning, mission, system, and simulation |
 | [Topic Reference](https://venom-algorithm.github.io/Venom_VNV/en/topics) | unified ROS 2 topic and message conventions |
 | [TF Tree](https://venom-algorithm.github.io/Venom_VNV/en/tf_tree) | core frame and TF relationships |
 | [Development Notes](https://venom-algorithm.github.io/Venom_VNV/en/development) | development environment, Git, fork / PR workflow, and submodule rules |

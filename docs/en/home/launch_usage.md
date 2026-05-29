@@ -71,7 +71,35 @@ source install/setup.bash
 ros2 launch venom_bringup mid360_point_lio.launch.py
 ```
 
-### 3. D435i / RealSense validation
+### 3. Mid360 + Point-LIO odom-only mode
+
+```bash
+cd ~/venom_ws
+source install/setup.bash
+ros2 launch venom_bringup mid360_point_lio_odom.launch.py
+```
+
+This entry uses `point_lio_online_odom.yaml` by default. Use it when you only need realtime `odom -> base_link` output and do not need map publication or PCD saving.
+
+### 4. Mid360 + Point-LIO explicit async-map mode
+
+```bash
+cd ~/venom_ws
+source install/setup.bash
+ros2 launch venom_bringup mid360_point_lio_async_map.launch.py
+```
+
+### 5. Point-LIO offline mapping
+
+```bash
+cd ~/venom_ws
+source install/setup.bash
+ros2 launch venom_bringup mid360_point_lio_offline_map.launch.py \
+  bag_path:=/absolute/path/to/rosbag2_dir \
+  output_pcd_path:=/absolute/path/to/offline_map.pcd
+```
+
+### 6. D435i / RealSense validation
 
 ```bash
 cd ~/venom_ws
@@ -79,7 +107,7 @@ source install/setup.bash
 ros2 launch venom_bringup d435i_test.launch.py
 ```
 
-### 4. PX4 VPS / external-pose bridge
+### 7. PX4 VPS / external-pose bridge
 
 ```bash
 cd ~/venom_ws
@@ -95,12 +123,36 @@ source install/setup.bash
 ros2 launch venom_bringup px4_vps_bridge.launch.py input_odom_topic:=/lio/odom
 ```
 
+### 8. Health-aware multi-waypoint navigation
+
+```bash
+cd ~/venom_ws
+source install/setup.bash
+ros2 launch venom_bringup health_aware_navigation.launch.py
+```
+
+If you only need the Nav2 Simple Commander waypoint entry:
+
+```bash
+cd ~/venom_ws
+source install/setup.bash
+ros2 run venom_bringup multi_waypoint_commander
+```
+
+### About `robot_bringup.launch.py`
+
+`robot_bringup.launch.py` already contains top-level `robot_type` selection logic, but it depends on per-robot bringup templates under each robot directory. For daily integration, use the concrete launch files listed on this page first.
+
 ## Suggested Order
 
 1. Validate Mid360 in RViz
 2. Bring up Mid360 + Point-LIO
-3. If you use a RealSense camera, validate D435i / RealSense next
-4. If external localization is fed into PX4, run the PX4 VPS / external-pose bridge
+3. If you only need realtime odometry, use the Mid360 + Point-LIO odom-only mode
+4. If you need to explicitly test async-map buffering, run the Mid360 + Point-LIO async-map mode
+5. If offline mapping is needed, use the Point-LIO offline mapping entry with a rosbag2 path
+6. If you use a RealSense camera, validate D435i / RealSense next
+7. If external localization is fed into PX4, run the PX4 VPS / external-pose bridge
+8. If mission control is needed, run the health-aware waypoint navigation entry
 
 ## Further Reading
 

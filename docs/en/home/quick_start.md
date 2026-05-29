@@ -16,13 +16,13 @@ Make sure the following are already available:
 
 If your base environment is not ready yet, start from [Environment Setup](../deployment/environment.md).
 
-You can verify Livox-SDK2 with:
+You can check whether the key Livox-SDK2 runtime library exists with:
 
 ```bash
-ldconfig -p | grep LivoxSdkCore
+ls /usr/local/lib/liblivox_lidar_sdk_shared.so
 ```
 
-If it is missing, complete [LiDAR Setup](../deployment/lidar_setup.md) first.
+If this file is missing, complete [LiDAR Setup](../deployment/lidar_setup.md) first.
 
 If `rosdep install` fails, try:
 

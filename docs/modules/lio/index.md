@@ -49,9 +49,10 @@ LIO 模块负责提供机器人本体的连续局部位姿估计，是系统中�
 
 ### 参数结构约束
 
-后续接入的新 LIO，配置文件应尽量遵守这组分层：
+后续接入的新 LIO，配置文件必须遵守这组分层。算法内部可以保留自己的原生参数名，但暴露给 VNV 上层 bringup 的参数文件要按这些分组组织：
 
 - 顶层公共基础参数
+- `lio`
 - `common`
 - `preprocess`
 - `mapping`
@@ -60,7 +61,7 @@ LIO 模块负责提供机器人本体的连续局部位姿估计，是系统中�
 - `frame`
 - `pcd_save`
 
-### 推荐默认命名
+### 默认命名规则
 
 - `publish.odom_topic = "odom"`
 - `publish.cloud_registered_topic = "cloud_registered"`

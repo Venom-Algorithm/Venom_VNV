@@ -51,7 +51,6 @@ submodules-ugv:
 	    driver/venom_serial_driver \
 	    localization/lio/Point-LIO \
 	    localization/lio/rf2o_laser_odometry \
-	    localization/relocalization/small_gicp_relocalization \
 	    planning/navigation/venom_teb_controller \
 	    perception/yolo_detector \
 	    perception/zbar_ros

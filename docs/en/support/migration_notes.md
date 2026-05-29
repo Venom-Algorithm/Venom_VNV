@@ -34,6 +34,12 @@ The repository has been moving from personal ownership toward organization-manag
 | `planning/navigation/ego-planner-swarm` | new Ego Planner Swarm ROS 2 submodule tracking `ros2_version` |
 | `planning/navigation/venom_teb_controller` | new TEB local planner integrated as a Nav2 controller plugin |
 | `perception/zbar_ros` | new QR/barcode recognition module with structured 2D outputs |
+| `venom_bringup/venom_bringup/mission_controller` | current mission-control framework lives in `venom_bringup`; new mission packages should still go under `mission/` |
+| `venom_bringup/venom_bringup/multi_waypoint_commander.py` | Nav2 Simple Commander based multi-waypoint task entry |
 | `venom_bringup/launch/examples/px4_vps_bridge.launch.py` | new PX4 external-pose bridge entry point |
 | `docker/Dockerfile.sim`, `docker-compose.yml` | new Docker sim environment |
 | root `Makefile` profiles | new `submodules-ugv`, `submodules-sim`, `submodules-uav`, and related selective checkout targets |
+
+## Notes
+
+- `robot_bringup.launch.py` is currently a top-level full-robot template. For daily integration, prefer concrete launch files such as `mid360_point_lio.launch.py`, `sentry_mapping.launch.py`, or `health_aware_navigation.launch.py`.

@@ -30,7 +30,7 @@ description: 面向多人协作开发的环境基线、常用软件、Git 流程
 | 版本管理 | Git + GitHub | 用于 fork、分支、PR 和子模块管理 |
 | 编辑器 | VS Code | 推荐作为统一编辑器 |
 | AI 助手 | Codex | 可用于代码阅读、文档整理和小规模改动辅助 |
-| 文档预览 | Docker | 推荐用容器预览 GitHub Pages 文档 |
+| 文档预览 | MkDocs Material | 文档站当前由 MkDocs 构建，依赖见 `requirements-docs.txt` |
 
 ## 按模块补充安装的依赖
 
@@ -52,7 +52,8 @@ description: 面向多人协作开发的环境基线、常用软件、Git 流程
 - PX4 / 无人机方向：
   - PX4、Micro XRCE-DDS Agent、桥接相关依赖
 - 文档维护方向：
-  - Docker
+  - Python 虚拟环境
+  - `requirements-docs.txt`
   - Markdown 编辑环境
 - 仿真方向：
   - Gazebo / 仿真相关工作区依赖
@@ -441,17 +442,35 @@ rqt_graph
 
 如果你改的是 `docs/`，建议先本地预览再提交。
 
-推荐使用 Docker 预览 GitHub Pages：
+当前文档站使用 MkDocs Material，不再使用旧的 Jekyll pipeline。第一次准备文档环境：
 
 ```bash
 cd ~/venom_ws/src/venom_vnv
-docker run --rm -it -p 4001:4000 -v "$PWD":/srv/jekyll jekyll/jekyll:pages sh -lc "apk add --no-cache ruby-webrick >/dev/null && jekyll serve --source docs --host 0.0.0.0"
+python3 -m venv .venv-docs
+source .venv-docs/bin/activate
+pip install -r requirements-docs.txt
+```
+
+本地预览：
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+source .venv-docs/bin/activate
+mkdocs serve -a 0.0.0.0:4001
 ```
 
 然后在浏览器打开：
 
 ```text
 http://localhost:4001/Venom_VNV/
+```
+
+提交前建议至少执行一次严格构建：
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+source .venv-docs/bin/activate
+DISABLE_MKDOCS_2_WARNING=true mkdocs build --strict
 ```
 
 ## 提交前检查清单

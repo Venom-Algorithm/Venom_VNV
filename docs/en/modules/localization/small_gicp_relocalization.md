@@ -1,60 +1,28 @@
 ---
-title: Relocalization
-description: small_gicp_relocalization — Global relocalization through point-cloud
-  registration.
+title: Relocalization (Temporarily Disabled)
+description: The GICP relocalization module is temporarily removed from the main-repository submodules because of known stability issues.
 ---
 
-## Module Role
+## Current Status
 
-`small_gicp_relocalization` is responsible for global relocalization against an existing map.
+`small_gicp_relocalization` is temporarily disabled and is no longer initialized as a `Venom_VNV` main-repository submodule.
 
-## System Contract
+This means:
 
-In the overall system, this module should mainly be thought of as the place that recovers or refines the `map -> odom` relationship.
+- `.gitmodules` no longer contains `localization/relocalization/small_gicp_relocalization`
+- `make submodules-ugv` no longer initializes this repository
+- fresh workspaces do not contain the `small_gicp_relocalization` package by default
+- existing relocalization launch files under `venom_bringup` are kept as historical integration points, but they are not recommended for current use
 
-## Current Entries
+## Conditions Before Re-Enabling
 
-| File | Purpose |
-| --- | --- |
-| `small_gicp_relocalization_launch.py` | original example launch with parameters hardcoded in the file |
-| `relocalization.launch.py` | VNV-facing launch used by upper-level bringup, with launch arguments such as `prior_pcd_file` |
-| `prior_map_publisher.launch.py` | publishes a prior PCD as `/prior_map` for visualization/debugging |
+Before bringing this module back, we should first:
 
-Full-system bringup should normally go through `venom_bringup`:
+1. define clear ownership for the `map -> odom` transform so it does not conflict with LIO or Nav2
+2. add safe fallback behavior for missing prior maps, input clouds, initial poses, and TF lookups
+3. add bag-based regression tests for low-speed motion, high-speed rotation, and localization jumps
+4. verify that missing RViz, slow disks, empty clouds, and TF timeouts do not block the main localization path
 
-```bash
-cd ~/venom_ws
-source install/setup.bash
-ros2 launch venom_bringup relocalization_bringup.launch.py \
-  pcd_file:=$HOME/venom_ws/src/venom_vnv/localization/lio/Point-LIO/PCD/scans.pcd
-```
+## Current Alternative
 
-For a focused node-only run:
-
-```bash
-cd ~/venom_ws
-source install/setup.bash
-ros2 run small_gicp_relocalization small_gicp_relocalization_node --ros-args \
-  -p prior_pcd_file:=$HOME/venom_ws/src/venom_vnv/localization/lio/Point-LIO/PCD/scans.pcd \
-  -p input_cloud_topic:=cloud_registered \
-  -p base_frame:=base_link \
-  -p robot_base_frame:=base_link \
-  -p lidar_frame:=laser_link
-```
-
-## Key Parameters
-
-| Parameter | Purpose | Default |
-| --- | --- | --- |
-| `num_threads` | Registration thread count. | `4` |
-| `num_neighbors` | Neighbor count for covariance estimation. | `20` in source, `10` in the VNV-facing launch |
-| `global_leaf_size` | Voxel size for the prior map, in meters. | `0.25` |
-| `registered_leaf_size` | Voxel size for the incoming registered cloud, in meters. | `0.25` |
-| `max_dist_sq` | Squared correspondence rejection threshold. | `1.0` |
-| `map_frame` | Global map frame. | `"map"` |
-| `odom_frame` | Local odometry frame. | `"odom"` |
-| `base_frame` | Robot base frame used when transforming the prior map. | `""` |
-| `robot_base_frame` | Robot base frame used when applying `initialpose`. | `""` |
-| `lidar_frame` | LiDAR frame used for TF lookup. | `""` |
-| `prior_pcd_file` | Prior PCD map path. | `""` |
-| `input_cloud_topic` | Input registered cloud topic. | `"registered_scan"` in source, usually `cloud_registered` in VNV launches |
+For Mid360 + Point-LIO validation, prefer the LIO odometry output itself and do not rely on GICP relocalization correction.

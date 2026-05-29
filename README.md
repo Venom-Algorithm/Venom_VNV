@@ -39,7 +39,7 @@ Venom VNV 不是单一赛题工程，而是面向多种机器人载体和任务�
 
 - 传感器接入与硬件驱动
 - 目标检测、跟踪、自瞄与任务感知
-- LIO、里程计与重定位
+- LIO、里程计与全局定位接口
 - 路径规划、controller 与机械臂运动规划
 - waypoint、行为树、监听器与任务管理
 - 系统启动与接口约束
@@ -58,10 +58,10 @@ Venom VNV 不是单一赛题工程，而是面向多种机器人载体和任务�
 | 层级 | 主要目录 | 说明 |
 | --- | --- | --- |
 | 驱动层 | `driver/` | Livox、海康相机、底盘、机械臂、串口、PX4 桥接 |
-| 感知层 | `perception/` | 自瞄检测、跟踪、解算等任务感知链路 |
-| 定位层 | `localization/` | Point-LIO、Fast-LIO、rf2o、small_gicp 重定位 |
+| 感知层 | `perception/` | 自瞄、YOLO 检测、二维码 / 条码识别等任务感知链路 |
+| 定位层 | `localization/` | Point-LIO、Fast-LIO、rf2o 与后续全局定位接口 |
 | 规划层 | `planning/` | 导航 planner、controller 与 MoveIt 抓取规划一类算法入口 |
-| 任务层 | `mission/` | `venom_waypoint`、行为树、监听器、任务管理一类包的统一入口 |
+| 任务层 | `mission/` | waypoint、行为树、监听器、任务管理一类包的统一入口；当前任务控制实现仍暂存在 `venom_bringup` |
 | 系统层 | `venom_bringup`、`venom_robot_description` | 系统启动、模式组织、TF 描述与整机装配 |
 | 仿真层 | `simulation/venom_nav_simulation` | 面向导航与定位链路的独立仿真工作区 |
 
@@ -72,12 +72,11 @@ Venom VNV 不是单一赛题工程，而是面向多种机器人载体和任务�
 | 传感器与驱动 | `livox_ros_driver2`、`ros2_hik_camera`、`venom_serial_driver` | 激光雷达、工业相机、串口链路接入 |
 | 载体驱动 | `scout_ros2`、`hunter_ros2`、`ugv_sdk`、`piper_ros` | 底盘、移动平台 SDK 与机械臂链路 |
 | 飞控桥接 | `driver/venom_px4_bridge` | PX4、DDS Agent 与 ROS 2 桥接 |
-| 感知 | `perception/rm_auto_aim` | 检测、跟踪、解算及接口定义 |
+| 感知 | `perception/rm_auto_aim`、`perception/yolo_detector`、`perception/zbar_ros` | 自瞄、通用 YOLO 检测、二维码 / 条码识别及接口定义 |
 | 定位 | `Point-LIO`、`Fast-LIO`、`rf2o_laser_odometry` | 3D/2D 里程计输出与统一接口约束 |
-| 重定位 | `small_gicp_relocalization` | 基于点云配准恢复 `map -> odom` |
-| 规划 | `planning/` | `venom_eagle_planner`、`venom_teb_controller`、`venom_moveit_grasp` 等规划算法入口 |
-| 任务 | `mission/` | `venom_waypoint`、`venom_nav_bt`、`venom_global_monitor`、`venom_mission_manager` 等任务包入口 |
-| 系统集成 | `venom_bringup` | 统一启动入口与整机装配组织 |
+| 规划 | `planning/navigation/ego-planner-swarm`、`planning/navigation/venom_teb_controller`、`planning/manipulation` | 无人机局部规划、Nav2 TEB controller 与机械臂运动规划入口 |
+| 任务 | `mission/`、`venom_bringup/venom_bringup/mission_controller` | `mission/` 是新任务包归属目录；当前 waypoint commander 与任务控制框架仍由 `venom_bringup` 承载 |
+| 系统集成 | `venom_bringup` | 统一启动入口、整机装配组织与当前过渡阶段的任务控制入口 |
 | 机器人描述 | `venom_robot_description` | 机器人模型、URDF 与 TF 发布 |
 | 仿真 | `venom_nav_simulation` | `MID360 + Gazebo + LIO + Nav2` 联调环境 |
 
@@ -95,21 +94,24 @@ venom_vnv/
 │   ├── venom_px4_bridge/
 │   └── venom_serial_driver/
 ├── perception/                      # 感知层
-│   └── rm_auto_aim/
+│   ├── rm_auto_aim/
+│   ├── yolo_detector/
+│   └── zbar_ros/
 ├── localization/                    # 定位层
 │   ├── lio/
 │   │   ├── Point-LIO/
 │   │   ├── Fast-LIO/
 │   │   └── rf2o_laser_odometry/
-│   └── relocalization/
-│       └── small_gicp_relocalization/
+│   └── relocalization/             # 全局定位 / 重定位模块预留目录
 ├── planning/                        # 规划层
 │   ├── navigation/                  # 导航规划与 controller
+│   │   ├── ego-planner-swarm/
+│   │   └── venom_teb_controller/
 │   └── manipulation/                # 机械臂运动规划
 ├── mission/                         # 任务层
-│   ├── navigation/                  # waypoint、BT、任务监听
-│   └── manipulation/                # 抓取任务流程
-├── venom_bringup/                   # 系统层：启动与整机装配
+│   ├── navigation/                  # waypoint、BT、任务监听的新包归属目录
+│   └── manipulation/                # 抓取任务流程的新包归属目录
+├── venom_bringup/                   # 系统层：启动、整机装配与当前任务控制实现
 ├── venom_robot_description/         # 系统层：机器人描述与 TF
 ├── simulation/
 │   └── venom_nav_simulation/        # 仿真层
@@ -169,6 +171,12 @@ ros2 launch venom_bringup mid360_rviz.launch.py
 # Mid360 + Point-LIO
 ros2 launch venom_bringup mid360_point_lio.launch.py
 
+# Mid360 + Point-LIO 纯里程计模式
+ros2 launch venom_bringup mid360_point_lio_odom.launch.py
+
+# Mid360 + Point-LIO 异步地图模式
+ros2 launch venom_bringup mid360_point_lio_async_map.launch.py
+
 # 步兵自瞄链路
 ros2 launch venom_bringup infantry_auto_aim.launch.py
 
@@ -177,6 +185,9 @@ ros2 launch venom_bringup scout_mini_mapping.launch.py
 
 # PX4 DDS 探测
 ros2 launch venom_bringup px4_agent_probe.launch.py
+
+# 带健康状态监听的多航点导航
+ros2 launch venom_bringup health_aware_navigation.launch.py
 ```
 
 更多命令见：

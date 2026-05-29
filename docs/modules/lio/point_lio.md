@@ -20,20 +20,121 @@ description: Point-LIO — MID360 参数与接口说明。
 
 - 子模块配置：[mid360.yaml](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/localization/lio/Point-LIO/config/mid360.yaml)
 - 建图配置：[mid360_mapping.yaml](https://github.com/Venom-Algorithm/Venom_VNV/blob/master/localization/lio/Point-LIO/config/mid360_mapping.yaml)
+- VNV 默认在线建图配置：`venom_bringup/config/examples/point_lio_mapping.yaml`
+- VNV 纯在线里程计配置：`venom_bringup/config/examples/point_lio_online_odom.yaml`
+- VNV 在线里程计 + 异步地图配置：`venom_bringup/config/examples/point_lio_online_async_map.yaml`
+- VNV 离线导图配置：`venom_bringup/config/examples/point_lio_offline_map.yaml`
+
+## 当前运行模式
+
+Point-LIO 当前按 `lio.operation_mode` 区分三种模式：
+
+| 模式 | 典型配置 | 作用 |
+| --- | --- | --- |
+| `online_odom` | `point_lio_online_odom.yaml` | 面向实时里程计输出，尽量降低地图发布和 PCD 保存负载；代码会强制关闭 PCD 保存。 |
+| `online_odom_async_map` | `point_lio_mapping.yaml`、`point_lio_online_async_map.yaml` | 里程计主线程保持实时，地图发布 / PCD 缓存交给异步地图线程处理，是当前在线建图联调默认模式。 |
+| `offline_map` | `point_lio_offline_map.yaml` | 从 `lio.offline.bag_path` 指定的 rosbag2 读取数据，离线生成地图，并按 `lio.offline.output_pcd_path` 保存。 |
+
+当前常用启动入口：
+
+```bash
+cd ~/venom_ws
+source install/setup.bash
+ros2 launch venom_bringup mid360_point_lio.launch.py
+```
+
+如果想显式使用异步地图配置入口：
+
+```bash
+cd ~/venom_ws
+source install/setup.bash
+ros2 launch venom_bringup mid360_point_lio_async_map.launch.py
+```
+
+如果只需要高实时性 odom，不需要地图发布和 PCD 保存：
+
+```bash
+cd ~/venom_ws
+source install/setup.bash
+ros2 launch venom_bringup mid360_point_lio_odom.launch.py
+```
+
+离线导图入口需要指定 rosbag2 目录：
+
+```bash
+cd ~/venom_ws
+source install/setup.bash
+ros2 launch venom_bringup mid360_point_lio_offline_map.launch.py \
+  bag_path:=/absolute/path/to/rosbag2_dir \
+  output_pcd_path:=/absolute/path/to/offline_map.pcd
+```
+
+如果要替换配置文件，可覆盖 `point_lio_cfg`：
+
+```bash
+cd ~/venom_ws
+source install/setup.bash
+ros2 launch venom_bringup mid360_point_lio.launch.py \
+  point_lio_cfg:=/absolute/path/to/point_lio_online_async_map.yaml
+```
+
+## 运行提示与告警
+
+最近的 Point-LIO 子模块已经加入运行时提示和告警，这些信息不是普通日志噪声，而是现场调参和排障时要优先看的状态信号。
+
+### 初始化阶段提示
+
+启动后如果看到下面两类提示，应让雷达和 IMU 保持静止：
+
+- `Point-LIO IMU initialization started. Keep the LiDAR-IMU device stationary...`
+- `Building Point-LIO initial local map. Keep the LiDAR-IMU device stationary...`
+
+看到 `Point-LIO initial local map is ready. Odometry tracking has started...` 之后，才表示初始局部地图已经建立，正常移动才是安全的。
+
+如果初始化阶段移动设备，最常见的后果是重力方向、IMU bias 或初始局部地图不稳，后续会表现为 odom 漂移、姿态跳变或局部地图扭曲。
+
+### 实时队列告警
+
+| 日志关键字 | 含义 | 处理方向 |
+| --- | --- | --- |
+| `Point-LIO realtime warning: dropped old LiDAR frame(s)` | 在线模式下 LiDAR 队列超过 `lio.realtime.max_lidar_queue`，旧帧被丢弃以避免延迟无限积压。 | 降低点云负载、确认 CPU 负载、适当增大队列，或改用更轻的 `online_odom` 配置。 |
+| `Point-LIO realtime warning: dropped old IMU sample(s)` | IMU 队列超过 `lio.realtime.max_imu_queue`，旧 IMU 数据被丢弃。 | 检查 IMU 发布频率是否异常、系统是否卡顿、DDS/进程是否抢占严重。 |
+| `Point-LIO async map warning: dropped old map job(s)` | 异步地图线程处理不过来，旧地图发布 / 保存任务被丢弃。 | 增大 `lio.async_map.queue_depth`、增大 `publish.map_publish_interval`、调大 `filter_size_map_publish`，或关闭高负载可视化。 |
+| `Point-LIO realtime warning: odometry loop overrun` | 单次里程计循环耗时超过 LiDAR 帧间隔，实时性已经不足。 | 优先减小当前帧点数、增大 `filter_size_surf`、关闭不必要发布，必要时只跑 `online_odom`。 |
+
+这些队列告警的设计目标是保护实时 odom：当机器性能不足时，系统宁可丢弃旧数据，也不要让 odom 延迟越堆越大。
+
+### 同步异常告警
+
+| 日志关键字 | 含义 | 常见原因 |
+| --- | --- | --- |
+| `Point-LIO sync warning: abnormal LiDAR frame duration` | 当前 LiDAR 帧时间跨度偏离 `mapping.lidar_time_inte` 太多。 | 雷达时间戳异常、录包播放速率异常、驱动配置或时间单位不匹配。 |
+| `Point-LIO sync warning: waiting for IMU to cover LiDAR frame end` | LiDAR 当前帧结束时间已经到了，但 IMU 数据还没覆盖到该时间。 | IMU 延迟、DDS 堵塞、驱动未同步、录包中 IMU 少帧。 |
+| `Point-LIO sync warning: IMU queue starts after LiDAR frame begin` | IMU 队列最早时间晚于 LiDAR 帧起点，前半帧缺少 IMU 覆盖。 | 启动顺序不稳、录包截断、IMU 数据丢失或时间戳不连续。 |
+
+同步告警频繁出现时，不应先改匹配参数。正确顺序是先检查 `/livox/lidar`、`/livox/imu` 的时间戳、发布频率和录包完整性，再考虑调整 `common.time_diff_lidar_to_imu`、`mapping.lidar_time_inte` 或 `mapping.imu_time_inte`。
 
 ## 参数说明
 
 | 参数名 | 作用 | 默认值 |
 | --- | --- | --- |
+| `lio.operation_mode` | 控制 Point-LIO 的整体运行模式，可选 `online_odom`、`online_odom_async_map`、`offline_map`。 | `"online_odom_async_map"` |
+| `lio.realtime.max_lidar_queue` | 在线模式下 LiDAR 消息队列上限，超过后按策略丢弃旧数据，避免实时系统无限积压。 | `8` |
+| `lio.realtime.max_imu_queue` | 在线模式下 IMU 消息队列上限。 | `400` |
+| `lio.async_map.queue_depth` | 异步地图线程任务队列深度，仅 `online_odom_async_map` 模式使用。 | `8` |
+| `lio.async_map.drop_policy` | 异步地图队列满时的丢弃策略。当前代码只支持 `drop_oldest`。 | `"drop_oldest"` |
+| `lio.offline.bag_path` | 离线模式读取的 rosbag2 路径。`offline_map` 模式必须配置。 | `""` |
+| `lio.offline.output_pcd_path` | 离线导图输出的 PCD 路径。 | `"PCD/offline_map.pcd"` |
+| `lio.offline.save_on_finish` | 离线模式处理完成后是否自动保存 PCD。 | `True` |
 | `use_imu_as_input` | 控制 Point-LIO 使用哪一套状态传播主线。当前项目固定使用默认输出状态分支，不切到 IMU 输入分支。 | `False` |
 | `prop_at_freq_of_imu` | 控制状态传播是否尽量跟随 IMU 的高频时间节奏执行。开启后，系统会按 IMU 更细粒度地传播状态。 | `True` |
 | `check_satu` | 控制是否屏蔽接近 IMU 饱和上限的测量维度，避免加速度计或陀螺仪接近满量程时污染状态更新。 | `True` |
 | `init_map_size` | 控制系统在正式进入建图与配准前，至少要累积多少初始地图点。值越大，启动更慢，但初始地图更稳。 | `100` |
 | `point_filter_num` | 控制预处理阶段对原始点云按顺序抽样的步长。值越大，输入点数越少，计算量越低。 | `3` |
 | `space_down_sample` | 控制是否在当前帧进入配准前做体素降采样。关闭后会保留更多点，但计算量明显增加。 | `True` |
-| `filter_size_surf` | 控制当前帧点云的体素降采样尺寸。值越小，当前帧细节越多；值越大，匹配更轻量。 | `0.2` |
-| `filter_size_map_internal` | 控制内部在线地图的体素尺度。这个参数会直接影响在线配准、匹配邻域密度和 odom 稳定性。 | `0.5` |
-| `filter_size_map_publish` | 控制 `/map_cloud` 可视化地图的体素尺度。它只影响可视化地图的稀疏程度和发布负载，不参与内部配准。 | `0.8` |
+| `filter_size_surf` | 控制当前帧点云的体素降采样尺寸。值越小，当前帧细节越多；值越大，匹配更轻量。 | `0.05` |
+| `filter_size_map_internal` | 控制内部在线地图的体素尺度。这个参数会直接影响在线配准、匹配邻域密度和 odom 稳定性。 | `0.2` |
+| `filter_size_map_publish` | 控制 `/map_cloud` 可视化地图的体素尺度。它只影响可视化地图的稀疏程度和发布负载，不参与内部配准。 | `0.2` |
 | `filter_size_map_save` | 控制导出 PCD 时使用的体素尺度，只影响最终保存出来的地图密度。 | `0.2` |
 | `ivox_nearby_type` | 控制 iVox 搜索邻域模式，决定配准时从周围多少体素中寻找邻居点。 | `6` |
 | `runtime_pos_log_enable` | 控制是否输出运行时位姿日志，主要用于调试与离线分析。 | `False` |

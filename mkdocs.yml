@@ -214,7 +214,6 @@ nav:
           - Point-LIO: modules/lio/point_lio.md
           - Fast-LIO: modules/lio/fast_lio.md
           - rf2o 激光里程计: modules/localization/rf2o_laser_odometry.md
-          - 重定位: modules/localization/small_gicp_relocalization.md
       - 规划层:
           - 规划层总览: modules/planning/index.md
           - Ego Planner Swarm: modules/planning/ego_planner_swarm.md

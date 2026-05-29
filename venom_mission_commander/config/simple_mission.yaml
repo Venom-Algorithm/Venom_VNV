@@ -1,0 +1,94 @@
+mission:
+  id: mock_circle_mission
+  loop: false
+  stop_on_task_failure: true
+
+waypoints:
+  - name: start_area
+    description: 起停区；mock 模式默认认为小车已经在这里，所以跳过第一次导航。
+    frame_id: map
+    x: 0.0
+    y: 0.0
+    yaw: 0.0
+    skip_navigation: true
+    tasks:
+      - name: start_delay
+        type: wait
+        seconds: 0.2
+
+  - name: task_point_1_pick
+    description: 任务点一；识别物品并夹取。
+    frame_id: map
+    x: 1.0
+    y: 0.0
+    yaw: 0.0
+    tasks:
+      - name: detect_item_at_point_1
+        type: detect_item
+        target: example_object
+        mock_confidence: 0.92
+        mock_delay_sec: 0.3
+      - name: grasp_item_at_point_1
+        type: grasp_item
+        source: detected_item
+        gripper: piper
+        mock_delay_sec: 0.4
+
+  - name: task_point_2_meter_voice
+    description: 任务点二；识别电表图像并执行语音播报。
+    frame_id: map
+    x: 1.0
+    y: 1.0
+    yaw: 1.5708
+    tasks:
+      - name: read_meter_at_point_2
+        type: read_meter
+        meter_id: example_meter
+        mock_value: 220.0V
+        mock_confidence: 0.9
+        mock_delay_sec: 0.3
+      - name: voice_report_meter
+        type: voice_report
+        mock_delay_sec: 0.2
+
+  - name: task_point_3_flame_tracking
+    description: 任务点三；识别火焰图片并追踪。
+    frame_id: map
+    x: 0.0
+    y: 1.0
+    yaw: 3.1416
+    tasks:
+      - name: detect_flame_at_point_3
+        type: detect_flame
+        mock_confidence: 0.88
+        mock_delay_sec: 0.3
+      - name: track_flame_at_point_3
+        type: track_flame
+        source: flame_detection
+        mock_tracking_steps: 3
+        mock_step_delay_sec: 0.2
+
+  - name: task_point_4_classify_place
+    description: 任务点四；把夹取物品分类放置。
+    frame_id: map
+    x: -1.0
+    y: 1.0
+    yaw: -1.5708
+    tasks:
+      - name: classify_and_place_object
+        type: classify_place
+        source: grasped_object
+        mock_category: example_category_a
+        place_zone: bin_a
+        mock_delay_sec: 0.4
+
+  - name: return_start_area
+    description: 回到起停区，形成一圈任务路线。
+    frame_id: map
+    x: 0.0
+    y: 0.0
+    yaw: 0.0
+    tasks:
+      - name: finish_delay
+        type: wait
+        seconds: 0.2

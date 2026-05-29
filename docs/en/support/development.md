@@ -31,7 +31,7 @@ For first-time deployment, start with:
 | Version control | Git + GitHub | fork, branch, PR, and submodule workflow |
 | Editor | VS Code | recommended common editor |
 | AI assistant | Codex | useful for reading, drafting, and small edits |
-| Docs preview | Docker | recommended for local GitHub Pages preview |
+| Docs preview | MkDocs Material | the docs site is built with MkDocs; dependencies are listed in `requirements-docs.txt` |
 
 ## Module-Specific Dependencies
 
@@ -51,7 +51,8 @@ Not everyone needs every dependency. Install by task direction:
 - PX4 / UAV work:
   - PX4, Micro XRCE-DDS Agent, and bridge-side dependencies
 - Docs work:
-  - Docker
+  - Python virtual environment
+  - `requirements-docs.txt`
   - Markdown editing environment
 - Simulation work:
   - Gazebo and simulation workspace dependencies
@@ -422,17 +423,35 @@ When debugging, check these first:
 
 If you modify `docs/`, preview locally before opening a PR.
 
-Recommended Docker command:
+The docs site now uses MkDocs Material rather than the old Jekyll pipeline. Prepare the docs environment once:
 
 ```bash
 cd ~/venom_ws/src/venom_vnv
-docker run --rm -it -p 4001:4000 -v "$PWD":/srv/jekyll jekyll/jekyll:pages sh -lc "apk add --no-cache ruby-webrick >/dev/null && jekyll serve --source docs --host 0.0.0.0"
+python3 -m venv .venv-docs
+source .venv-docs/bin/activate
+pip install -r requirements-docs.txt
+```
+
+Preview locally:
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+source .venv-docs/bin/activate
+mkdocs serve -a 0.0.0.0:4001
 ```
 
 Then open:
 
 ```text
 http://localhost:4001/Venom_VNV/
+```
+
+Before submitting docs changes, run a strict build:
+
+```bash
+cd ~/venom_ws/src/venom_vnv
+source .venv-docs/bin/activate
+DISABLE_MKDOCS_2_WARNING=true mkdocs build --strict
 ```
 
 ## Pre-Submission Checklist
