@@ -37,6 +37,7 @@
 #include <rclcpp_action/rclcpp_action.hpp>
 #include <sensor_msgs/msg/joint_state.hpp>
 #include <std_msgs/msg/bool.hpp>
+#include <std_srvs/srv/set_bool.hpp>
 #include <trajectory_msgs/msg/joint_trajectory.hpp>
 #include <trajectory_msgs/msg/joint_trajectory_point.hpp>
 
@@ -599,6 +600,7 @@ class PickPlaceServer : public rclcpp::Node
 public:
   using ExecuteTask = venom_manipulation_interfaces::action::ExecuteTask;
   using GraspTarget = venom_manipulation_interfaces::msg::GraspTarget;
+  using SetBool = std_srvs::srv::SetBool;
 #if defined(HAVE_LINKATTACHER_MSGS)
   using AttachLink = linkattacher_msgs::srv::AttachLink;
   using DetachLink = linkattacher_msgs::srv::DetachLink;
@@ -701,7 +703,10 @@ private:
       goal->task_type != ExecuteTask::Goal::MOVE_HOME &&
       goal->task_type != ExecuteTask::Goal::MOVE_OBSERVE &&
       goal->task_type != ExecuteTask::Goal::PICK_AND_PLACE_LATEST_TARGET &&
-      goal->task_type != ExecuteTask::Goal::CLASSIFY_PLATFORM_TO_COLOR_BOXES)
+      goal->task_type != ExecuteTask::Goal::CLASSIFY_PLATFORM_TO_COLOR_BOXES &&
+      goal->task_type != ExecuteTask::Goal::REPEAT_VISUAL_PICK_TO_PAYLOAD &&
+      goal->task_type != ExecuteTask::Goal::START_FLAME_TRACKING &&
+      goal->task_type != ExecuteTask::Goal::STOP_FLAME_TRACKING)
     {
       RCLCPP_WARN(get_logger(), "Rejecting unsupported task type %u", goal->task_type);
       return rclcpp_action::GoalResponse::REJECT;
@@ -777,6 +782,12 @@ private:
     const bool vision_pick_task = task_type == ExecuteTask::Goal::PICK_AND_PLACE_LATEST_TARGET;
     const bool classification_task =
       task_type == ExecuteTask::Goal::CLASSIFY_PLATFORM_TO_COLOR_BOXES;
+    const bool repeat_visual_pick_task =
+      task_type == ExecuteTask::Goal::REPEAT_VISUAL_PICK_TO_PAYLOAD;
+    const bool flame_tracking_start_task =
+      task_type == ExecuteTask::Goal::START_FLAME_TRACKING;
+    const bool flame_tracking_stop_task =
+      task_type == ExecuteTask::Goal::STOP_FLAME_TRACKING;
     const bool pick_task =
       task_type == ExecuteTask::Goal::PICK_AND_PLACE_FIXED || vision_pick_task;
     const bool diagnostic_ik_only = pick_task && parameters_.diagnostic_ik_only;
@@ -789,6 +800,16 @@ private:
 
       if (classification_task) {
         execute_classification_place_goal(goal_handle);
+        return;
+      }
+
+      if (repeat_visual_pick_task) {
+        execute_repeat_visual_pick_goal(goal_handle);
+        return;
+      }
+
+      if (flame_tracking_start_task || flame_tracking_stop_task) {
+        execute_flame_tracking_goal(goal_handle, flame_tracking_start_task);
         return;
       }
 
@@ -817,6 +838,35 @@ private:
           return;
         }
 
+        if (parameters_.move_home_open_gripper) {
+          publish_feedback(
+            goal_handle,
+            ExecuteTask::Goal::STAGE_OPENING_GRIPPER,
+            "Opening gripper fully at home");
+          if (parameters_.gripper_open_joint7 >= -0.5) {
+            publish_gripper_target(parameters_.gripper_open_joint7, 0.40);
+          } else {
+            std::string open_gripper_error_message;
+            if (!execute_named_gripper_target(
+                parameters_.gripper_open_named_target,
+                "opening gripper at home",
+                open_gripper_error_message))
+            {
+              finish_result(
+                goal_handle,
+                false,
+                ExecuteTask::Goal::STAGE_OPENING_GRIPPER,
+                ExecuteTask::Result::ERROR_EXECUTION_FAILED,
+                open_gripper_error_message.empty() ?
+                "Failed to open gripper fully at home." :
+                open_gripper_error_message);
+              clear_current_task(nullptr);
+              return;
+            }
+          }
+          std::this_thread::sleep_for(std::chrono::milliseconds(600));
+        }
+
         if (vision_pick_task && parameters_.vision_target.wait_after_home_timeout_sec > 0.0) {
           publish_feedback(
             goal_handle,
@@ -824,7 +874,7 @@ private:
             "Waiting for a fresh visual target after home");
 
           std::string fresh_target_error_message;
-          if (!wait_for_visual_target_after(
+          if (!wait_for_fresh_visual_target_after(
               now(),
               parameters_.vision_target.wait_after_home_timeout_sec,
               fresh_target_error_message))
@@ -1457,6 +1507,12 @@ private:
     return pose;
   }
 
+  void rebuild_factory_from_parameters()
+  {
+    auto node_handle = rclcpp::Node::SharedPtr(this, [](rclcpp::Node *) {});
+    factory_ = std::make_unique<TaskFactory>(node_handle, parameters_);
+  }
+
   bool execute_arm_pose_goal(
     const std::shared_ptr<GoalHandleExecuteTask> & goal_handle,
     const geometry_msgs::msg::PoseStamped & pose,
@@ -1527,23 +1583,26 @@ private:
     return true;
   }
 
-  bool set_fusion_target_class(const std::string & target_class, std::string & error_message)
+  bool set_fusion_target_class(
+    const std::string & target_class,
+    const std::string & target_fusion_node_name,
+    bool set_enabled,
+    double settle_sec,
+    std::string & error_message)
   {
-    const auto & config = parameters_.classification_place;
-    if (!config.set_fusion_target_class) {
+    if (!set_enabled) {
       return true;
     }
-    if (!target_fusion_parameter_client_) {
-      error_message = "Target fusion parameter client is unavailable.";
-      return false;
-    }
-    if (!target_fusion_parameter_client_->wait_for_service(std::chrono::seconds(2))) {
+    const std::string node_name =
+      target_fusion_node_name.empty() ? "/grasp_target_fusion" : target_fusion_node_name;
+    auto client = std::make_shared<rclcpp::AsyncParametersClient>(this, node_name);
+    if (!client->wait_for_service(std::chrono::seconds(2))) {
       error_message =
-        "Timed out waiting for parameter service on " + config.target_fusion_node_name + ".";
+        "Timed out waiting for parameter service on " + node_name + ".";
       return false;
     }
 
-    auto future = target_fusion_parameter_client_->set_parameters(
+    auto future = client->set_parameters(
       {rclcpp::Parameter("target_class", target_class)});
     if (future.wait_for(std::chrono::seconds(2)) != std::future_status::ready) {
       error_message = "Timed out setting grasp_target_fusion target_class to '" + target_class + "'.";
@@ -1559,12 +1618,312 @@ private:
       }
     }
 
-    const double settle_sec = std::max(0.0, config.target_switch_settle_sec);
-    if (settle_sec > 1e-6) {
+    const double bounded_settle_sec = std::max(0.0, settle_sec);
+    if (bounded_settle_sec > 1e-6) {
       std::this_thread::sleep_for(std::chrono::duration_cast<std::chrono::milliseconds>(
-        std::chrono::duration<double>(settle_sec)));
+        std::chrono::duration<double>(bounded_settle_sec)));
     }
     return true;
+  }
+
+  bool set_fusion_target_class(const std::string & target_class, std::string & error_message)
+  {
+    const auto & config = parameters_.classification_place;
+    return set_fusion_target_class(
+      target_class,
+      config.target_fusion_node_name,
+      config.set_fusion_target_class,
+      config.target_switch_settle_sec,
+      error_message);
+  }
+
+  bool set_fixed_place_index(int64_t index, std::string & error_message)
+  {
+    const auto result = set_parameter(rclcpp::Parameter("place_target.fixed_pose_index", index));
+    if (!result.successful) {
+      error_message =
+        "Failed to set place_target.fixed_pose_index to " + std::to_string(index) +
+        ": " + result.reason;
+      return false;
+    }
+    return true;
+  }
+
+  bool execute_visual_pick_once_for_repeat(
+    const std::shared_ptr<GoalHandleExecuteTask> & goal_handle,
+    std::size_t pick_index,
+    std::size_t total_picks,
+    std::string & error_message)
+  {
+    const std::string progress =
+      std::to_string(pick_index + 1) + "/" + std::to_string(total_picks);
+
+    if (!parameters_.pick_only || !parameters_.use_direct_visual_pick_fallback) {
+      error_message =
+        "Repeat visual pick task currently requires pick_only=true and "
+        "use_direct_visual_pick_fallback=true in configuration.";
+      return false;
+    }
+
+    if (parameters_.move_home_before_pick) {
+      publish_feedback(
+        goal_handle,
+        ExecuteTask::Goal::STAGE_MOVING_HOME,
+        "Repeat visual pick " + progress + ": moving arm home");
+
+      if (!execute_named_arm_target(
+          parameters_.arm_home_named_target,
+          "home before repeat visual pick",
+          error_message))
+      {
+        if (error_message.empty()) {
+          error_message = "Failed to move arm home before repeat visual pick.";
+        }
+        return false;
+      }
+
+      if (parameters_.move_home_open_gripper) {
+        publish_feedback(
+          goal_handle,
+          ExecuteTask::Goal::STAGE_OPENING_GRIPPER,
+          "Repeat visual pick " + progress + ": opening gripper at home");
+        if (parameters_.gripper_open_joint7 >= -0.5) {
+          publish_gripper_target(parameters_.gripper_open_joint7, 0.40);
+        } else if (!execute_named_gripper_target(
+            parameters_.gripper_open_named_target,
+            "opening gripper at home",
+            error_message))
+        {
+          if (error_message.empty()) {
+            error_message = "Failed to open gripper fully at home.";
+          }
+          return false;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(600));
+      }
+
+      if (parameters_.vision_target.wait_after_home_timeout_sec > 0.0) {
+        publish_feedback(
+          goal_handle,
+          ExecuteTask::Goal::STAGE_WAITING_FOR_TARGET,
+          "Repeat visual pick " + progress + ": waiting for a fresh visual target");
+        if (!wait_for_fresh_visual_target_after(
+            now(),
+            parameters_.vision_target.wait_after_home_timeout_sec,
+            error_message))
+        {
+          return false;
+        }
+      }
+    }
+
+    publish_feedback(
+      goal_handle,
+      ExecuteTask::Goal::STAGE_WAITING_FOR_TARGET,
+      "Repeat visual pick " + progress + ": resolving latest visual grasp target");
+    if (!prepare_visual_pick_target(error_message)) {
+      return false;
+    }
+
+    return execute_direct_visual_pick(goal_handle, error_message);
+  }
+
+  void execute_repeat_visual_pick_goal(const std::shared_ptr<GoalHandleExecuteTask> & goal_handle)
+  {
+    const auto baseline_parameters = parameters_;
+    const int64_t original_fixed_place_index =
+      get_parameter("place_target.fixed_pose_index").as_int();
+    const auto & config = baseline_parameters.repeat_visual_pick;
+    std::string error_message;
+
+    const auto restore_baseline = [&]() {
+      parameters_ = baseline_parameters;
+      rebuild_factory_from_parameters();
+      std::string restore_error_message;
+      if (!set_fixed_place_index(original_fixed_place_index, restore_error_message)) {
+        RCLCPP_WARN(get_logger(), "%s", restore_error_message.c_str());
+      }
+    };
+
+    const auto finish_failure = [&](uint8_t stage, int32_t error_code, const std::string & message) {
+      stop_gripper_hold();
+      restore_baseline();
+      clear_current_task(nullptr);
+      finish_result(goal_handle, false, stage, error_code, message);
+    };
+
+    if (config.place_indices.empty()) {
+      finish_failure(
+        ExecuteTask::Goal::STAGE_FAILED,
+        ExecuteTask::Result::ERROR_NOT_READY,
+        "repeat_visual_pick.place_indices is empty.");
+      return;
+    }
+    if (config.target_class.empty()) {
+      finish_failure(
+        ExecuteTask::Goal::STAGE_FAILED,
+        ExecuteTask::Result::ERROR_NOT_READY,
+        "repeat_visual_pick.target_class is empty.");
+      return;
+    }
+
+    try {
+      publish_feedback(
+        goal_handle,
+        ExecuteTask::Goal::STAGE_WAITING_FOR_TARGET,
+        "Setting repeat visual pick target class to " + config.target_class);
+      if (!set_fusion_target_class(
+          config.target_class,
+          config.target_fusion_node_name,
+          config.set_fusion_target_class,
+          config.target_switch_settle_sec,
+          error_message))
+      {
+        finish_failure(
+          ExecuteTask::Goal::STAGE_WAITING_FOR_TARGET,
+          ExecuteTask::Result::ERROR_NOT_READY,
+          error_message);
+        return;
+      }
+
+      for (std::size_t index = 0; index < config.place_indices.size(); ++index) {
+        if (goal_handle->is_canceling()) {
+          finish_failure(
+            ExecuteTask::Goal::STAGE_FAILED,
+            ExecuteTask::Result::ERROR_CANCELED,
+            "Repeat visual pick task canceled.");
+          return;
+        }
+
+        const int64_t place_index = config.place_indices[index];
+        publish_feedback(
+          goal_handle,
+          ExecuteTask::Goal::STAGE_MOVING_PLACE,
+          "Repeat visual pick " + std::to_string(index + 1) + "/" +
+          std::to_string(config.place_indices.size()) +
+          ": selecting fixed place index " + std::to_string(place_index));
+        if (!set_fixed_place_index(place_index, error_message)) {
+          finish_failure(
+            ExecuteTask::Goal::STAGE_FAILED,
+            ExecuteTask::Result::ERROR_NOT_READY,
+            error_message);
+          return;
+        }
+
+        if (!execute_visual_pick_once_for_repeat(
+            goal_handle,
+            index,
+            config.place_indices.size(),
+            error_message))
+        {
+          finish_failure(
+            goal_handle->is_canceling() ?
+            ExecuteTask::Goal::STAGE_FAILED :
+            ExecuteTask::Goal::STAGE_FAILED,
+            goal_handle->is_canceling() ?
+            ExecuteTask::Result::ERROR_CANCELED :
+            ExecuteTask::Result::ERROR_EXECUTION_FAILED,
+            error_message.empty() ? "Repeat visual pick failed." : error_message);
+          return;
+        }
+
+        parameters_ = baseline_parameters;
+        rebuild_factory_from_parameters();
+
+        if (index + 1 < config.place_indices.size()) {
+          const double delay_sec = std::max(0.0, config.delay_between_picks_sec);
+          if (delay_sec > 1e-6) {
+            std::this_thread::sleep_for(std::chrono::duration_cast<std::chrono::milliseconds>(
+              std::chrono::duration<double>(delay_sec)));
+          }
+        }
+      }
+
+      stop_gripper_hold();
+      restore_baseline();
+      clear_current_task(nullptr);
+      finish_result(
+        goal_handle,
+        true,
+        ExecuteTask::Goal::STAGE_DONE,
+        ExecuteTask::Result::ERROR_NONE,
+        "Repeat visual pick to payload completed.");
+    } catch (const std::exception & exception) {
+      detach_pick_object_from_gazebo_link_attacher();
+      detach_pick_object_from_moveit();
+      finish_failure(
+        ExecuteTask::Goal::STAGE_FAILED,
+        ExecuteTask::Result::ERROR_EXECUTION_FAILED,
+        std::string("Repeat visual pick task failed: ") + exception.what());
+    }
+  }
+
+  void execute_flame_tracking_goal(
+    const std::shared_ptr<GoalHandleExecuteTask> & goal_handle,
+    bool enable)
+  {
+    const auto & config = parameters_.flame_tracking;
+    const auto timeout = std::chrono::duration_cast<std::chrono::milliseconds>(
+      std::chrono::duration<double>(std::max(0.1, config.service_timeout_sec)));
+    std::string action_label = enable ? "start" : "stop";
+
+    publish_feedback(
+      goal_handle,
+      ExecuteTask::Goal::STAGE_WAITING_FOR_TARGET,
+      "Calling flame tracking " + action_label + " service");
+
+    auto client = create_client<SetBool>(
+      config.set_enabled_service,
+      rmw_qos_profile_services_default,
+      action_callback_group_);
+    if (!client->wait_for_service(timeout)) {
+      clear_current_task(nullptr);
+      finish_result(
+        goal_handle,
+        false,
+        ExecuteTask::Goal::STAGE_FAILED,
+        ExecuteTask::Result::ERROR_NOT_READY,
+        "Timed out waiting for flame tracking service " + config.set_enabled_service + ".");
+      return;
+    }
+
+    auto request = std::make_shared<SetBool::Request>();
+    request->data = enable;
+    auto future = client->async_send_request(request);
+    if (future.wait_for(timeout) != std::future_status::ready) {
+      clear_current_task(nullptr);
+      finish_result(
+        goal_handle,
+        false,
+        ExecuteTask::Goal::STAGE_FAILED,
+        ExecuteTask::Result::ERROR_TIMEOUT,
+        "Timed out calling flame tracking service " + config.set_enabled_service + ".");
+      return;
+    }
+
+    const auto response = future.get();
+    if (!response->success) {
+      clear_current_task(nullptr);
+      finish_result(
+        goal_handle,
+        false,
+        ExecuteTask::Goal::STAGE_FAILED,
+        ExecuteTask::Result::ERROR_NOT_READY,
+        response->message.empty() ?
+        "Flame tracking service rejected the request." :
+        response->message);
+      return;
+    }
+
+    clear_current_task(nullptr);
+    finish_result(
+      goal_handle,
+      true,
+      ExecuteTask::Goal::STAGE_DONE,
+      ExecuteTask::Result::ERROR_NONE,
+      response->message.empty() ?
+      (enable ? "Flame tracking started." : "Flame tracking stopped.") :
+      response->message);
   }
 
   bool wait_for_box_target(
@@ -2439,7 +2798,18 @@ private:
       }
     }
 
-    const auto current_pose_after_lift = arm_move_group_->getCurrentPose(parameters_.hand_frame);
+    if (!execute_pre_place_alignment(goal_handle, error_message)) {
+      return false;
+    }
+
+    if (parameters_.place_target.release_after_pre_place) {
+      publish_feedback(
+        goal_handle,
+        ExecuteTask::Goal::STAGE_OPENING_GRIPPER,
+        "Releasing object from pre-place pose");
+      return execute_direct_release_fallback(goal_handle, error_message);
+    }
+
     XYZ fixed_place_position;
     if (!get_selected_fixed_place_position(fixed_place_position, error_message)) {
       return false;
@@ -2450,13 +2820,33 @@ private:
     fixed_place_pose.pose.position.x = fixed_place_position.x;
     fixed_place_pose.pose.position.y = fixed_place_position.y;
     fixed_place_pose.pose.position.z = fixed_place_position.z;
-    fixed_place_pose.pose.orientation = current_pose_after_lift.pose.orientation;
+    tf2::Quaternion fixed_place_orientation;
+    fixed_place_orientation.setRPY(
+      parameters_.place_target.orientation.roll,
+      parameters_.place_target.orientation.pitch,
+      parameters_.place_target.orientation.yaw);
+    fixed_place_orientation.normalize();
+    fixed_place_pose.pose.orientation.x = fixed_place_orientation.x();
+    fixed_place_pose.pose.orientation.y = fixed_place_orientation.y();
+    fixed_place_pose.pose.orientation.z = fixed_place_orientation.z();
+    fixed_place_pose.pose.orientation.w = fixed_place_orientation.w();
 
     if (!execute_pose_goal(
         fixed_place_pose,
         "Moving to fixed place pose",
         ExecuteTask::Goal::STAGE_MOVING_PLACE))
     {
+      if (parameters_.place_target.allow_direct_release_fallback) {
+        RCLCPP_WARN(
+          get_logger(),
+          "Failed to reach fixed place pose. Releasing object from current pre-place pose instead.");
+        error_message.clear();
+        publish_feedback(
+          goal_handle,
+          ExecuteTask::Goal::STAGE_OPENING_GRIPPER,
+          "Fixed place planning failed, releasing object from current pre-place pose");
+        return execute_direct_release_fallback(goal_handle, error_message);
+      }
       return false;
     }
 
@@ -2796,6 +3186,33 @@ private:
     if (latest_grasp_target_->confidence < parameters_.vision_target.min_target_confidence) {
       if (error_message != nullptr) {
         *error_message = "Latest visual target confidence is below threshold.";
+      }
+      return false;
+    }
+
+    const auto & position = latest_grasp_target_->pose.position;
+    if (!std::isfinite(position.x) || !std::isfinite(position.y) || !std::isfinite(position.z)) {
+      if (error_message != nullptr) {
+        *error_message = "Latest visual target position contains a non-finite value.";
+      }
+      return false;
+    }
+
+    const auto & workspace_min = parameters_.vision_target.workspace_min;
+    const auto & workspace_max = parameters_.vision_target.workspace_max;
+    if (position.x < workspace_min.x || position.x > workspace_max.x ||
+      position.y < workspace_min.y || position.y > workspace_max.y ||
+      position.z < workspace_min.z || position.z > workspace_max.z)
+    {
+      if (error_message != nullptr) {
+        std::ostringstream message;
+        message << std::fixed << std::setprecision(4)
+                << "Latest visual target position is outside workspace bounds: position=("
+                << position.x << ", " << position.y << ", " << position.z << ") bounds=[("
+                << workspace_min.x << ", " << workspace_min.y << ", " << workspace_min.z
+                << "), (" << workspace_max.x << ", " << workspace_max.y << ", "
+                << workspace_max.z << ")].";
+        *error_message = message.str();
       }
       return false;
     }

@@ -9,9 +9,9 @@ pick_place_server:
     arm_home_named_target: zero
     gripper_open_named_target: open
     gripper_close_named_target: close
-    move_home_open_gripper: false
+    move_home_open_gripper: true
     skip_open_gripper_stage: true
-    gripper_open_joint7: -0.035
+    gripper_open_joint7: -0.040
     gripper_close_joint7: 0.0
     pipeline_planner_id: ompl
     max_solutions: 1
@@ -67,7 +67,7 @@ pick_place_server:
       - 0.78539816339
       - 1.57079632679
     place_target:
-      offset_xyz: [0.05, 0.0, 0.0]
+      offset_xyz: [0.0, 0.0, 0.0]
       release_height: 0.10
       orientation_rpy: [3.14159265359, 1.3962634016, -2.39617317732]
       release_after_pre_place: true
@@ -86,12 +86,14 @@ pick_place_server:
       require_single_target: true
       require_valid_signal: false
       target_timeout_sec: 120.0
-      wait_after_home_timeout_sec: 3.0
+      wait_after_home_timeout_sec: 45.0
       min_target_confidence: 0.7
       compute_grasp_offsets: true
       lock_lateral_offsets_to_zero: false
       default_target_size_xyz: [0.044, 0.044, 0.10]
       target_position_bias_xyz: [0.15, 0.0, 0.0]
+      workspace_min_xyz: [0.10, -0.35, 0.03]
+      workspace_max_xyz: [0.60, 0.35, 0.40]
       yaw_candidate_offsets: [0.0, -0.52359877560, 0.52359877560, -0.78539816339, 0.78539816339]
       grasp_strategy: radial_side
       object_shape: cylinder
@@ -123,6 +125,16 @@ pick_place_server:
       target_fusion_node_name: /grasp_target_fusion
       set_fusion_target_class: true
       target_switch_settle_sec: 0.20
+    repeat_visual_pick:
+      target_class: bottle
+      place_indices: [0, 1]
+      target_fusion_node_name: /grasp_target_fusion
+      set_fusion_target_class: true
+      target_switch_settle_sec: 0.20
+      delay_between_picks_sec: 1.0
+    flame_tracking:
+      set_enabled_service: /flame_arm_tracker/set_enabled
+      service_timeout_sec: 3.0
     pre_place:
       enabled: true
       heading_offset: 0.80

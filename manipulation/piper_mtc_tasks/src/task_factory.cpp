@@ -228,6 +228,10 @@ void declare_task_parameters(rclcpp::Node & node)
   node.declare_parameter<std::vector<double>>(
     "vision_target.default_target_size_xyz", {0.053, 0.053, 0.134});
   node.declare_parameter<std::vector<double>>(
+    "vision_target.workspace_min_xyz", {-10.0, -10.0, -10.0});
+  node.declare_parameter<std::vector<double>>(
+    "vision_target.workspace_max_xyz", {10.0, 10.0, 10.0});
+  node.declare_parameter<std::vector<double>>(
     "vision_target.yaw_candidate_offsets",
     std::vector<double>{-0.2617993878, -0.0872664626, 0.0, 0.0872664626, 0.2617993878});
   node.declare_parameter<std::vector<std::string>>(
@@ -274,6 +278,18 @@ void declare_task_parameters(rclcpp::Node & node)
     "classification_place.target_fusion_node_name", "/grasp_target_fusion");
   node.declare_parameter<bool>("classification_place.set_fusion_target_class", true);
   node.declare_parameter<double>("classification_place.target_switch_settle_sec", 0.20);
+  node.declare_parameter<std::string>("repeat_visual_pick.target_class", "bottle");
+  node.declare_parameter<std::vector<int64_t>>(
+    "repeat_visual_pick.place_indices",
+    std::vector<int64_t>{0, 1});
+  node.declare_parameter<std::string>(
+    "repeat_visual_pick.target_fusion_node_name", "/grasp_target_fusion");
+  node.declare_parameter<bool>("repeat_visual_pick.set_fusion_target_class", true);
+  node.declare_parameter<double>("repeat_visual_pick.target_switch_settle_sec", 0.20);
+  node.declare_parameter<double>("repeat_visual_pick.delay_between_picks_sec", 1.0);
+  node.declare_parameter<std::string>(
+    "flame_tracking.set_enabled_service", "/flame_arm_tracker/set_enabled");
+  node.declare_parameter<double>("flame_tracking.service_timeout_sec", 3.0);
   node.declare_parameter<std::vector<double>>(
     "place_target.offset_xyz", {0.0, 0.0, 0.0});
   node.declare_parameter<double>("place_target.release_height", 0.03);
@@ -484,6 +500,10 @@ TaskParameters load_task_parameters(rclcpp::Node & node)
     read_xyz_parameter(node, "vision_target.target_position_bias_xyz");
   parameters.vision_target.default_target_size =
     read_xyz_parameter(node, "vision_target.default_target_size_xyz");
+  parameters.vision_target.workspace_min =
+    read_xyz_parameter(node, "vision_target.workspace_min_xyz");
+  parameters.vision_target.workspace_max =
+    read_xyz_parameter(node, "vision_target.workspace_max_xyz");
   parameters.vision_target.yaw_candidate_offsets =
     node.get_parameter("vision_target.yaw_candidate_offsets").as_double_array();
   parameters.vision_target.allowed_target_classes =
@@ -556,6 +576,28 @@ TaskParameters load_task_parameters(rclcpp::Node & node)
     node.get_parameter("classification_place.set_fusion_target_class").as_bool();
   parameters.classification_place.target_switch_settle_sec =
     node.get_parameter("classification_place.target_switch_settle_sec").as_double();
+  parameters.repeat_visual_pick.target_class =
+    node.get_parameter("repeat_visual_pick.target_class").as_string();
+  parameters.repeat_visual_pick.place_indices =
+    node.get_parameter("repeat_visual_pick.place_indices").as_integer_array();
+  parameters.repeat_visual_pick.target_fusion_node_name =
+    node.get_parameter("repeat_visual_pick.target_fusion_node_name").as_string();
+  if (parameters.repeat_visual_pick.target_fusion_node_name.empty()) {
+    parameters.repeat_visual_pick.target_fusion_node_name = "/grasp_target_fusion";
+  }
+  parameters.repeat_visual_pick.set_fusion_target_class =
+    node.get_parameter("repeat_visual_pick.set_fusion_target_class").as_bool();
+  parameters.repeat_visual_pick.target_switch_settle_sec =
+    node.get_parameter("repeat_visual_pick.target_switch_settle_sec").as_double();
+  parameters.repeat_visual_pick.delay_between_picks_sec =
+    node.get_parameter("repeat_visual_pick.delay_between_picks_sec").as_double();
+  parameters.flame_tracking.set_enabled_service =
+    node.get_parameter("flame_tracking.set_enabled_service").as_string();
+  if (parameters.flame_tracking.set_enabled_service.empty()) {
+    parameters.flame_tracking.set_enabled_service = "/flame_arm_tracker/set_enabled";
+  }
+  parameters.flame_tracking.service_timeout_sec =
+    node.get_parameter("flame_tracking.service_timeout_sec").as_double();
   parameters.place_target.offset =
     read_xyz_parameter(node, "place_target.offset_xyz");
   parameters.place_target.release_height =

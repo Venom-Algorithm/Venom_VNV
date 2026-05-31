@@ -67,6 +67,8 @@ struct VisionTargetConfig
   std::string object_shape{"cylinder"};
   XYZ target_position_bias{0.0, 0.0, 0.0};
   XYZ default_target_size{0.045, 0.045, 0.06};
+  XYZ workspace_min{-10.0, -10.0, -10.0};
+  XYZ workspace_max{10.0, 10.0, 10.0};
   std::vector<double> yaw_candidate_offsets{0.0};
   std::vector<std::string> allowed_target_classes{"block", "cube"};
 };
@@ -119,6 +121,22 @@ struct ClassificationPlaceConfig
   std::string target_fusion_node_name{"/grasp_target_fusion"};
   bool set_fusion_target_class{true};
   double target_switch_settle_sec{0.20};
+};
+
+struct RepeatVisualPickConfig
+{
+  std::string target_class{"bottle"};
+  std::vector<int64_t> place_indices{0, 1};
+  std::string target_fusion_node_name{"/grasp_target_fusion"};
+  bool set_fusion_target_class{true};
+  double target_switch_settle_sec{0.20};
+  double delay_between_picks_sec{1.0};
+};
+
+struct FlameTrackingTaskConfig
+{
+  std::string set_enabled_service{"/flame_arm_tracker/set_enabled"};
+  double service_timeout_sec{3.0};
 };
 
 struct TaskParameters
@@ -199,6 +217,8 @@ struct TaskParameters
   ObservePose observe_pose;
   PrePlaceConfig pre_place;
   ClassificationPlaceConfig classification_place;
+  RepeatVisualPickConfig repeat_visual_pick;
+  FlameTrackingTaskConfig flame_tracking;
   PlaceTargetConfig place_target;
   SceneBox pickup_table;
   SceneOpenTopBin place_bin;

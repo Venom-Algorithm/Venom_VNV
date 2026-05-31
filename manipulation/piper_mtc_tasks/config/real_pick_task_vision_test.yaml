@@ -9,7 +9,7 @@ pick_place_server:
     arm_home_named_target: zero
     gripper_open_named_target: open
     gripper_close_named_target: close
-    gripper_open_joint7: -0.022
+    gripper_open_joint7: -0.040
     gripper_close_joint7: 0.0
     pipeline_planner_id: ompl
     max_solutions: 1
@@ -31,6 +31,7 @@ pick_place_server:
     execute_on_plan: true
     diagnostic_ik_only: false
     pick_only: true
+    use_direct_visual_pick_fallback: true
     top_down_strategy_enabled: true
     disable_scene_objects: true
     arm_only_reach_test: false
@@ -89,7 +90,7 @@ pick_place_server:
       require_single_target: true
       require_valid_signal: false
       target_timeout_sec: 120.0
-      wait_after_home_timeout_sec: 3.0
+      wait_after_home_timeout_sec: 45.0
       min_target_confidence: 0.7
       compute_grasp_offsets: true
       lock_lateral_offsets_to_zero: true
@@ -101,7 +102,9 @@ pick_place_server:
       collision_scale_xy: 0.85
       collision_scale_z: 0.90
       default_target_size_xyz: [0.044, 0.044, 0.10]
-      target_position_bias_xyz: [0.15, 0.0, 0.0]
+      target_position_bias_xyz: [0.0, 0.0, 0.0]
+      workspace_min_xyz: [0.10, -0.35, 0.03]
+      workspace_max_xyz: [0.60, 0.35, 0.40]
       yaw_candidate_offsets: [-0.3490658504, -0.1745329252, -0.0872664626, 0.0, 0.0872664626, 0.1745329252, 0.3490658504]
       allowed_target_classes: [black_block, white_block, black, white, can, redbull, block, cylinder, bottle]
     observe_pose:

@@ -46,8 +46,10 @@ def generate_launch_description():
     d435i_launch = os.path.join(bringup_share, "launch", "examples", "d435i_test.launch.py")
     piper_control_launch = os.path.join(piper_share, "launch", "start_single_piper.launch.py")
     real_pick_task_launch = os.path.join(mtc_share, "launch", "real_pick_task.launch.py")
+    flame_tracking_launch = os.path.join(flame_share, "launch", "flame_tracking.launch.py")
     fusion_config = os.path.join(fusion_share, "config", "grasp_target_fusion.yaml")
     color_box_config = os.path.join(flame_share, "config", "color_box_detection.yaml")
+    flame_tracking_config = os.path.join(flame_share, "config", "flame_tracking.yaml")
     workspace_handeye_file = os.path.abspath(
         os.path.join(
             os.path.dirname(__file__),
@@ -63,7 +65,7 @@ def generate_launch_description():
             fusion_share, "handeye", "hand_to_camera_optical_frame_2026-05-23.yaml"
         )
     )
-    mtc_params = os.path.join(mtc_share, "config", "real_pick_task_vision_test.yaml")
+    mtc_params = os.path.join(mtc_share, "config", "real_pick_task.yaml")
 
     return LaunchDescription([
         DeclareLaunchArgument("camera_namespace", default_value="camera"),
@@ -77,7 +79,7 @@ def generate_launch_description():
         DeclareLaunchArgument("auto_enable", default_value="true"),
         DeclareLaunchArgument("gripper_exist", default_value="true"),
         DeclareLaunchArgument("gripper_val_mutiple", default_value="2"),
-        DeclareLaunchArgument("invert_gripper_command", default_value="true"),
+        DeclareLaunchArgument("invert_gripper_command", default_value="false"),
         DeclareLaunchArgument("invert_gripper_feedback", default_value="false"),
         DeclareLaunchArgument("send_zero_pose_after_exit_teach", default_value="true"),
         DeclareLaunchArgument("launch_piper_control", default_value="true"),
@@ -88,16 +90,22 @@ def generate_launch_description():
         DeclareLaunchArgument("link_prefix", default_value="piper_"),
         DeclareLaunchArgument("handeye_file", default_value=handeye_file),
         DeclareLaunchArgument("mtc_params", default_value=mtc_params),
-        DeclareLaunchArgument("launch_yolo_detector", default_value="false"),
-        DeclareLaunchArgument("launch_yolo_bridge", default_value="false"),
+        DeclareLaunchArgument("launch_yolo_detector", default_value="true"),
+        DeclareLaunchArgument("launch_yolo_bridge", default_value="true"),
         DeclareLaunchArgument("launch_color_box_detector", default_value="false"),
+        DeclareLaunchArgument("launch_flame_tracking", default_value="false"),
+        DeclareLaunchArgument("flame_use_yolo", default_value="true"),
+        DeclareLaunchArgument("flame_params_file", default_value=flame_tracking_config),
+        DeclareLaunchArgument("launch_repeat_visual_pick", default_value="false"),
+        DeclareLaunchArgument("target_class", default_value="bottle"),
+        DeclareLaunchArgument("place_indices", default_value="0,1"),
         DeclareLaunchArgument(
             "yolo_model_path",
             default_value="yolov8n.pt",
         ),
         DeclareLaunchArgument("yolo_image_topic", default_value="/camera/d435i/color/image_raw"),
         DeclareLaunchArgument("yolo_output_topic", default_value="/perception/detections"),
-        DeclareLaunchArgument("yolo_allowed_classes", default_value="black_block,white_block,black,white"),
+        DeclareLaunchArgument("yolo_allowed_classes", default_value="bottle"),
         DeclareLaunchArgument("yolo_min_confidence", default_value="0.7"),
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(d435i_launch),
@@ -149,7 +157,7 @@ def generate_launch_description():
             executable="grasp_target_fusion",
             name="grasp_target_fusion",
             output="screen",
-            parameters=[fusion_config],
+            parameters=[fusion_config, {"target_class": LaunchConfiguration("target_class")}],
         ),
         Node(
             package="flame_arm_tracker",
@@ -158,6 +166,14 @@ def generate_launch_description():
             output="screen",
             parameters=[color_box_config],
             condition=IfCondition(LaunchConfiguration("launch_color_box_detector")),
+        ),
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(flame_tracking_launch),
+            launch_arguments={
+                "params_file": LaunchConfiguration("flame_params_file"),
+                "use_yolo": LaunchConfiguration("flame_use_yolo"),
+            }.items(),
+            condition=IfCondition(LaunchConfiguration("launch_flame_tracking")),
         ),
         Node(
             package="yolo_detector",
@@ -189,5 +205,16 @@ def generate_launch_description():
                 }
             ],
             condition=IfCondition(LaunchConfiguration("launch_yolo_bridge")),
+        ),
+        Node(
+            package="piper_mtc_tasks",
+            executable="repeat_visual_pick.py",
+            name="repeat_visual_pick",
+            output="screen",
+            arguments=[
+                "--target-class", LaunchConfiguration("target_class"),
+                "--place-indices", LaunchConfiguration("place_indices"),
+            ],
+            condition=IfCondition(LaunchConfiguration("launch_repeat_visual_pick")),
         ),
     ])

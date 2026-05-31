@@ -17,6 +17,7 @@ find_package(moveit_ros_planning_interface REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(std_srvs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(trajectory_msgs REQUIRED)
@@ -34,6 +35,7 @@ set(common_dependencies
   rclcpp
   rclcpp_action
   sensor_msgs
+  std_srvs
   tf2
   tf2_geometry_msgs
   trajectory_msgs
@@ -149,6 +151,7 @@ install(
 install(
   PROGRAMS
     scripts/pivot_tcp_calibration.py
+    scripts/repeat_visual_pick.py
     scripts/visual_target_probe.py
   DESTINATION lib/${PROJECT_NAME}
 )
