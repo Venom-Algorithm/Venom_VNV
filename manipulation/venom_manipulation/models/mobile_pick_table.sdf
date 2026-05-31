@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<sdf version="1.7">
+  <model name="mobile_pick_table">
+    <static>true</static>
+    <link name="table_link">
+      <collision name="platform_collision">
+        <geometry>
+          <box>
+            <size>0.34 0.26 0.12</size>
+          </box>
+        </geometry>
+        <pose>0 0 0.06 0 0 0</pose>
+      </collision>
+      <visual name="platform_visual">
+        <geometry>
+          <box>
+            <size>0.34 0.26 0.12</size>
+          </box>
+        </geometry>
+        <pose>0 0 0.06 0 0 0</pose>
+        <material>
+          <ambient>0.12 0.55 0.16 1.0</ambient>
+          <diffuse>0.18 0.74 0.22 1.0</diffuse>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

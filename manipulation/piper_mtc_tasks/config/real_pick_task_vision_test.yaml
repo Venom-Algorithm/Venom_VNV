@@ -1,0 +1,171 @@
+pick_place_server:
+  ros__parameters:
+    use_sim_time: false
+    action_name: /manipulation/execute_task
+    planning_frame: piper_base_link
+    arm_group_name: arm
+    gripper_group_name: gripper
+    hand_frame: piper_gripper_grasp_center
+    arm_home_named_target: zero
+    gripper_open_named_target: open
+    gripper_close_named_target: close
+    gripper_open_joint7: -0.040
+    gripper_close_joint7: 0.0
+    pipeline_planner_id: ompl
+    max_solutions: 1
+    max_ik_solutions: 32
+    min_solution_distance: 0.05
+    connect_timeout_sec: 20.0
+    plan_timeout_sec: 30.0
+    approach_min_distance: 0.03
+    approach_max_distance: 0.05
+    lift_min_distance: 0.05
+    lift_max_distance: 0.06
+    retreat_min_distance: 0.0
+    retreat_max_distance: 0.0
+    cartesian_step_size: 0.005
+    cartesian_jump_threshold: 0.0
+    cartesian_velocity_scaling: 0.10
+    cartesian_acceleration_scaling: 0.08
+    grasp_angle_delta: 0.174532925199
+    execute_on_plan: true
+    diagnostic_ik_only: false
+    pick_only: true
+    use_direct_visual_pick_fallback: true
+    top_down_strategy_enabled: true
+    disable_scene_objects: true
+    arm_only_reach_test: false
+    skip_connect_stage: true
+    skip_open_gripper_stage: false
+    move_home_before_pick: true
+    use_contact_aware_gripper_close: true
+    enable_gazebo_attachment: false
+    gazebo_attach_object_model: redbull_can
+    gazebo_attach_robot_link: link7
+    gazebo_attach_object_link: can_link
+    autostart_task_type: 0
+    tcp_offset_xyz: [0.0, 0.0, -0.0758]
+    grasp_target_offset_xyz: [-0.030, 0.0, 0.035]
+    pregrasp_offset_xyz: [0.070, 0.0, 0.040]
+    approach_direction_xyz: [1.0, 0.0, 0.0]
+    lift_direction_xyz: [0.0, 0.0, 1.0]
+    retreat_direction_xyz: [0.0, 0.0, 1.0]
+    grasp_orientation_rpy: [3.14159265359, -1.57079632679, 0.0]
+    top_down_grasp_target_x_candidates: [-0.040, -0.030, -0.020]
+    top_down_grasp_target_y_candidates: [-0.020, -0.010, 0.000, 0.010]
+    top_down_grasp_target_z_candidates: [0.020, 0.035, 0.050]
+    top_down_pregrasp_x_candidates: [0.060, 0.070, 0.080]
+    top_down_pregrasp_y_candidates: [0.00]
+    top_down_pregrasp_z_candidates: [0.030, 0.040, 0.050]
+    top_down_approach_direction_candidates:
+      - 1.0
+      - 0.0
+      - 0.0
+      - 0.98
+      - 0.0
+      - 0.20
+      - 0.98
+      - 0.0
+      - -0.20
+    top_down_roll_candidates: [3.14159265359]
+    top_down_pitch_candidates: [-1.57079632679, -1.3962634016, -1.22173047640]
+    top_down_yaw_candidates: [-0.3490658504, 0.0, 0.3490658504]
+    place_target:
+      offset_xyz: [0.05, 0.0, 0.0]
+      release_height: 0.10
+      orientation_rpy: [3.14159265359, 1.3962634016, -2.39617317732]
+      release_after_pre_place: true
+      allow_direct_release_fallback: true
+      direct_release_retreat_z: 0.08
+      fixed_pose_index: 0
+      fixed_pose_candidates_xyz:
+        - 0.0
+        - 0.20
+        - 0.30
+        - 0.0
+        - 0.28
+        - 0.30
+    vision_target:
+      enabled: true
+      require_single_target: true
+      require_valid_signal: false
+      target_timeout_sec: 120.0
+      wait_after_home_timeout_sec: 45.0
+      min_target_confidence: 0.7
+      compute_grasp_offsets: true
+      lock_lateral_offsets_to_zero: true
+      pregrasp_distance: 0.07
+      grasp_clearance: 0.01
+      grasp_z_offset: 0.0
+      grasp_strategy: radial_side
+      object_shape: cylinder
+      collision_scale_xy: 0.85
+      collision_scale_z: 0.90
+      default_target_size_xyz: [0.044, 0.044, 0.10]
+      target_position_bias_xyz: [0.0, 0.0, 0.0]
+      workspace_min_xyz: [0.10, -0.35, 0.03]
+      workspace_max_xyz: [0.60, 0.35, 0.40]
+      yaw_candidate_offsets: [-0.3490658504, -0.1745329252, -0.0872664626, 0.0, 0.0872664626, 0.1745329252, 0.3490658504]
+      allowed_target_classes: [black_block, white_block, black, white, can, redbull, block, cylinder, bottle]
+    observe_pose:
+      enabled: true
+      xyz: [0.0, 0.24, 0.37]
+      rpy: [0.0, 1.57079632679, 1.57079632679]
+    classification_place:
+      enabled: true
+      platform_slots_xyz:
+        - 0.0
+        - 0.20
+        - 0.30
+        - 0.0
+        - 0.28
+        - 0.30
+      platform_slot_classes: [white_block, black_block]
+      box_classes: [white_box, black_box]
+      pregrasp_offset_xyz: [0.0, 0.0, 0.07]
+      lift_offset_xyz: [0.0, 0.0, 0.07]
+      release_offset_xyz: [0.0, 0.0, 0.10]
+      grasp_orientation_rpy: [0.0, 1.57079632679, 1.57079632679]
+      box_target_timeout_sec: 3.0
+      min_box_confidence: 0.5
+      target_fusion_node_name: /grasp_target_fusion
+      set_fusion_target_class: true
+      target_switch_settle_sec: 0.20
+    pre_place:
+      enabled: true
+      heading_offset: 0.80
+      base_joint_name: joint1
+      min_delta: 0.02
+      coarse_base_first: true
+      retract_joint3_name: joint3
+      retract_joint4_name: joint4
+      retract_joint3_delta: -0.30
+      retract_joint4_delta: 0.35
+      hover_after_base: true
+      hover_margin_xy: 0.01
+      hover_margin_z: 0.03
+    pickup_table:
+      id: pickup_table
+      x: 0.30
+      y: -0.14
+      z: 0.06
+      size_x: 0.34
+      size_y: 0.26
+      size_z: 0.12
+    place_bin:
+      id: rear_drop_bin
+      x: -0.16
+      y: -0.12
+      z: 0.04
+      size_x: 0.15
+      size_y: 0.10
+      size_z: 0.08
+      wall_thickness: 0.01
+    pickup_object:
+      id: redbull_can
+      x: 0.28
+      y: -0.07
+      z: 0.172
+      radius: 0.022
+      height: 0.10
+      touch_links: [piper_gripper_base, piper_link7, piper_link8]

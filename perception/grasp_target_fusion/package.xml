@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>grasp_target_fusion</name>
+  <version>0.1.0</version>
+  <description>Bridge 2D detections and D435i depth into normalized grasp targets for MTC.</description>
+  <maintainer email="2893478728@qq.com">lzx2530</maintainer>
+  <license>MIT</license>
+
+  <depend>geometry_msgs</depend>
+  <depend>rclpy</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>tf2_geometry_msgs</depend>
+  <depend>tf2_ros</depend>
+  <depend>venom_manipulation_interfaces</depend>
+  <depend>yolo_interfaces</depend>
+
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>python3-numpy</exec_depend>
+  <exec_depend>python3-opencv</exec_depend>
+  <exec_depend>yolo_detector</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

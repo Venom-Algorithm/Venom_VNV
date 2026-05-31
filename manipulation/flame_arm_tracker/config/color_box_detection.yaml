@@ -1,0 +1,30 @@
+color_box_detector:
+  ros__parameters:
+    image_topic: /camera/d435i/color/image_raw
+    detection_topic: /perception/detections_2d
+    detection_array_topic: /perception/detections_2d_array
+    debug_mask_topic: /perception/debug/color_box_mask
+    debug_result_topic: /perception/debug/color_box_result
+    publish_debug_images: true
+    white_class_name: white_box
+    black_class_name: black_box
+    white_hsv_ranges:
+      - 0
+      - 0
+      - 150
+      - 179
+      - 80
+      - 255
+    black_hsv_ranges:
+      - 0
+      - 0
+      - 0
+      - 179
+      - 255
+      - 80
+    min_area_px: 500.0
+    max_area_ratio: 0.45
+    min_confidence: 0.50
+    morph_kernel_size: 5
+    min_aspect_ratio: 0.35
+    max_aspect_ratio: 3.00

@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<sdf version="1.7">
+  <model name="pick_target_block">
+    <static>false</static>
+    <allow_auto_disable>false</allow_auto_disable>
+    <link name="block_link">
+      <pose>0 0 0.03 0 0 0</pose>
+      <inertial>
+        <mass>0.05</mass>
+        <inertia>
+          <ixx>0.000023</ixx>
+          <iyy>0.000023</iyy>
+          <izz>0.000017</izz>
+          <ixy>0.0</ixy>
+          <ixz>0.0</ixz>
+          <iyz>0.0</iyz>
+        </inertia>
+      </inertial>
+      <collision name="block_collision">
+        <geometry>
+          <box>
+            <size>0.045 0.045 0.06</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>15.0</mu>
+              <mu2>15.0</mu2>
+            </ode>
+          </friction>
+          <bounce>
+            <restitution_coefficient>0.0</restitution_coefficient>
+            <threshold>100000</threshold>
+          </bounce>
+          <contact>
+            <ode>
+              <kp>1000000.0</kp>
+              <kd>50.0</kd>
+              <min_depth>0.001</min_depth>
+              <max_vel>0.0</max_vel>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+      <visual name="block_visual">
+        <geometry>
+          <box>
+            <size>0.045 0.045 0.06</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.80 0.22 0.18 1.0</ambient>
+          <diffuse>0.92 0.30 0.24 1.0</diffuse>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

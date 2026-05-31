@@ -1,0 +1,104 @@
+flame_color_detector:
+  ros__parameters:
+    image_topic: /camera/d435i/color/image_raw
+    detection_topic: /perception/detections_2d
+    detection_array_topic: /perception/detections_2d_array
+    debug_mask_topic: /perception/debug/flame_mask
+    debug_result_topic: /perception/debug/flame_result
+    publish_debug_images: false
+    class_name: flame_picture
+    hsv_ranges:
+      - 0
+      - 80
+      - 80
+      - 12
+      - 255
+      - 255
+      - 165
+      - 80
+      - 80
+      - 179
+      - 255
+      - 255
+      - 13
+      - 70
+      - 90
+      - 45
+      - 255
+      - 255
+    min_area_px: 300.0
+    max_area_ratio: 0.50
+    max_bbox_area_ratio: 0.45
+    min_confidence: 0.50
+    morph_kernel_size: 5
+    min_aspect_ratio: 0.20
+    max_aspect_ratio: 5.00
+    merge_candidates: true
+
+flame_yolo_detector:
+  ros__parameters:
+    image_topic: /camera/d435i/color/image_raw
+    detection_topic: /perception/detections_2d
+    detection_array_topic: /perception/detections_2d_array
+    debug_result_topic: /perception/debug/flame_yolo_result
+    publish_debug_images: false
+    model_path: models/exp_256_openvino_model
+    class_names:
+      - fire
+    confidence_threshold: 0.45
+    iou_threshold: 0.45
+    image_size: 256
+    device: ""
+    use_openvino_runtime: true
+
+flame_arm_tracker:
+  ros__parameters:
+    detection_array_topic: /perception/detections_2d_array
+    camera_info_topic: /camera/d435i/color/camera_info
+    joint_state_topic: /joint_states
+    cmd_vel_topic: /cmd_vel
+    joint_command_topic: /joint_command
+    debug_topic: /flame_arm_tracker/debug
+    target_class_name: fire
+    command_rate_hz: 20.0
+    tracking_timeout_sec: 0.30
+    lost_target_prediction_start_sec: 0.08
+    lost_target_prediction_speed_scale: 0.0
+    joint_state_timeout_sec: 0.30
+    observe_duration_sec: 2.0
+    observe_position_tolerance_rad: 0.05
+    command_velocity: 80.0
+    kp_yaw: 0.34
+    kd_yaw: 0.012
+    kp_pitch: 0.16
+    kd_pitch: 0.0
+    cmd_vel_yaw_feedforward_gain: 0.0
+    deadband_rad: 0.010
+    deadband_hysteresis_rad: 0.008
+    target_center_offset_x_px: 0.0
+    target_center_offset_y_px: 0.0
+    min_consecutive_detections: 1
+    max_detection_jump_px: 180.0
+    target_smoothing_alpha: 0.45
+    use_alpha_beta_filter: true
+    alpha_beta_alpha: 0.55
+    alpha_beta_beta: 0.04
+    target_prediction_sec: 0.02
+    derivative_filter_alpha: 0.12
+    use_dual_loop_yaw: false
+    outer_kp_yaw: 3.20
+    outer_kd_yaw: 0.010
+    inner_kp_yaw_velocity: 0.0
+    inner_ki_yaw_velocity: 0.0
+    max_yaw_velocity_rad_s: 2.00
+    max_yaw_accel_rad_s2: 14.00
+    max_yaw_velocity_integral: 0.30
+    use_command_accumulator: false
+    max_command_feedback_lead: 0.10
+    yaw_joint_sign: -1.0
+    pitch_joint5_sign: 0.0
+    pitch_joint6_sign: 0.0
+    observe_joints: [0.0, 0.95, -1.45, 0.0, 0.55, 0.0]
+    joint_delta_limits: [0.100, 0.0, 0.0, 0.0, 0.004, 0.004]
+    joint_min_limits: [-2.10, -0.10, -2.60, -2.80, -1.60, -2.80]
+    joint_max_limits: [2.10, 2.30, 0.20, 2.80, 1.60, 2.80]

@@ -1,0 +1,22 @@
+payload_mount_sweep:
+  ros__parameters:
+    arm_group_name: arm
+    hand_frame: piper_gripper_grasp_center
+    ik_timeout_sec: 0.05
+    max_results: 40
+
+    # These are cube-center positions in piper_base_link.
+    # For a 60 mm cube in a 10 mm shallow pocket, the tray floor is roughly z - 0.03 m.
+    target_x_range: [0.12, 0.38, 0.02]
+    target_y_range: [-0.20, 0.20, 0.02]
+    target_z_range: [0.06, 0.18, 0.02]
+
+    # Side grasp candidates for the exposed cube faces.
+    roll_candidates: [0.0]
+    pitch_candidates: [-1.57079632679]
+    yaw_candidates:
+      - -1.57079632679
+      - -0.78539816339
+      - 0.0
+      - 0.78539816339
+      - 1.57079632679

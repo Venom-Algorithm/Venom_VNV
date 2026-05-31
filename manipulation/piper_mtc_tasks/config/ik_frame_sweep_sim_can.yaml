@@ -1,0 +1,35 @@
+ik_frame_sweep:
+  ros__parameters:
+    arm_group_name: arm
+    hand_frame: gripper_grasp_center
+    check_table_collision: false
+    ik_timeout_sec: 0.10
+    max_results: 20
+    object_xyz: [0.28, -0.07, 0.172]
+    object_radius: 0.022
+    object_height: 0.10
+    tcp_z_range: [0.0, 0.0, 0.005]
+    tcp_xy: [0.0, 0.0]
+    pregrasp_xyz: [0.0, 0.0, -0.020]
+    target_x_range: [0.0, 0.0, 0.01]
+    target_y_range: [0.0, 0.0, 0.01]
+    target_z_range: [-0.040, 0.060, 0.010]
+    allowed_touch_links: [link7, link8]
+    roll_candidates: [3.14159265359]
+    pitch_candidates:
+      - -1.57079632679
+      - -1.22173047640
+      - -0.87266462599
+      - -0.52359877559
+      - 0.0
+      - 0.52359877559
+      - 0.87266462599
+      - 1.22173047640
+      - 1.57079632679
+    yaw_candidates:
+      - -1.57079632679
+      - -0.78539816339
+      - 0.0
+      - 0.78539816339
+      - 1.57079632679
+    grasp_angles: [0.0]

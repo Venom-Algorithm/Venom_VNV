@@ -34,3 +34,9 @@ COLCON_IGNORE
 
 # Claude Code project directory
 .claude/
+
+# Local Codex metadata
+.codex
+
+# Local model weights; package deployable model artifacts explicitly if needed
+*.pt

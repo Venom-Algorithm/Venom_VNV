@@ -1,0 +1,43 @@
+task_pose_reachability_probe:
+  ros__parameters:
+    planning_frame: piper_base_link
+    arm_group_name: arm
+    hand_frame: piper_gripper_grasp_center
+    ik_timeout_sec: 0.08
+    check_collisions: true
+    add_pickup_table_collision: true
+
+    # Arm tucked over the vehicle, elbow folded, wrist pitched for forward/down viewing.
+    initial_joint_posture: [0.0, 0.95, -1.45, 0.0, 0.55, 0.0]
+
+    # Front observation pose: arm over the tray center, wrist turned sideways/down.
+    observe_pose:
+      xyz: [0.0, 0.24, 0.37]
+      rpy: [0.0, 1.57079632679, 1.57079632679]
+
+    # Top-down-ish block grasp used by the current direct visual pick fallback.
+    grasp_orientation_rpy: [0.0, -1.57079632679, 0.0]
+    grasp_roll_candidates: [0.0, 3.14159265359]
+    grasp_pitch_candidates: [-1.57079632679, -0.78539816339, 0.0, 0.78539816339, 1.57079632679]
+    grasp_yaw_candidates: [-3.14159265359, -1.57079632679, 0.0, 1.57079632679, 3.14159265359]
+    pregrasp_offset_xyz: [0.0, 0.0, 0.07]
+    lift_offset_xyz: [0.0, 0.0, 0.07]
+    box_release_offset_xyz: [0.0, 0.0, 0.10]
+
+    # Tray order after the collection task:
+    #   near slot = white block, picked first for classification
+    #   far slot  = black block, picked second
+    platform_slots_xyz:
+      - 0.0
+      - 0.20
+      - 0.30
+      - 0.0
+      - 0.28
+      - 0.30
+    platform_slot_names: [near_white_slot, far_black_slot]
+
+    # Coarse payload platform collision model; tune this to match the real tray if needed.
+    pickup_table:
+      id: payload_platform
+      center_xyz: [0.0, 0.24, 0.14]
+      size_xyz: [0.18, 0.18, 0.02]
